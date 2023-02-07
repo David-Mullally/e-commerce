@@ -20,6 +20,8 @@
 }
 
 .chat-wrapper{
+    background-color: #fff;
+    border-radius: 5px;
     opacity: 0;
     position: fixed;
         bottom: 100px;
@@ -53,3 +55,21 @@
     display: none !important;
 }
 
+.chat-form{
+    padding: 15px;
+}
+
+.chat-form button,
+.chat-form input,
+.chat-form textarea {
+    margin-bottom: 10px;
+}
+
+.chat-form textarea{
+    resize: none;
+}
+
+.form-control:focus,
+.btn:focus{
+    box-shadow: none;
+}
