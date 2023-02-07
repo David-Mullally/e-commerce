@@ -39,6 +39,11 @@
     padding: 13px;
 }
 
+.chat-msg{
+    max-height: 300px;
+    overflow: auto;
+}
+
 #check:checked ~ .chat-btn i {
     display:block;
 }

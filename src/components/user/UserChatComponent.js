@@ -6,6 +6,7 @@ const UserChatComponent = () => {
       <input type="checkbox" id="check" />
       <label className="chat-btn" htmlFor="check">
         <i className="bi bi-chat-dots comment"></i>
+        <span className="position-absolute top-0 start-10 translate-middle p-2 bg-danger border- border-light rounded-circle" ></span>
         <i className="bi bi-x-circle close"></i>
       </label>
       <div className="chat-wrapper">
@@ -14,7 +15,18 @@ const UserChatComponent = () => {
         </div>
         <div className="chat-form">
           <div className="chat-msg">
-            <p>Chat history</p>
+            {Array.from({ length: 20 }).map((_, id) => {
+              return (
+                <>
+                  <p>
+                    <b>You:</b> Hello World! This is a test message.
+                  </p>
+                  <p className="bg-primary p-3 ms-4 text-light rounded-pill">
+                    <b>Support:</b> Hello World! This is a test reply.
+                  </p>
+                </>
+              );
+            })}
           </div>
           <textarea
             id="clientChatMsg"
