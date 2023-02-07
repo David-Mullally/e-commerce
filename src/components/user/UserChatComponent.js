@@ -17,14 +17,14 @@ const UserChatComponent = () => {
           <div className="chat-msg">
             {Array.from({ length: 20 }).map((_, id) => {
               return (
-                <>
+                <div key={id}>
                   <p>
                     <b>You:</b> Hello World! This is a test message.
                   </p>
                   <p className="bg-primary p-3 ms-4 text-light rounded-pill">
                     <b>Support:</b> Hello World! This is a test reply.
                   </p>
-                </>
+                </div>
               );
             })}
           </div>
