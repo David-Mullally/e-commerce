@@ -24,8 +24,13 @@ const ProductListPage = () => {
           <Button variant="primary">Filter</Button>
           <Button variant="danger">Reset</Button>
           </Col>
-          <Col md={9}>
-            <ProductForListComponent  />
+        <Col md={9}>
+          {Array.from({ length: 5 }).map((_, idx)=>{
+            return(
+              <ProductForListComponent key={idx} images={["games", "monitors", "tablets", "games", "monitors"]} idx={idx}/>
+            )
+          })}
+           
             <PaginationComponent />
           </Col>
       </Row>

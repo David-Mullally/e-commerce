@@ -2,18 +2,21 @@ import { Button, Card } from "react-bootstrap";
 import { RatingView } from "react-simple-star-rating";
 
 
-const ProductForListComponent = () => {
+const ProductForListComponent = ({images, idx}) => {
     return (
-        <Card style={{ width: "18rem" }}>
-            <Card.Img varaint="top" src="https://www.sky.de/static/img/serien/sky_23-01_the-last-of-us_hero_s.jpg" ></Card.Img>
+    <>
+        {console.log(idx)}
+        <Card style={{marginTop: "30px", marginBottom: "50px"}}>
+            <Card.Img varaint="top" src={`/images/category-${idx + 1}.jpg`} style={{maxHeight: "300px"}} ></Card.Img>
             <Card.Body>
                 <Card.Title>Card Title</Card.Title>
                 <Card.Text>
-                    Some quick example textto imitate card's content 
+                    Some quick example text to imitate card's content 
                 </Card.Text>
                 <Button variant="primary">Go To</Button>
             </Card.Body>
-        </Card>
+            </Card>
+            </>
     )
 }
 
