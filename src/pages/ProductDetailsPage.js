@@ -8,28 +8,73 @@ import {
   ListGroup,
   Row,
 } from "react-bootstrap";
-import { useParams } from "react-router-dom";
 import AddedToCartMessageComponent from "../components/AddedToCartMessageComponent";
 import { Rating } from "react-simple-star-rating";
+import ImageZoom from "js-image-zoom";
+import { useEffect } from "react";
 
 const ProductDetailsPage = () => {
-  const { productId } = useParams();
+  var options123 = {
+    scale: 2,
+    offset: { vertical: 0, horizontal: 0 },
+    zoomPosition: "right",
+  }
+  
+  var options4 ={
+    scale: 2,
+    offset: { vertical: 0, horizontal: 0 },
+    zoomPosition: "top",
+  }
+
+  useEffect(() => {
+    new ImageZoom(document.getElementById("first"), options123)
+    new ImageZoom(document.getElementById("second"), options123)
+    new ImageZoom(document.getElementById("third"), options123)
+    new ImageZoom(document.getElementById("forth"), options4)
+  })
   return (
     <Container>
       <AddedToCartMessageComponent />
-      <Row className="mt-5">
-        <Col md={4}>
-          {Array.from({ length: 5 }).map((_, idx) => {
-            return (
-              <Image
-                style={{ maxWidth: "250px", maxHeight: "170px" }}
-                fluid
-                src={`/images/category-${idx + 1}.jpg`}
-              />
-            );
-          })}
+      <Row className="mt-2">
+        <Col md={4} style={{zIndex: 1}}>
+          <div id="first">
+            <Image
+              crossOrigin="anonymous"
+              style={{ maxWidth: "190px", maxHeight: "170px" }}
+              fluid
+              src={`/images/category-1.jpg`}
+            />
+          </div>
+          <br />
+          <div id="second">
+            <Image
+              crossOrigin="anonymous"
+              style={{ maxWidth: "190px", maxHeight: "170px" }}
+              fluid
+              src={`/images/category-2.jpg`}
+            />
+          </div>
+          <br />
+          <div id="third">
+            <Image
+              crossOrigin="anonymous"
+              style={{ maxWidth: "190px", maxHeight: "170px" }}
+              fluid
+              src={`/images/category-3.jpg`}
+            />
+          </div>
+          <br />
+          <div id="forth">
+            <Image
+              crossOrigin="anonymous"
+              style={{ maxWidth: "190px", maxHeight: "170px" }}
+              fluid
+              src={`/images/category-4.jpg`}
+            />
+          </div>
+          <br />
         </Col>
-        <Col md={8} style={{ height: "80vh", overflowY: "scroll" }}>
+        <Col md={8} style={{ height: "60vh", overflowY: "scroll" }}>
           <Row>
             <Col md={8}>
               <ListGroup variant="flush">
@@ -105,7 +150,9 @@ const ProductDetailsPage = () => {
               <option value="2">2 (Poor)</option>
               <option value="1">1 (Awful)</option>
             </Form.Select>
-            <Button className="mb-3 mt-3" variant="primary">Submit</Button>
+            <Button className="mb-3 mt-3" variant="primary">
+              Submit
+            </Button>
           </Form>
         </Col>
       </Row>
