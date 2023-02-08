@@ -1,4 +1,13 @@
-import { Alert, Button, Col, Container, Form, Image, ListGroup, Row } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Col,
+  Container,
+  Form,
+  Image,
+  ListGroup,
+  Row,
+} from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import AddedToCartMessageComponent from "../components/AddedToCartMessageComponent";
 import { Rating } from "react-simple-star-rating";
@@ -11,31 +20,46 @@ const ProductDetailsPage = () => {
       <Row className="mt-5">
         <Col md={4}>
           {Array.from({ length: 5 }).map((_, idx) => {
-            return <Image style={{maxWidth: "250px", maxHeight:"170px"}} fluid src={`/images/category-${idx + 1}.jpg`} />;
+            return (
+              <Image
+                style={{ maxWidth: "250px", maxHeight: "170px" }}
+                fluid
+                src={`/images/category-${idx + 1}.jpg`}
+              />
+            );
           })}
         </Col>
-        <Col md={8} style={{height: "80vh" , overflowY: "scroll"}}>
+        <Col md={8} style={{ height: "80vh", overflowY: "scroll" }}>
           <Row>
             <Col md={8}>
               <ListGroup variant="flush">
-                <ListGroup.Item>Cras Justo Odio</ListGroup.Item>
+                <ListGroup.Item>
+                  <h1>Product Name</h1>
+                </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating readonly size={20} initialValue={4} />
+                  (1)
                 </ListGroup.Item>
-                <ListGroup.Item>mABSCjAH mbasf kjABSJ</ListGroup.Item>
-                <ListGroup.Item>myxbnc kjhas ihas</ListGroup.Item>
+                <ListGroup.Item>
+                  Price <span className="fw-bold">$500</span>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  myxbnc kjhas ihas mnABSjsaj kasbjcbashsa jahsjcabs hagScibash
+                </ListGroup.Item>
               </ListGroup>
             </Col>
             <Col md={4}>
               <ListGroup>
-                <ListGroup.Item>chjasdh jASFJ</ListGroup.Item>
-                <ListGroup.Item>Ahf iAHDUAS</ListGroup.Item>
+                <ListGroup.Item>Status: In Stock</ListGroup.Item>
+                <ListGroup.Item>
+                  Price <span className="fw-bold">$500</span>
+                </ListGroup.Item>
                 <ListGroup.Item>
                   <Form.Select size="lg" aria-label="Default select example">
-                    <option>Open this menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option>1</option>
+                    <option value="1">2</option>
+                    <option value="2">3</option>
+                    <option value="3">4</option>
                   </Form.Select>
                 </ListGroup.Item>
                 <ListGroup.Item>
@@ -50,24 +74,29 @@ const ProductDetailsPage = () => {
               <ListGroup variant="flush">
                 <ListGroup.Item>jAHWD Uahf jaH</ListGroup.Item>
                 <ListGroup.Item>asncksan jaH</ListGroup.Item>
-                <ListGroup.Item>mnkh  jASHU Uaghs</ListGroup.Item>
+                <ListGroup.Item>mnkh jASHU Uaghs</ListGroup.Item>
               </ListGroup>
             </Col>
           </Row>
           <hr />
           send review form
-          <Alert variant="danger">You must be loggin in to write a review</Alert>
+          <Alert variant="danger">
+            You must be loggin in to write a review
+          </Alert>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Email Address</Form.Label>
               <Form.Control type="email" placeholder="name@example.com" />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlTeaxarea1">
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTeaxarea1"
+            >
               <Form.Label>Example Textarea</Form.Label>
               <Form.Control as="textarea" rows={3} />
             </Form.Group>
             <Form.Select aria-label="Default select example">
-            <option>Open this menu</option>
+              <option>Open this menu</option>
               <option value="1">One</option>
               <option value="2">Two</option>
               <option value="3">Three</option>
