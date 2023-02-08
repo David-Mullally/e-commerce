@@ -4,6 +4,7 @@ import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
 import RoutesWithUserChatComponent from "./components/user/RoutesWithUserChatComponent";
 import ProtectedRoutesComponent from "./components/ProtectedRoutesComponent";
+import ScrollToTop from "./utils/ScrollToTop";
 ///////////My Pages for unprotected routes///////
 import CartPage from "./pages/CartPage";
 import HomePage from "./pages/HomePage";
@@ -31,6 +32,7 @@ import UserProfilePage from "./pages/user/UserProfilePage";
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <HeaderComponent />
       <Routes>
 <Route element={<RoutesWithUserChatComponent />}>
