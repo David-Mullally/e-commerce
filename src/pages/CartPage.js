@@ -1,17 +1,18 @@
 import { Alert, Button, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import CartItemComponent from "../components/CartItemComponent";
 
 const CartPage = () => {
   return (
     <Container>
       <Row className="mt-4">
         <Col md={8}>
-          <h1>Shopping Cart</h1>
-          {Array.from({ length: 3 }).map((item) => (
-            <>
-              CartItemComponent <br />
-            </>
+                  <h1>Shopping Cart</h1>
+                  <ListGroup variant="flush">
+          {Array.from({ length: 3 }).map((item, idx) => (
+              <CartItemComponent key={idx} />
           ))}
+          </ListGroup>
           <Alert varient="info">Your Cart is empty</Alert>
         </Col>
         <Col md={4}>
