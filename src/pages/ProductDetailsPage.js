@@ -14,7 +14,7 @@ const ProductDetailsPage = () => {
             return <Image style={{maxWidth: "250px", maxHeight:"170px"}} fluid src={`/images/category-${idx + 1}.jpg`} />;
           })}
         </Col>
-        <Col md={8}>
+        <Col md={8} style={{height: "80vh" , overflowY: "scroll"}}>
           <Row>
             <Col md={8}>
               <ListGroup variant="flush">
