@@ -2,7 +2,9 @@ html{
     position: relative;
     min-height: 100%;  /*required for positioning of the footer to work*/
 }
-
+body{
+    overflow: auto;
+}
 footer{
     position: absolute;
     bottom: 0;

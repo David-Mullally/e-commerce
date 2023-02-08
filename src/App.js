@@ -35,7 +35,7 @@ function App() {
       <ScrollToTop />
       <HeaderComponent />
       <Routes>
-<Route element={<RoutesWithUserChatComponent />}>
+        <Route element={<RoutesWithUserChatComponent />}>
           {/* unprotected routes*/}
           <Route path="/" element={<HomePage />} />
           <Route path="/cart" element={<CartPage />} />
@@ -67,9 +67,8 @@ function App() {
               element={<UserOrderDetailsPage />}
             />
           </Route>
-</Route>
+        </Route>
 
-        
         {/* Admin routes */}
         <Route element={<ProtectedRoutesComponent admin={true} />}>
           <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
@@ -90,7 +89,7 @@ function App() {
           <Route path="/admin/orders" element={<AdminOrdersPage />} />
           <Route path="/admin/products" element={<AdminProductsPage />} />
           <Route path="/admin/users" element={<AdminUsersPage />} />
-          </Route>
+        </Route>
       </Routes>
       <FooterComponent />
     </BrowserRouter>
