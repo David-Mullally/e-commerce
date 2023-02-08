@@ -10,7 +10,7 @@ import SortOptionsComponent from "../components/SortOptionsComponent";
 
 const ProductListPage = () => {
   return (
-    <Container fluid>
+    <Container fluid className="product-list-page">
       <Row>
         <Col md={3}>
           <ListGroup variant="flush">
