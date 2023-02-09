@@ -43,7 +43,7 @@ const UserOrderDetailsPage = () => {
             </Row>
           </Row>
           <h2>Order Items</h2>
-          <ListGroup variant="flush">
+          <ListGroup variant="flush" style={{height: "500px"}}>
             {Array.from({ length: 3 }).map((item, idx) => (
               <CartItemComponent key={idx} />
             ))}
