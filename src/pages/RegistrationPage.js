@@ -1,9 +1,29 @@
 import { useState } from "react";
-import { Alert, Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Col,
+  Container,
+  Form,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const RegistrationPage = () => {
   const [validated, setValidated] = useState(false);
+
+  const onChange = () => {
+    const password = document.querySelector("input[name=password]");
+    const passwordConfirm = document.querySelector(
+      "input[name=passwordConfirm]"
+    );
+    if (password.value === passwordConfirm.value) {
+      passwordConfirm.setCustomValidity("");
+    } else {
+      passwordConfirm.setCustomValidity("Passwords don't match");
+    }
+  };
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -16,7 +36,7 @@ const RegistrationPage = () => {
   };
   return (
     <Container>
-      <Row className="mt-5 justify-content-md-center">
+      <Row className="mt-3 justify-content-md-center">
         <Col md={6}>
           <h1>Register</h1>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -25,7 +45,7 @@ const RegistrationPage = () => {
               <Form.Control
                 required
                 type="text"
-                placeholder="Enter your firts name"
+                placeholder="Enter your first name"
                 name="firstName"
               />
               <Form.Control.Feedback type="invalid">
@@ -63,7 +83,8 @@ const RegistrationPage = () => {
                 type="password"
                 placeholder="Enter password"
                 name="password"
-                minlength={6}
+                minLength={6}
+                onChange={onChange}
               />
               <Form.Control.Feedback type="invalid">
                 please must contain at least 6 characters!
@@ -76,7 +97,8 @@ const RegistrationPage = () => {
                 type="password"
                 placeholder="Confirm password"
                 name="passwordConfirm"
-                minlength={6}
+                minLength={6}
+                onChange={onChange}
               />
               <Form.Control.Feedback type="invalid">
                 Passwords didn't match!
@@ -97,9 +119,13 @@ const RegistrationPage = () => {
                 aria-hidden="true"
               ></Spinner>
               Submit
-                      </Button>
-                      <Alert show="true" variant="danger">User with this email already exists!</Alert>
-                      <Alert  className ="mb-5" show="true" variant="info">registration successful!</Alert>
+            </Button>
+            <Alert show="true" variant="danger">
+              User with this email already exists!
+            </Alert>
+            <Alert className="mb-5" show="true" variant="info">
+              registration successful!
+            </Alert>
           </Form>
         </Col>
       </Row>
