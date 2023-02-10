@@ -38,17 +38,15 @@ const AdminUsersPage = () => {
                       <i className={item} />
                     </td>
                     <td>
-                      <LinkContainer to="/admin/order-details">
+                      <LinkContainer to="/admin/edit-user">
                         <Button className="btm-sm">
                           <i className="bi bi-pencil-square"></i>
                         </Button>
                       </LinkContainer>
                       {" / "}
-                      <LinkContainer to="/admin/order-details">
                         <Button variant="danger" className="btm-sm" onClick={deleteHandler}>
                           <i className="bi bi-x-circle"></i>
                         </Button>
-                      </LinkContainer>
                     </td>
                   </tr>
                 );
