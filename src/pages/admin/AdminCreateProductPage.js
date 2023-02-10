@@ -77,7 +77,7 @@ const AdminCreateProductPage = () => {
           </Form.Group>
           <Form.Group className="mb-3" controlId="form.ProductPriceTextArea">
             <Form.Label>Price</Form.Label>
-            <Form.Control name="productPrice" required type="number" />
+            <Form.Control name="productPrice" required type="text" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="form.ProductCategoryTextArea">
             <Form.Label>
