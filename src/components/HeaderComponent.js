@@ -24,7 +24,7 @@ const HeaderComponent = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <InputGroup>
-              <DropdownButton id="dropdown-basic-button" title="Polls">
+              <DropdownButton id="dropdown-basic-button" title="Search">
                 <Dropdown.Item>Best Fictional Dad</Dropdown.Item>
                 <Dropdown.Item>Dad Jokes</Dropdown.Item>
                 <Dropdown.Item>Dad Music</Dropdown.Item>
