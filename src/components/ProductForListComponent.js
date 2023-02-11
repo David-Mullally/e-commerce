@@ -6,7 +6,7 @@ const ProductForListComponent = ({images, idx}) => {
     <div>
         {console.log(idx)}
             <Card style={{ marginTop: "10px", marginBottom: "10px", maxHeight: "180px" }} >
-            <Card.Img varaint="top" src={`/images/category-${idx + 1}.jpg`} style={{maxHeight: "50px", maxWidth: "100px"}} ></Card.Img>
+            <Card.Img crossOrigin="anonymous" varaint="top" src={`/images/category-${idx + 1}.jpg`} style={{maxHeight: "50px", maxWidth: "100px"}} ></Card.Img>
             <Card.Body>
                 <Card.Title>Card Title</Card.Title>
                 <Card.Text>
