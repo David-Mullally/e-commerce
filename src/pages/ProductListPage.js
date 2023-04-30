@@ -8,7 +8,11 @@ import ProductForListComponent from "../components/ProductForListComponent";
 import RatingFilterComponent from "../components/filterQueryResultOptions/RatingFilterComponent";
 import SortOptionsComponent from "../components/SortOptionsComponent";
 
+
+import axios from "axios";
+
 const ProductListPage = () => {
+  axios.get("/api/products").then((res) => console.log(res));
   return (
     <Container fluid className="product-list-page">
       <Row>
@@ -21,7 +25,7 @@ const ProductListPage = () => {
             <ListGroup.Item><CategoryFilterComponent /></ListGroup.Item>
             <ListGroup.Item><AttributesFilterComponent /></ListGroup.Item>
           </ListGroup>
-          <Button variant="primary">Filter</Button>
+          <Button variant="primary">Filter</Button>{" "}
           <Button variant="danger">Reset</Button>
           </Col>
         <Col md={9}>
