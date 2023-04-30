@@ -8,11 +8,7 @@ import ProductForListComponent from "../components/ProductForListComponent";
 import RatingFilterComponent from "../components/filterQueryResultOptions/RatingFilterComponent";
 import SortOptionsComponent from "../components/SortOptionsComponent";
 
-
-import axios from "axios";
-
 const ProductListPage = () => {
-  axios.get("/api/products").then((res) => console.log(res));
   return (
     <Container fluid className="product-list-page">
       <Row>
