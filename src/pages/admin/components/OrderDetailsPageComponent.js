@@ -12,7 +12,7 @@ import CartItemComponent from "../../../components/CartItemComponent";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const OrderDetailsPageComponent = ({ getOrder }) => {
+const OrderDetailsPageComponent = ({ getOrder, markAsDelivered }) => {
   const { id } = useParams();
 
   const [userInfo, setUserInfo] = useState([]);
@@ -22,8 +22,8 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
   const [cartSubtotal, setCartSubtotal] = useState(0);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [orderButtonMessage, setOrderButtonMessage] =
-        useState("Mark as Delivered");
-    const [cartItems, setCartItems] = useState([]);
+    useState("Mark as Delivered");
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     getOrder(id)
@@ -38,8 +38,8 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
         if (order.isDelivered) {
           setOrderButtonMessage("Order Is Finished");
           setButtonDisabled(true);
-          }
-          setCartItems(order.cartItems)
+        }
+        setCartItems(order.cartItems);
       })
       .catch((err) =>
         console.log({
@@ -49,6 +49,7 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
         })
       );
   }, [isDelivered, id]);
+
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -94,7 +95,7 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
           <h2>Order Items</h2>
           <ListGroup variant="flush" style={{ height: "500px" }}>
             {cartItems.map((item, idx) => (
-                <CartItemComponent key={idx} item={item} orderCreated={true} />
+              <CartItemComponent key={idx} item={item} orderCreated={true} />
             ))}
           </ListGroup>
         </Col>
@@ -120,6 +121,23 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
               <div className="d-grid gap-2">
                 <Button
                   disabled={buttonDisabled}
+                  onClick={() =>
+                    markAsDelivered(id)
+                      .then((res) => {
+                        if (res) {
+                          setIsDelivered(true);
+                        }
+                      })
+                      .catch((err) =>
+                        console.log([
+                          {
+                            name: err.response.data.message
+                              ? err.response.data.message
+                              : err.response.data,
+                          },
+                        ])
+                      )
+                  }
                   size="lg"
                   variant="danger"
                   type="button"
