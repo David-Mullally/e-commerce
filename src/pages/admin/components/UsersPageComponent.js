@@ -2,23 +2,28 @@ import { Button, Col, Row, Table } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-const UsersPageComponent = ({fetchUsers}) => {
+const UsersPageComponent = ({ fetchUsers }) => {
+  const [users, setUsers] = useState([0]);
 
-    const [users, setUsers] = useState([0]);
+  const deleteHandler = () => {
+    if (window.confirm("Are you sure?")) alert("user deleted successfully");
+  };
 
-
-    const deleteHandler = () => {
-        if(window.confirm("Are you sure?")) alert("user deleted successfully")
-    };
-
-    useEffect(() => {
-        const abortctrl = new AbortController();
-        fetchUsers(abortctrl).then((res) => setUsers(res));
-        return ()=> abortctrl.abort();
-    },[]);
-
+  useEffect(() => {
+    const abortctrl = new AbortController();
+    fetchUsers(abortctrl)
+      .then((res) => setUsers(res))
+      .catch((err) =>
+        console.log(
+          err.response.data.message
+            ? err.response.data.message
+            : err.response.data
+        )
+      );
+    return () => abortctrl.abort();
+  }, []);
 
   return (
     <Row className="m-5">
@@ -26,8 +31,7 @@ const UsersPageComponent = ({fetchUsers}) => {
         <AdminLinksComponent />
       </Col>
       <Col md={10}>
-              <h1>User List</h1>
-              {console.log(users)}
+        <h1>User List</h1>
         <Table striped bordered hover responsive>
           <thead>
             <tr>
@@ -40,32 +44,34 @@ const UsersPageComponent = ({fetchUsers}) => {
             </tr>
           </thead>
           <tbody>
-            {["bi bi-check-lg text-success", "bi bi-x-lg text-danger"].map(
-              (item, idx) => {
-                return (
-                  <tr key={idx}>
-                    <td>{idx + 1}</td>
-                    <td>Cloud</td>
-                    <td>Strife</td>
-                    <td>cloud@strife-delivery-services.com</td>
-                    <td>
-                      <i className={item} />
-                    </td>
-                    <td>
-                      <LinkContainer to="/admin/edit-user">
-                        <Button className="btm-sm">
-                          <i className="bi bi-pencil-square"></i>
-                        </Button>
-                      </LinkContainer>
-                      {" / "}
-                        <Button variant="danger" className="btm-sm" onClick={deleteHandler}>
-                          <i className="bi bi-x-circle"></i>
-                        </Button>
-                    </td>
-                  </tr>
-                );
-              }
-            )}
+            {users.map((user, idx) => {
+              return (
+                <tr key={idx}>
+                  <td>{idx + 1}</td>
+                  <td>{user.name}</td>
+                  <td>{user.lastName}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    {user.isAdmin ? <i className= "bi bi-check-lg text-success"></i> : <i className="bi bi-x-lg text-danger"></i>}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/admin/edit-user/${user.id}`}>
+                      <Button className="btm-sm">
+                        <i className="bi bi-pencil-square"></i>
+                      </Button>
+                    </LinkContainer>
+                    {" / "}
+                    <Button
+                      variant="danger"
+                      className="btm-sm"
+                      onClick={deleteHandler}
+                    >
+                      <i className="bi bi-x-circle"></i>
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Col>
