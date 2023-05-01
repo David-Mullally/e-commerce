@@ -5,7 +5,7 @@ import axios from "axios";
 const fetchUsers = async(abortctrl) => {
   const { data } = await axios.get("/api/users", {
     signal: abortctrl.signal,
-  });
+  })
   return data;
 }
 
