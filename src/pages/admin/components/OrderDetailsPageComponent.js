@@ -22,7 +22,8 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
   const [cartSubtotal, setCartSubtotal] = useState(0);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [orderButtonMessage, setOrderButtonMessage] =
-    useState("Mark as Delivered");
+        useState("Mark as Delivered");
+    const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     getOrder(id)
@@ -37,7 +38,8 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
         if (order.isDelivered) {
           setOrderButtonMessage("Order Is Finished");
           setButtonDisabled(true);
-        }
+          }
+          setCartItems(order.cartItems)
       })
       .catch((err) =>
         console.log({
@@ -91,8 +93,8 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
           </Row>
           <h2>Order Items</h2>
           <ListGroup variant="flush" style={{ height: "500px" }}>
-            {Array.from({ length: 3 }).map((item, idx) => (
-              <CartItemComponent key={idx} />
+            {cartItems.map((item, idx) => (
+                <CartItemComponent key={idx} item={item} orderCreated={true} />
             ))}
           </ListGroup>
         </Col>
