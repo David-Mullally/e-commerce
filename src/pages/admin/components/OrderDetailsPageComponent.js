@@ -10,22 +10,43 @@ import {
 import CartItemComponent from "../../../components/CartItemComponent";
 
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const OrderDetailsPageComponent = ({ getOrder }) => {
   const { id } = useParams();
+
+  const [userInfo, setUserInfo] = useState([]);
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [isPaid, setIsPaid] = useState(false);
+  const [isDelivered, setIsDelivered] = useState(false);
+  const [cartSubtotal, setCartSubtotal] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [orderButtonMessage, setOrderButtonMessage] =
+    useState("Mark as Delivered");
+
   useEffect(() => {
     getOrder(id)
-      .then((items) => console.log(items))
+      .then((order) => {
+        setUserInfo(order.user);
+        setPaymentMethod(order.paymentMethod);
+        order.isPaid ? setIsPaid(order.paidAt) : setIsPaid(false);
+        order.isDelivered
+          ? setIsDelivered(order.deliveredAt)
+          : setIsDelivered(false);
+        setCartSubtotal(order.orderTotal.cartSubtotal);
+        if (order.isDelivered) {
+          setOrderButtonMessage("Order Is Finished");
+          setButtonDisabled(true);
+        }
+      })
       .catch((err) =>
-        console.log(
-          {
-            name: err.response.data.message
-              ? err.response.data.message
-              : err.response.data,
-          })
+        console.log({
+          name: err.response.data.message
+            ? err.response.data.message
+            : err.response.data,
+        })
       );
-  }, []);
+  }, [isDelivered, id]);
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -35,26 +56,35 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
           <Row>
             <Col md={6}>
               <h2>Shipping</h2>
-              <b>Name</b>: John Doe <br />
-              <b>Address</b>: 742 Evergreen Terrace, Springfield <br />
-              <b>Phone</b>: 555-342672
+              <b>Name</b>: {userInfo.name} {userInfo.lastName} <br />
+              <b>Address</b>: {userInfo.address} {userInfo.city}{" "}
+              {userInfo.zipCode}
+              <br />
+              <b>Phone</b>: {userInfo.phoneNumber}
             </Col>
             <Col md={6}>
               <h2>Payment Method</h2>
-              <Form.Select disabled={false}>
+              <Form.Select value={paymentMethod} disabled={true}>
                 <option value="pp">PayPal</option>
                 <option value="Ccod">Cash On delivery</option>
               </Form.Select>
             </Col>
             <Row>
               <Col>
-                <Alert variant="danger" className="mt-3">
-                  Not Delivered{" "}
+                <Alert
+                  variant={isDelivered ? "success" : "danger"}
+                  className="mt-3"
+                >
+                  {isDelivered ? (
+                    <>Delivered at {isDelivered}</>
+                  ) : (
+                    <>Not Delivered</>
+                  )}
                 </Alert>
               </Col>
               <Col>
-                <Alert variant="success" className="mt-3">
-                  Paid on 21-01-2023{" "}
+                <Alert variant={isPaid ? "success" : "danger"} className="mt-3">
+                  {isPaid ? <>Paid at {isDelivered}</> : <>Not Paid</>}
                 </Alert>
               </Col>
             </Row>
@@ -72,7 +102,8 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
               <h3>Order Summary</h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              Items Price (incl. Tax): <span className="fw-bold">$150</span>
+              Items Price (incl. Tax):{" "}
+              <span className="fw-bold">{cartSubtotal}</span>
             </ListGroup.Item>
             <ListGroup.Item>
               Shipping: <span className="fw-bold">Included</span>
@@ -81,12 +112,17 @@ const OrderDetailsPageComponent = ({ getOrder }) => {
               Tax: <span className="fw-bold">Included</span>
             </ListGroup.Item>
             <ListGroup.Item className="text-danger">
-              Total Price: <span className="fw-bold">$300</span>
+              Total Price: <span className="fw-bold">{cartSubtotal}</span>
             </ListGroup.Item>
             <ListGroup.Item className="text-danger">
               <div className="d-grid gap-2">
-                <Button size="lg" variant="danger" type="button">
-                  Mark As Delivered
+                <Button
+                  disabled={buttonDisabled}
+                  size="lg"
+                  variant="danger"
+                  type="button"
+                >
+                  {orderButtonMessage}
                 </Button>
               </div>
             </ListGroup.Item>
