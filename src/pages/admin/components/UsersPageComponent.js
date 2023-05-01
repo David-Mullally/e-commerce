@@ -16,7 +16,7 @@ const UsersPageComponent = ({fetchUsers}) => {
     useEffect(() => {
         const abortctrl = new AbortController();
         fetchUsers(abortctrl).then((res) => setUsers(res));
-        return abortctrl.abort();
+        return ()=> abortctrl.abort();
     },[]);
 
 
