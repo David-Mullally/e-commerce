@@ -4,12 +4,18 @@ import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 
 import { useState, useEffect } from "react";
 
-const ProductsPageComponent = ({fetchProducts}) => {
+const ProductsPageComponent = ({fetchProducts, deleteProduct}) => {
   const [products, setProducts] = useState([]);
+  const [productDeleted, setProductDeleted] = useState(false);
 
 
-  const deleteHandler = () => {
-    if (window.confirm("Are you sure?")) alert("product deleted successfully");
+  const deleteHandler = async(productId) => {
+    if (window.confirm("Are you sure?")) {
+      const data = await deleteProduct(productId)
+      if(data.message === "product deleted") {
+        setProductDeleted(!productDeleted);
+      }
+    }
   };
   
 
@@ -18,14 +24,14 @@ const ProductsPageComponent = ({fetchProducts}) => {
     fetchProducts(abortctrl)
       .then((res) => setProducts(res))
       .catch((err) =>
-        console.log(
-          err.response.data.message
+        setProducts([
+         { name: err.response.data.message
             ? err.response.data.message
-            : err.response.data
-        )
+            : err.response.data}
+        ])
       );
     return () => abortctrl.abort();
-  }, []);
+  }, [productDeleted]);
 
   return (
     <Row className="m-5">
@@ -69,7 +75,7 @@ const ProductsPageComponent = ({fetchProducts}) => {
                     <Button
                       variant="danger"
                       className="btn-sm"
-                      onClick={deleteHandler}
+                      onClick={() =>deleteHandler(item._id)}
                     >
                       <i className="bi bi-x-circle"></i>
                     </Button>
