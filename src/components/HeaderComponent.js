@@ -56,7 +56,7 @@ const HeaderComponent = () => {
                 My Profile
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item to>Log Out</NavDropdown.Item>
+              <NavDropdown.Item to="/logout">Log Out</NavDropdown.Item>
             </NavDropdown>
             <LinkContainer to="/login">
               <Nav.Link>Login</Nav.Link>
