@@ -13,7 +13,7 @@ import { Rating } from "react-simple-star-rating";
 import ImageZoom from "js-image-zoom";
 import { useEffect } from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/actions/cartActions";
 
 const ProductDetailsPage = () => {
@@ -23,6 +23,8 @@ const ProductDetailsPage = () => {
   const addToCartHandler = () => {
     dispatch(addToCart());
   }
+
+  const products = useSelector((state) => state.cart.value);
   
   var options123 = {
     scale: 2,
@@ -89,7 +91,7 @@ const ProductDetailsPage = () => {
             <Col md={8}>
               <ListGroup variant="flush">
                 <ListGroup.Item>
-                  <h1>Product Name</h1>
+                  <h1>Product Name {products}</h1>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating readonly size={20} initialValue={4} />
