@@ -3,7 +3,7 @@ import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 
-const LogInPageComponent = ({ LogInUserApiRequest }) => {
+const LogInPageComponent = ({ LogInUserApiRequest, reduxDispatch, setReduxUserState }) => {
   const [validated, setValidated] = useState(false);
   const [loginUserResponseState, setLoginUserResponseState] = useState({ success: "", error: "", loading: false });
 
@@ -24,6 +24,11 @@ const LogInPageComponent = ({ LogInUserApiRequest }) => {
       LogInUserApiRequest(email, password, doNotLogout)
         .then((res) => {
           setLoginUserResponseState({ success: res.success, error: "", loading: false })
+
+
+          if (res.userLoggedIn) {
+            reduxDispatch(setReduxUserState(res.userLoggedIn))
+          }
 
           if (res.success === "user logged in" && !res.userLoggedIn.isAdmin) {
             navigate("/user", {replace: true})
