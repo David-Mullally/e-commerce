@@ -6,9 +6,9 @@ import {
   Container,
   Form,
   Row,
-  Spinner,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Spinner from "react-bootstrap/Spinner"
 
 const RegistrationPage = () => {
   const [validated, setValidated] = useState(false);
