@@ -1,20 +1,11 @@
 import { useState } from "react";
-import {
-  Alert,
-  Button,
-  Col,
-  Container,
-  Form,
-  Row,
-} from "react-bootstrap";
-import Spinner from 'react-bootstrap/Spinner'
+import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
 
 const LogInPageComponent = ({ LogInUserApiRequest }) => {
   const [validated, setValidated] = useState(false);
- /* const [loginUserResponseState, setLoginUserResponseState] = ({success: "", error: "", loading: false})*/
-
-
+  const [loginUserResponseState, setLoginUserResponseState] = useState({ success: "", error: "", loading: false });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,14 +16,17 @@ const LogInPageComponent = ({ LogInUserApiRequest }) => {
     const doNotLogout = form.doNotLogout.checked;
 
     if (event.currentTarget.checkValidity() === true && email && password) {
+      setLoginUserResponseState({loading: true});
       LogInUserApiRequest(email, password, doNotLogout)
-        .then((res) => console.log(res))
+        .then((res) => {
+          setLoginUserResponseState({success: res.success, error: "", loading: false})
+        })
         .catch((err) =>
-          console.log(
-            err.response.data.message
+          setLoginUserResponseState({ error: err.response.data.message
               ? err.response.data.message
-              : err.response.data,
-        ));
+            : err.response.data
+          })
+        );
     }
 
     setValidated(true);
@@ -75,17 +69,28 @@ const LogInPageComponent = ({ LogInUserApiRequest }) => {
               </Col>
             </Row>
             <Button variant="primary" type="submit">
-              <Spinner
-                as="spin"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              ></Spinner>
+              {loginUserResponseState &&
+              loginUserResponseState.loading === true ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                ></Spinner>
+              ) : (
+                ""
+              )}
               Submit
             </Button>
-            <Alert show={false} variant="danger">
-              invalid credentials
+            <Alert
+              show={
+                loginUserResponseState &&
+                loginUserResponseState.error === "wrong credentials"
+              }
+              variant="danger"
+            >
+              wrong credentials
             </Alert>
           </Form>
         </Col>

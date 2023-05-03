@@ -112,7 +112,7 @@ const RegistrationPage = () => {
             </Form.Group>
             <Button type="submit">
               <Spinner
-                as="spin"
+                as="span"
                 animation="border"
                 size="sm"
                 role="status"
