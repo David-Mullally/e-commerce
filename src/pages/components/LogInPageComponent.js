@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LogInPageComponent = ({ LogInUserApiRequest }) => {
   const [validated, setValidated] = useState(false);
   const [loginUserResponseState, setLoginUserResponseState] = useState({ success: "", error: "", loading: false });
+
+
+  const navigate = useNavigate();
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,9 +23,16 @@ const LogInPageComponent = ({ LogInUserApiRequest }) => {
       setLoginUserResponseState({loading: true});
       LogInUserApiRequest(email, password, doNotLogout)
         .then((res) => {
-          setLoginUserResponseState({success: res.success, error: "", loading: false})
-        })
-        .catch((err) =>
+          setLoginUserResponseState({ success: res.success, error: "", loading: false })
+
+          if (res.success === "user logged in" && !res.userLoggedIn.isAdmin) {
+            navigate("/user", {replace: true})
+          } else {
+            navigate("/admin/orders", {replace: true})
+          }
+
+          
+        }).catch((err) =>
           setLoginUserResponseState({ error: err.response.data.message
               ? err.response.data.message
             : err.response.data
