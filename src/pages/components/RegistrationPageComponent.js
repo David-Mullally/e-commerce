@@ -14,6 +14,7 @@ const RegistrationPageComponent = ({
     error: "",
     loading: false,
   });
+  const [passwordsMatchState, setPasswordsMatchState] = useState(true);
 
   const onChange = () => {
     const password = document.querySelector("input[name=password]");
@@ -21,9 +22,9 @@ const RegistrationPageComponent = ({
       "input[name=passwordConfirm]"
     );
     if (password.value === passwordConfirm.value) {
-      passwordConfirm.setCustomValidity("");
+      setPasswordsMatchState(true);
     } else {
-      passwordConfirm.setCustomValidity("Passwords don't match");
+      setPasswordsMatchState(false);
     }
   };
 
@@ -52,8 +53,6 @@ const RegistrationPageComponent = ({
             loading: false,
           });
           reduxDispatch(setReduxUserState(data.userCreated));
-          sessionStorage.setItem("userInfo", JSON.stringify(data.userCreated));
-          if (data.success === "User created") window.location.href = "/user";
         })
         .catch((err) =>
           setRegisterUserResponseState(
@@ -117,9 +116,10 @@ const RegistrationPageComponent = ({
                 name="password"
                 minLength={6}
                 onChange={onChange}
+                isInvalid={!passwordsMatchState}
               />
               <Form.Control.Feedback type="invalid">
-                please must contain at least 6 characters!
+                passwords must contain at least 6 characters!
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
@@ -131,6 +131,7 @@ const RegistrationPageComponent = ({
                 name="passwordConfirm"
                 minLength={6}
                 onChange={onChange}
+                isInvalid={!passwordsMatchState}
               />
               <Form.Control.Feedback type="invalid">
                 Passwords didn't match!
@@ -157,10 +158,23 @@ const RegistrationPageComponent = ({
               )}
               Submit
             </Button>
-            <Alert show={registerUserResponseState && registerUserResponseState.error === "user already exists"} variant="danger">
+            <Alert
+              show={
+                registerUserResponseState &&
+                registerUserResponseState.error === "user already exists"
+              }
+              variant="danger"
+            >
               User with this email already exists!
             </Alert>
-            <Alert className="mb-5" show={registerUserResponseState && registerUserResponseState.success === "User created"} variant="info">
+            <Alert
+              className="mb-5"
+              show={
+                registerUserResponseState &&
+                registerUserResponseState.success === "User created"
+              }
+              variant="info"
+            >
               registration successful!
             </Alert>
           </Form>

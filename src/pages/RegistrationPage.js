@@ -11,12 +11,20 @@ const registerApiUserRequest = async (name, lastName, email, password) => {
     email,
     password,
   });
+  sessionStorage.setItem("userInfo", JSON.stringify(data.userCreated));
+  if (data.success === "User created") window.location.href = "/user";
   return data;
 };
 
 const RegistrationPage = () => {
   const reduxDispatch = useDispatch();
-  return <RegistrationPageComponent registerApiUserRequest={registerApiUserRequest} reduxDispatch={reduxDispatch} setReduxUserState={setReduxUserState} />;
+  return (
+    <RegistrationPageComponent
+      registerApiUserRequest={registerApiUserRequest}
+      reduxDispatch={reduxDispatch}
+      setReduxUserState={setReduxUserState}
+    />
+  );
 };
 
 export default RegistrationPage;
