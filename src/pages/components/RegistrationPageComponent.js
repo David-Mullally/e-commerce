@@ -3,8 +3,17 @@ import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
-const RegistrationPageComponent = ({ registerApiUserRequest }) => {
+const RegistrationPageComponent = ({
+  registerApiUserRequest,
+  reduxDispatch,
+  setReduxUserState,
+}) => {
   const [validated, setValidated] = useState(false);
+  const [registerUserResponseState, setRegisterUserResponseState] = useState({
+    success: "",
+    error: "",
+    loading: false,
+  });
 
   const onChange = () => {
     const password = document.querySelector("input[name=password]");
@@ -32,17 +41,27 @@ const RegistrationPageComponent = ({ registerApiUserRequest }) => {
       name &&
       lastName &&
       email &&
-      password
+      password &&
+      form.password.value === form.passwordConfirm.value
     ) {
+      setRegisterUserResponseState({ loading: true });
       registerApiUserRequest(name, lastName, email, password)
-        .then((res) => console.log(res))
-        .catch((err)=>
-          console.log(
+        .then((data) => {
+          setRegisterUserResponseState({
+            success: data.success,
+            loading: false,
+          });
+          reduxDispatch(setReduxUserState(data.userCreated));
+          sessionStorage.setItem("userInfo", JSON.stringify(data.userCreated));
+          if (data.success === "User created") window.location.href = "/user";
+        })
+        .catch((err) =>
+          setRegisterUserResponseState(
             err.response.data.message
               ? err.response.data.message
               : err.response.data
           )
-        )
+        );
     }
 
     setValidated(true);
@@ -124,19 +143,24 @@ const RegistrationPageComponent = ({ registerApiUserRequest }) => {
               </Row>
             </Form.Group>
             <Button type="submit">
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              ></Spinner>
+              {registerUserResponseState &&
+              registerUserResponseState.loading === true ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                ></Spinner>
+              ) : (
+                ""
+              )}
               Submit
             </Button>
-            <Alert show="true" variant="danger">
+            <Alert show={registerUserResponseState && registerUserResponseState.error === "user already exists"} variant="danger">
               User with this email already exists!
             </Alert>
-            <Alert className="mb-5" show="true" variant="info">
+            <Alert className="mb-5" show={registerUserResponseState && registerUserResponseState.success === "User created"} variant="info">
               registration successful!
             </Alert>
           </Form>
