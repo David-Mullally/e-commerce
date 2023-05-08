@@ -10,15 +10,15 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
 
   const deleteHandler = async (userId) => {
     if (window.confirm("Are you sure?")) {
-      const data = await deleteUser(userId)
+      const data = await deleteUser(userId);
       if (data === "user removed") {
-        setUserDeleted(!userDeleted)
+        setUserDeleted(!userDeleted);
       }
     }
   };
 
   useEffect(() => {
-    const abortctrl = new AbortController()
+    const abortctrl = new AbortController();
     fetchUsers(abortctrl)
       .then((res) => setUsers(res))
       .catch((err) =>
@@ -28,8 +28,10 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
             : err.response.data
         )
       );
-    return () => abortctrl.abort();
-  }, [userDeleted]);
+    return () => {
+      abortctrl.abort();
+    };
+  }, [userDeleted]); 
 
   return (
     <Row className="m-5">
@@ -58,7 +60,11 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
                   <td>{user.lastName}</td>
                   <td>{user.email}</td>
                   <td>
-                    {user.isAdmin ? <i className= "bi bi-check-lg text-success"></i> : <i className="bi bi-x-lg text-danger"></i>}
+                    {user.isAdmin ? (
+                      <i className="bi bi-check-lg text-success"></i>
+                    ) : (
+                      <i className="bi bi-x-lg text-danger"></i>
+                    )}
                   </td>
                   <td>
                     <LinkContainer to={`/admin/edit-user/${user.id}`}>
@@ -70,7 +76,7 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
                     <Button
                       variant="danger"
                       className="btm-sm"
-                      onClick={() =>deleteHandler(user._id)}
+                      onClick={() => deleteHandler(user._id)}
                     >
                       <i className="bi bi-x-circle"></i>
                     </Button>

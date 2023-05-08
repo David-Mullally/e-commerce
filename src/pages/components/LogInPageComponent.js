@@ -30,13 +30,9 @@ const LogInPageComponent = ({ LogInUserApiRequest, reduxDispatch, setReduxUserSt
             reduxDispatch(setReduxUserState(res.userLoggedIn))
           }
 
-          if (res.success === "user logged in" && !res.userLoggedIn.isAdmin) {
-            navigate("/user", {replace: true})
-          } else {
-            navigate("/admin/orders", {replace: true})
-          }
 
-          
+          if (res.success === "user logged in" && !res.userLoggedIn.isAdmin) navigate("/user")
+          else navigate("/admin/orders")
         }).catch((err) =>
           setLoginUserResponseState({ error: err.response.data.message
               ? err.response.data.message
