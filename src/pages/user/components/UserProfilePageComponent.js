@@ -7,6 +7,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
     success: "",
     error: "",
   });
+  const [passwordsMatchState, setPasswordsMatchState] = useState(true);
 
   const onChange = () => {
     const password = document.querySelector("input[name=password]");
@@ -14,9 +15,9 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
       "input[name=passwordConfirm]"
     );
     if (password.value === passwordConfirm.value) {
-      passwordConfirm.setCustomValidity("");
+      setPasswordsMatchState(true);
     } else {
-      passwordConfirm.setCustomValidity("Passwords don't match");
+      setPasswordsMatchState(false);
     }
   };
 
@@ -48,13 +49,17 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
         city,
         state,
         password
-      ).then(data => {
-        setUpdateUserResponseRequest({ success: data.success, error: "" })
-      }).catch((err) => setUpdateUserResponseRequest(
-        { error: err.response.data
-           ? err.response.data.message
-           : err.response.data}
-       ))
+      )
+        .then((data) => {
+          setUpdateUserResponseRequest({ success: data.success, error: "" });
+        })
+        .catch((err) =>
+          setUpdateUserResponseRequest({
+            error: err.response.data
+              ? err.response.data.message
+              : err.response.data,
+          })
+        );
     }
 
     setValidated(true);
@@ -163,6 +168,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
                 name="password"
                 minLength={6}
                 onChange={onChange}
+                isInvalid={!passwordsMatchState}
               />
               <Form.Control.Feedback type="invalid">
                 please must contain at least 6 characters!
@@ -176,18 +182,32 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
                 name="passwordConfirm"
                 minLength={6}
                 onChange={onChange}
+                isInvalid={!passwordsMatchState}
               />
               <Form.Control.Feedback type="invalid">
-                Passwords didn't match!
+                Passwords don't match!
               </Form.Control.Feedback>
             </Form.Group>
             <Button variant="primary" type="submit">
               Update
             </Button>
-            <Alert show={updateUserResponseRequest && updateUserResponseRequest.error !== ""} variant="danger">
+            <Alert
+              show={
+                updateUserResponseRequest &&
+                updateUserResponseRequest.error !== ""
+              }
+              variant="danger"
+            >
               something went wrong
             </Alert>
-            <Alert className="mb-5" show={updateUserResponseRequest && updateUserResponseRequest.success === "user updated"} variant="info">
+            <Alert
+              className="mb-5"
+              show={
+                updateUserResponseRequest &&
+                updateUserResponseRequest.success === "user updated"
+              }
+              variant="info"
+            >
               User updated successfully!
             </Alert>
           </Form>
