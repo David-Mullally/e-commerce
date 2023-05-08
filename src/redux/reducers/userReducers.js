@@ -1,4 +1,4 @@
-import { LOGIN_USER } from "../constants/userConstants";
+import { LOGIN_USER, LOGOUT_USER } from "../constants/userConstants";
 
 
 export const UserRegisterLoginReducer = (state = {}, action) =>{
@@ -8,6 +8,8 @@ export const UserRegisterLoginReducer = (state = {}, action) =>{
                 ...state,
                 userInfo: action.payload
             }
+        case LOGOUT_USER: 
+            return {}
         default:
             return state;
    }

@@ -70,7 +70,7 @@ function App() {
         </Route>
 
         {/* Admin routes */}
-        <Route element={<ProtectedRoutesComponent admin={true} />}>
+        <Route element={<ProtectedRoutesComponent admin={false} />}>
           <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
           <Route path="/admin/chat" element={<AdminChatPage />} />
           <Route
