@@ -3,6 +3,10 @@ import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 
 const UserProfilePageComponent = ({ updateUserApiRequest }) => {
   const [validated, setValidated] = useState(false);
+  const [updateUserResponseRequest, setUpdateUserResponseRequest] = useState({
+    success: "",
+    error: "",
+  });
 
   const onChange = () => {
     const password = document.querySelector("input[name=password]");
@@ -23,7 +27,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
 
     const name = form.name.value;
     const lastName = form.lastName.value;
-    const phoneNumber = form.phoneNumber.value;;
+    const phoneNumber = form.phoneNumber.value;
     const address = form.email.value;
     const zipCode = form.zipCode.value;
     const country = form.country.value;
@@ -45,8 +49,12 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
         state,
         password
       ).then(data => {
-        console.log(data);
-      });
+        setUpdateUserResponseRequest({ success: data.success, error: "" })
+      }).catch((err) => setUpdateUserResponseRequest(
+        { error: err.response.data
+           ? err.response.data.message
+           : err.response.data}
+       ))
     }
 
     setValidated(true);
@@ -176,10 +184,10 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
             <Button variant="primary" type="submit">
               Update
             </Button>
-            <Alert show="true" variant="danger">
-              User with this email already exists!
+            <Alert show={updateUserResponseRequest && updateUserResponseRequest.error !== ""} variant="danger">
+              something went wrong
             </Alert>
-            <Alert className="mb-5" show="true" variant="info">
+            <Alert className="mb-5" show={updateUserResponseRequest && updateUserResponseRequest.success === "user updated"} variant="info">
               User updated successfully!
             </Alert>
           </Form>
