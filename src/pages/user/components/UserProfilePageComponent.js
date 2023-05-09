@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 
-const UserProfilePageComponent = ({ updateUserApiRequest }) => {
+const UserProfilePageComponent = ({
+  updateUserApiRequest,
+  fetchUser,
+  userInfo,
+}) => {
   const [validated, setValidated] = useState(false);
   const [updateUserResponseRequest, setUpdateUserResponseRequest] = useState({
     success: "",
     error: "",
   });
   const [passwordsMatchState, setPasswordsMatchState] = useState(true);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    fetchUser(userInfo._id).then((data) => setUser(data)).catch((err)=> console.log(err));
+  }, [userInfo._id]);
 
   const onChange = () => {
     const password = document.querySelector("input[name=password]");
@@ -72,7 +81,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicFirstName">
               <Form.Label>Your first name</Form.Label>
-              <Form.Control required type="text" name="name" defaultValue="" />
+              <Form.Control required type="text" name="name" defaultValue={user.name} />
               <Form.Control.Feedback type="invalid">
                 Please enter your first name!
               </Form.Control.Feedback>
@@ -82,7 +91,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
               <Form.Control
                 required
                 type="text"
-                defaultValue=""
+                defaultValue={user.lastName}
                 name="lastName"
               />
               <Form.Control.Feedback type="invalid">
@@ -92,7 +101,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
             <Form.Group className="mb-3" controlId="formBasiceMail">
               <Form.Label>Your e-mail</Form.Label>
               <Form.Control
-                value="If you wish to cahnge your email delete your account and create a new one"
+                value={`${user.email}: This may not be changed`}
                 disabled
                 name="email"
               />
@@ -104,7 +113,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
                 type="text"
                 name="phoneNumber"
                 placeholder="Enter Your Phone Number"
-                defaultValue=""
+                defaultValue={user.phoneNumber}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicAddress">
@@ -114,7 +123,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
                 type="text"
                 name="address"
                 placeholder="Enter Your Street Name and House Number"
-                defaultValue=""
+                defaultValue={user.address}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicCountry">
@@ -124,7 +133,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
                 type="text"
                 name="country"
                 placeholder="Enter Your Country"
-                defaultValue=""
+                defaultValue={user.country}
               />
               <Form.Control.Feedback type="invalid">
                 Passwords didn't match!
@@ -137,7 +146,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
                 type="text"
                 name="zipCode"
                 placeholder="Enter Your ZIP"
-                defaultValue=""
+                defaultValue={user.zipCode}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicCity">
@@ -147,7 +156,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
                 type="text"
                 name="city"
                 placeholder="Enter Your City"
-                defaultValue=""
+                defaultValue={user.city}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicState">
@@ -157,7 +166,7 @@ const UserProfilePageComponent = ({ updateUserApiRequest }) => {
                 type="text"
                 name="state"
                 placeholder="Enter Your State"
-                defaultValue=""
+                defaultValue={user.state}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
