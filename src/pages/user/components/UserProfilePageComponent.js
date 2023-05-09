@@ -4,7 +4,11 @@ import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 const UserProfilePageComponent = ({
   updateUserApiRequest,
   fetchUser,
-  userInfo,
+  userInfoFromRedux,
+  setReduxUserState,
+  reduxDispatch,
+  localStorage,
+  sessionStorage,
 }) => {
   const [validated, setValidated] = useState(false);
   const [updateUserResponseRequest, setUpdateUserResponseRequest] = useState({
@@ -12,10 +16,13 @@ const UserProfilePageComponent = ({
     error: "",
   });
   const [passwordsMatchState, setPasswordsMatchState] = useState(true);
-  const [user, setUser] = useState({});
+    const [user, setUser] = useState({});
+    const userInfo = userInfoFromRedux;
 
   useEffect(() => {
-    fetchUser(userInfo._id).then((data) => setUser(data)).catch((err)=> console.log(err));
+    fetchUser(userInfo._id)
+      .then((data) => setUser(data))
+      .catch((err) => console.log(err));
   }, [userInfo._id]);
 
   const onChange = () => {
@@ -60,7 +67,10 @@ const UserProfilePageComponent = ({
         password
       )
         .then((data) => {
-          setUpdateUserResponseRequest({ success: data.success, error: "" });
+            setUpdateUserResponseRequest({ success: data.success, error: "" });
+            reduxDispatch(setReduxUserState({ doNotLogout: userInfo.doNotLogout, ...data.userUpdated }));
+            if (userInfo.doNotLogout) localStorage.setItem("userInfo", JSON.stringify({ doNotLogout: true, ...data.userUpdated }));
+            else sessionStorage.setItem("userInfo", JSON.stringify({ doNotLogout: false, ...data.userUpdated }));
         })
         .catch((err) =>
           setUpdateUserResponseRequest({
@@ -81,7 +91,12 @@ const UserProfilePageComponent = ({
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicFirstName">
               <Form.Label>Your first name</Form.Label>
-              <Form.Control required type="text" name="name" defaultValue={user.name} />
+              <Form.Control
+                required
+                type="text"
+                name="name"
+                defaultValue={user.name}
+              />
               <Form.Control.Feedback type="invalid">
                 Please enter your first name!
               </Form.Control.Feedback>
