@@ -1,10 +1,17 @@
 import * as actionTypes from "../constants/cartConstants";
 
-export const counterReducer = (state = { value: 0 }, action) => {
-    switch (action.type) {
-        case actionTypes.ADD_TO_CART:
-            return { value: state.value + 1 + action.someValue }
-        default:
-            return state
-    }
-}
+const CART_INITIAL_STATE = {
+  cartItems: [],
+  itemsCount: 0,
+  cartSubtotal: 0,
+};
+
+export const cartReducer = (state = CART_INITIAL_STATE, action) => {
+  switch (action.type) {
+    case actionTypes.ADD_TO_CART:
+      console.log(action.payload);
+      return state;
+    default:
+      return state;
+  }
+};
