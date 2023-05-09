@@ -8,11 +8,15 @@ import ProductForListComponent from "../../components/ProductForListComponent";
 import RatingFilterComponent from "../../components/filterQueryResultOptions/RatingFilterComponent";
 import SortOptionsComponent from "../../components/SortOptionsComponent";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const ProductListPageComponent = ({ getProducts }) => {
+const ProductListPageComponent = ({ getProducts}) => {
+  const [products, setProducts] = useState([]);
+
   useEffect(() => {
-    getProducts().then((products) => console.log(products));
+    getProducts()
+      .then((products) => setProducts(products.products))
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -41,12 +45,17 @@ const ProductListPageComponent = ({ getProducts }) => {
           <Button variant="danger">Reset</Button>
         </Col>
         <Col md={9}>
-          {Array.from({ length: 5 }).map((_, idx) => {
+          {products.map((product) => {
             return (
               <ProductForListComponent
-                key={idx}
-                images={["games", "monitors", "tablets", "games", "monitors"]}
-                idx={idx}
+                key={product._id}
+                images={product.images}
+                name={product.name}
+                description={product.description}
+                price={product.price}
+                rating={product.rating}
+                reviewsNumber={product.reviewsNumber}
+                productId={product._id}
               />
             );
           })}
