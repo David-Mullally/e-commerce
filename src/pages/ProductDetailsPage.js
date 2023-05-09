@@ -15,40 +15,43 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/actions/cartActions";
+import { useParams } from "react-router-dom";
 
 const ProductDetailsPage = () => {
+  const { id } = useParams();
+  console.log("id:",id);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const addToCartHandler = () => {
     dispatch(addToCart());
-  }
+  };
 
   const products = useSelector((state) => state.cart.value);
-  
+
   var options123 = {
     scale: 2,
     offset: { vertical: 0, horizontal: 0 },
     zoomPosition: "right",
-  }
-  
-  var options4 ={
+  };
+
+  var options4 = {
     scale: 2,
     offset: { vertical: 0, horizontal: 0 },
     zoomPosition: "top",
-  }
+  };
 
   useEffect(() => {
-    new ImageZoom(document.getElementById("first"), options123)
-    new ImageZoom(document.getElementById("second"), options123)
-    new ImageZoom(document.getElementById("third"), options123)
-    new ImageZoom(document.getElementById("forth"), options4)
-  })
+    new ImageZoom(document.getElementById("first"), options123);
+    new ImageZoom(document.getElementById("second"), options123);
+    new ImageZoom(document.getElementById("third"), options123);
+    new ImageZoom(document.getElementById("forth"), options4);
+  });
   return (
     <Container>
       <AddedToCartMessageComponent />
       <Row className="mt-2">
-        <Col md={4} style={{zIndex: 1}}>
+        <Col md={4} style={{ zIndex: 1 }}>
           <div id="first">
             <Image
               crossOrigin="anonymous"
@@ -120,7 +123,9 @@ const ProductDetailsPage = () => {
                   </Form.Select>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <Button onClick={addToCartHandler} variant="danger">Add To Cart</Button>
+                  <Button onClick={addToCartHandler} variant="danger">
+                    Add To Cart
+                  </Button>
                 </ListGroup.Item>
               </ListGroup>
             </Col>
