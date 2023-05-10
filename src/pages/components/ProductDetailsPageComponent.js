@@ -12,7 +12,6 @@ import AddedToCartMessageComponent from "../../components/AddedToCartMessageComp
 import { Rating } from "react-simple-star-rating";
 import ImageZoom from "js-image-zoom";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
 
@@ -21,10 +20,12 @@ const ProductDetailsPageComponent = ({
   reduxDispatch,
 }) => {
   const [quantity, setQuantity] = useState(1);
+  const [showCartMessage, setShowCartMessage] = useState(false);
   const { id } = useParams();
 
   const addToCartHandler = () => {
     reduxDispatch(addToCartReduxAction(id, quantity));
+    setShowCartMessage(true);
   };
 
   var options123 = {
@@ -47,7 +48,10 @@ const ProductDetailsPageComponent = ({
   });
   return (
     <Container>
-      <AddedToCartMessageComponent />
+      <AddedToCartMessageComponent
+        showCartMessage={showCartMessage}
+        setShowCartMessage={setShowCartMessage}
+      />
       <Row className="mt-2">
         <Col md={4} style={{ zIndex: 1 }}>
           <div id="first">
@@ -115,7 +119,7 @@ const ProductDetailsPageComponent = ({
                 <ListGroup.Item>
                   <Form.Select
                     value={quantity}
-                    onChange={e => setQuantity(e.target.value)}
+                    onChange={(e) => setQuantity(e.target.value)}
                     size="lg"
                     aria-label="Default select example"
                   >
