@@ -14,6 +14,10 @@ const reducer = combineReducers({
   userRegisterLogin: UserRegisterLoginReducer,
 });
 
+const cartItemsInLocalStorage = localStorage.getItem("cart")
+  ? JSON.parse(localStorage.getItem("cart"))
+  : [];
+
 const userInfoInLocalStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : sessionStorage.getItem("userInfo")
@@ -21,9 +25,19 @@ const userInfoInLocalStorage = localStorage.getItem("userInfo")
   : {};
 const INITIAL_STATE = {
   cart: {
-    cartItems: [],
-    itemsCounT: 0,
-    cartSubtotal: 0
+    cartItems: cartItemsInLocalStorage,
+    itemsCount: cartItemsInLocalStorage
+      ? cartItemsInLocalStorage.reduce(
+          (quantity, item) => Number(item.quantity) + quantity,
+          0
+        )
+      : 0,
+    cartSubtotal: cartItemsInLocalStorage
+      ? cartItemsInLocalStorage.reduce(
+          (price, item) => price + item.price * Number(item.quantity),
+          0
+        )
+      : 0,
   },
   userRegisterLogin: { userInfo: userInfoInLocalStorage },
 };
