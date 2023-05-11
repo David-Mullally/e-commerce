@@ -1,7 +1,7 @@
 html{
     position: relative;
     min-height: 100%;  /*required for positioning of the footer to work*/
-    font-size: 14px;
+    font-size: 10px;
 }
 
 footer{

@@ -45,7 +45,7 @@ const UserProfilePageComponent = ({
     const name = form.name.value;
     const lastName = form.lastName.value;
     const phoneNumber = form.phoneNumber.value;
-    const address = form.email.value;
+    const address = form.address.value;
     const zipCode = form.zipCode.value;
     const country = form.country.value;
     const city = form.city.value;
@@ -92,7 +92,6 @@ const UserProfilePageComponent = ({
             <Form.Group className="mb-3" controlId="formBasicFirstName">
               <Form.Label>Your first name</Form.Label>
               <Form.Control
-                required
                 type="text"
                 name="name"
                 defaultValue={user.name}
@@ -104,7 +103,6 @@ const UserProfilePageComponent = ({
             <Form.Group className="mb-3" controlId="formBasicLastName">
               <Form.Label>Your surname</Form.Label>
               <Form.Control
-                required
                 type="text"
                 defaultValue={user.lastName}
                 name="lastName"
@@ -124,7 +122,6 @@ const UserProfilePageComponent = ({
             <Form.Group className="mb-3" controlId="formBasicPhoneNumber">
               <Form.Label>Your phone number</Form.Label>
               <Form.Control
-                required
                 type="text"
                 name="phoneNumber"
                 placeholder="Enter Your Phone Number"
@@ -134,7 +131,6 @@ const UserProfilePageComponent = ({
             <Form.Group className="mb-3" controlId="formBasicAddress">
               <Form.Label>Address</Form.Label>
               <Form.Control
-                required
                 type="text"
                 name="address"
                 placeholder="Enter Your Street Name and House Number"
@@ -144,7 +140,6 @@ const UserProfilePageComponent = ({
             <Form.Group className="mb-3" controlId="formBasicCountry">
               <Form.Label>Country</Form.Label>
               <Form.Control
-                required
                 type="text"
                 name="country"
                 placeholder="Enter Your Country"
@@ -157,7 +152,6 @@ const UserProfilePageComponent = ({
             <Form.Group className="mb-3" controlId="formBasicZIP">
               <Form.Label>ZIP Code</Form.Label>
               <Form.Control
-                required
                 type="text"
                 name="zipCode"
                 placeholder="Enter Your ZIP"
@@ -167,7 +161,6 @@ const UserProfilePageComponent = ({
             <Form.Group className="mb-3" controlId="formBasicCity">
               <Form.Label>City</Form.Label>
               <Form.Control
-                required
                 type="text"
                 name="city"
                 placeholder="Enter Your City"
@@ -177,7 +170,6 @@ const UserProfilePageComponent = ({
             <Form.Group className="mb-3" controlId="formBasicState">
               <Form.Label>State</Form.Label>
               <Form.Control
-                required
                 type="text"
                 name="state"
                 placeholder="Enter Your State"

@@ -8,6 +8,8 @@ import {
   Row,
 } from "react-bootstrap";
 import CartItemComponent from "../../../components/CartItemComponent";
+import { useEffect, useState } from "react";
+import { logout } from "../../../redux/actions/userActions";
 const UserCartDetailsPageComponent = ({
   cartItems,
   itemsCount,
@@ -18,6 +20,9 @@ const UserCartDetailsPageComponent = ({
   userInfo,
   getUser,
 }) => {
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [userAddress, setUserAddress] = useState(false);
+  const [missingAddress, setMissingAddress] = useState("");
   const changeCount = (productId, count) => {
     reduxDispatch(addToCart(productId, count));
   };
@@ -28,7 +33,40 @@ const UserCartDetailsPageComponent = ({
     }
   };
 
-  getUser().then((res) => console.log(res));
+  useEffect(() => {
+    getUser()
+      .then((data) => {
+        if (
+          !data.address ||
+          !data.city ||
+          !data.zipCode ||
+          !data.phoneNumber ||
+          !data.state ||
+          !data.country
+        ) {
+          setMissingAddress(
+            "You must fill in your billing information to make an order"
+          );
+          setButtonDisabled(true);
+        } else {
+          setUserAddress({
+            address: data.address,
+            city: data.city,
+            zipCode: data.zipCode,
+            state: data.state,
+            country: data.country,
+            phoneNumber: data.phoneNumber,
+          });
+          setMissingAddress(false);
+        }
+      })
+      .catch((err) => {
+        reduxDispatch(logout());
+        /*console.log( err.response.data.message
+            ? err.response.data.message
+            : err.response.data)*/
+      });
+  }, [userInfo._id]);
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -40,8 +78,10 @@ const UserCartDetailsPageComponent = ({
               <h2>Shipping</h2>
               <b>Name</b>: {userInfo.name} {userInfo.lastName}
               <br />
-              <b>Address</b>: 742 Evergreen Terrace, Springfield <br />
-              <b>Phone</b>: 555-342672
+              <b>Address</b>:{userAddress.address} {userAddress.city}{" "}
+              {userAddress.state} {userAddress.zipCode}
+              <br />
+              <b>Phone</b>: {userAddress.phoneNumber}
             </Col>
             <Col md={6}>
               <h2>Payment Method</h2>
@@ -53,8 +93,8 @@ const UserCartDetailsPageComponent = ({
             <Row>
               <Col>
                 <Alert variant="danger" className="mt-3">
-                  Not Delivered. Please provide the nessecary information to
-                  complete your order.
+                  Not Delivered.
+                  *{missingAddress}.
                 </Alert>
               </Col>
               <Col>
@@ -96,7 +136,12 @@ const UserCartDetailsPageComponent = ({
             </ListGroup.Item>
             <ListGroup.Item className="text-danger">
               <div className="d-grid gap-2">
-                <Button size="lg" variant="danger" type="button">
+                <Button
+                  size="lg"
+                  variant="danger"
+                  type="button"
+                  disabled={buttonDisabled}
+                >
                   Pay For Order
                 </Button>
               </div>
