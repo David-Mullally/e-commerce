@@ -13,7 +13,7 @@ export const addToCart = (productId, quantity) => async (dispatch, getState) => 
       count: data.count,
       quantity,
     },
-  });
+  })
 
   localStorage.setItem("cart", JSON.stringify(getState().cart.cartItems));
 };

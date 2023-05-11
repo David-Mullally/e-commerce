@@ -119,7 +119,7 @@ const ProductDetailsPageComponent = ({
                 <ListGroup.Item>
                   <Form.Select
                     value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onChange={e => setQuantity(e.target.value)}
                     size="lg"
                     aria-label="Default select example"
                   >

@@ -5,26 +5,24 @@ import CartItemComponent from "../../components/CartItemComponent";
 const CartPageComponent = ({
   addToCart,
   cartItems,
+  cartItemsCount,
   cartSubtotal,
-  reduxSDispatch,
+  reduxDispatch,
 }) => {
-  console.log(cartItems);
+  const changeCount = (productId, count) => {
+    reduxDispatch(addToCart(productId, count));
+  };
   return (
     <Container>
       <Row className="mt-4">
         <Col md={8}>
           <h1>Shopping Cart</h1>
           <ListGroup variant="flush">
-            {Array.from({ length: 3 }).map((item, idx) => (
+            {cartItems.map((item, idx) => (
               <CartItemComponent
-                item={{
-                  image: { path: "/images/tablets-category.png" },
-                  name: "Product name",
-                  price: 10,
-                  count: 10,
-                  quantity: 10,
-                }}
+                item={item}
                 key={idx}
+                changeCount={changeCount}
               />
             ))}
           </ListGroup>
@@ -33,10 +31,10 @@ const CartPageComponent = ({
         <Col md={4}>
           <ListGroup>
             <ListGroup.Item>
-              <h3>Subtotal (2)</h3>
+              <h3>Subtotal ({cartItemsCount})</h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              Price: <span className="fw-bold">$800</span>
+              Price: <span className="fw-bold">{cartSubtotal}</span>
             </ListGroup.Item>
             <ListGroup.Item>
               <LinkContainer to="/user/cart-details">

@@ -34,7 +34,7 @@ const INITIAL_STATE = {
       : 0,
     cartSubtotal: cartItemsInLocalStorage
       ? cartItemsInLocalStorage.reduce(
-          (price, item) => price + item.price * Number(item.quantity),
+          (price, item) => price + item.price * item.quantity,
           0
         )
       : 0,

@@ -32,7 +32,7 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
             const sum = Number(x.quantity) * Number(x.price);
             currentState.cartSubtotal += sum;
           }
-          return x.productId === productAlreadyExistsInState
+          return x.productId === productAlreadyExistsInState.productId
             ? productBeingAddedToCart
             : x;
         });
