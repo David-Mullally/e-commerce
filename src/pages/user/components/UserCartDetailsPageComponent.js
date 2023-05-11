@@ -12,7 +12,20 @@ const UserCartDetailsPageComponent = ({
   cartItems,
   itemsCount,
   cartSubtotal,
+  addToCart,
+  removeFromCart,
+  reduxDispatch,
 }) => {
+
+    const changeCount =(productId, count) => {
+        reduxDispatch(addToCart(productId, count))
+    }
+
+    const removeFromCartHandler = (productId, quantity, price) => {
+        if (window.confirm("Are you sure?")) {
+            reduxDispatch(removeFromCart(productId, quantity, price))
+        }
+    }
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -50,7 +63,7 @@ const UserCartDetailsPageComponent = ({
           <h2>Order Items</h2>
           <ListGroup variant="flush" style={{ height: "500px" }}>
             {cartItems.map((item, idx) => (
-              <CartItemComponent item={item} key={idx} />
+                <CartItemComponent item={item} key={idx} removeFromCartHandler={removeFromCartHandler} changeCount={changeCount} />
             ))}
           </ListGroup>
         </Col>
@@ -60,7 +73,8 @@ const UserCartDetailsPageComponent = ({
               <h3>Order Summary</h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              Items Price (incl. Tax): <span className="fw-bold">${cartSubtotal}</span>
+              Items Price (incl. Tax):{" "}
+              <span className="fw-bold">${cartSubtotal}</span>
             </ListGroup.Item>
             <ListGroup.Item>
               Shipping: <span className="fw-bold">Included</span>
