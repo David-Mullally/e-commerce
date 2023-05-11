@@ -23,6 +23,7 @@ const UserCartDetailsPageComponent = ({
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [userAddress, setUserAddress] = useState(false);
   const [missingAddress, setMissingAddress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("pp");
   const changeCount = (productId, count) => {
     reduxDispatch(addToCart(productId, count));
   };
@@ -67,6 +68,31 @@ const UserCartDetailsPageComponent = ({
             : err.response.data)*/
       });
   }, [userInfo._id]);
+
+  const orderHandler = () => {
+    const orderData = {
+      orderTotal: {
+        itemsCount: itemsCount,
+        cartSubtotal: cartSubtotal,
+      },
+      cartItems: cartItems.map((item) => {
+        return {
+          productId: item.productId,
+          name: item.name,
+          price: item.price,
+          image: { path: item.image ? item.image.path ?? null : null },
+          quantity: item.quantity,
+          count: item.count,
+        };
+      }),
+      paymentMethod: paymentMethod,
+    };
+    console.log(orderData);
+    };
+    
+    const choosePayment = (e) => {
+        setPaymentMethod(e.target.value)
+    }
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -85,7 +111,7 @@ const UserCartDetailsPageComponent = ({
             </Col>
             <Col md={6}>
               <h2>Payment Method</h2>
-              <Form.Select>
+              <Form.Select onChange={choosePayment}>
                 <option value="pp">PayPal</option>
                 <option value="Ccod">Cash On delivery</option>
               </Form.Select>
@@ -93,8 +119,7 @@ const UserCartDetailsPageComponent = ({
             <Row>
               <Col>
                 <Alert variant="danger" className="mt-3">
-                  Not Delivered.
-                  *{missingAddress}.
+                  Not Delivered. *{missingAddress}.
                 </Alert>
               </Col>
               <Col>
@@ -137,12 +162,13 @@ const UserCartDetailsPageComponent = ({
             <ListGroup.Item className="text-danger">
               <div className="d-grid gap-2">
                 <Button
+                  onClick={orderHandler}
                   size="lg"
                   variant="danger"
                   type="button"
                   disabled={buttonDisabled}
                 >
-                  Pay For Order
+                  Place Order
                 </Button>
               </div>
             </ListGroup.Item>

@@ -74,7 +74,7 @@ const OrderDetailsPageComponent = ({ getOrder, markAsDelivered }) => {
               <h2>Payment Method</h2>
               <Form.Select value={paymentMethod} disabled={true}>
                 <option value="pp">PayPal</option>
-                <option value="Ccod">Cash On delivery</option>
+                <option value="Cod">Cash On delivery</option>
               </Form.Select>
             </Col>
             <Row>
