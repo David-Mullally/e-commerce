@@ -1,6 +1,7 @@
 import { Button, Col, Form, Image, ListGroup, Row } from "react-bootstrap";
 
-const CartItemComponent = ({ item, orderCreated = false, changeCount= false }) => {
+const CartItemComponent = ({ item, orderCreated = false, changeCount = false }) => {
+  
   return (
     <>
       <ListGroup.Item>
