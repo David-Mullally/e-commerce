@@ -11,6 +11,15 @@ const CartPageComponent = ({
   const changeCount = (productId, count) => {
     reduxDispatch(addToCart(productId, count));
   };
+
+  const removeFromCartHandler = (productId, quantity, price) => {
+    if (window.confirm("Are you sure?")) {
+      console.log(productId);
+      console.log(quantity);
+      console.log(price);
+    }
+  };
+
   return (
     <Container>
       <Row className="mt-4">
@@ -25,6 +34,7 @@ const CartPageComponent = ({
                   item={item}
                   key={idx}
                   changeCount={changeCount}
+                  removeFromCartHandler={removeFromCartHandler}
                 />
               ))}
             </ListGroup>
@@ -43,7 +53,9 @@ const CartPageComponent = ({
             </ListGroup.Item>
             <ListGroup.Item>
               <LinkContainer to="/user/cart-details">
-                <Button disabled={cartSubtotal === 0} type="button">Proceed To Checkout</Button>
+                <Button disabled={cartSubtotal === 0} type="button">
+                  Proceed To Checkout
+                </Button>
               </LinkContainer>
             </ListGroup.Item>
           </ListGroup>
