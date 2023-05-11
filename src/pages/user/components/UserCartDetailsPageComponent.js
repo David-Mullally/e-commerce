@@ -15,17 +15,20 @@ const UserCartDetailsPageComponent = ({
   addToCart,
   removeFromCart,
   reduxDispatch,
+  userInfo,
+  getUser,
 }) => {
+  const changeCount = (productId, count) => {
+    reduxDispatch(addToCart(productId, count));
+  };
 
-    const changeCount =(productId, count) => {
-        reduxDispatch(addToCart(productId, count))
+  const removeFromCartHandler = (productId, quantity, price) => {
+    if (window.confirm("Are you sure?")) {
+      reduxDispatch(removeFromCart(productId, quantity, price));
     }
+  };
 
-    const removeFromCartHandler = (productId, quantity, price) => {
-        if (window.confirm("Are you sure?")) {
-            reduxDispatch(removeFromCart(productId, quantity, price))
-        }
-    }
+  getUser().then((res) => console.log(res));
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -35,7 +38,8 @@ const UserCartDetailsPageComponent = ({
           <Row>
             <Col md={6}>
               <h2>Shipping</h2>
-              <b>Name</b>: John Doe <br />
+              <b>Name</b>: {userInfo.name} {userInfo.lastName}
+              <br />
               <b>Address</b>: 742 Evergreen Terrace, Springfield <br />
               <b>Phone</b>: 555-342672
             </Col>
@@ -63,7 +67,12 @@ const UserCartDetailsPageComponent = ({
           <h2>Order Items</h2>
           <ListGroup variant="flush" style={{ height: "500px" }}>
             {cartItems.map((item, idx) => (
-                <CartItemComponent item={item} key={idx} removeFromCartHandler={removeFromCartHandler} changeCount={changeCount} />
+              <CartItemComponent
+                item={item}
+                key={idx}
+                removeFromCartHandler={removeFromCartHandler}
+                changeCount={changeCount}
+              />
             ))}
           </ListGroup>
         </Col>
