@@ -61,7 +61,14 @@ const UserOrderDetailsPage = () => {
         });
       },
       onCancel: onCancelHandler,
-      onApprove: onApproveHandler,
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function (orderData) {
+          var transaction = orderData.purchase_units[0].payments.captures[0]
+          if (transaction.status === "COMPLETED" && Number(transaction.amount.value) === Number(cartSubtotal)) {
+            console.log("Update order in database")
+          }
+        })
+      },
       onError: onErrorHandler,
     };
   };
