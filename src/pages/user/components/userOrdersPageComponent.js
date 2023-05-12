@@ -1,7 +1,17 @@
 import { Col, Row, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-const UserOrdersPageComponent = () => {
+const UserOrdersPageComponent = ({ getOrders }) => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    getOrders()
+      .then((orders) => setOrders(orders))
+      .catch((er) => console.log(er));
+  }, []);
+
+  getOrders().then((orders) => console.log("orders::", orders));
   return (
     <Row className="m-5">
       <Col md={12}>
@@ -17,20 +27,23 @@ const UserOrdersPageComponent = () => {
               <th>Order Details</th>
             </tr>
           </thead>
-                  <tbody>
-                      
-            {["bi bi-check-lg text-success", "bi bi-x-lg text-danger"].map((item, idx) => {
+          <tbody>
+            {orders.map((order, idx) => {
               return (
                 <tr key={idx}>
                   <td>{idx + 1}</td>
-                  <td>Mark Twain</td>
-                  <td>22-01-2023</td>
-                  <td>$145</td>
+                  <td>You</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.orderTotal.cartSubtotal}</td>
                   <td>
-                    <i className={item} />
+                    {order.orderIsDelivered ? (
+                      <i className="bi bi-check-lg test-success"></i>
+                    ) : (
+                      <i className="bi bi-x-lg test-danger"> </i>
+                    )}
                   </td>
                   <td>
-                    <Link to="/user/order-details">Go To Order</Link>
+                    <Link to={`/user/order-details/${order._id}`}>Go To Order</Link>
                   </td>
                 </tr>
               );
