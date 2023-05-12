@@ -14,7 +14,7 @@ const UserOrderDetailsPageComponent = ({
   userInfo,
   getUser,
   getOrder,
-  loadScript,
+  loadPaypalScript,
 }) => {
   const [userAddress, setUserAddress] = useState({});
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -75,22 +75,12 @@ const UserOrderDetailsPageComponent = ({
         "To pay for your order click one of the buttons below"
       );
       if (!isPaid) {
-        loadScript({
-          "client-id":
-            "AQMw66B6UGy4bCdgiFkSBLpsasODCC0lEdUzyOMF8rNADaIcE_f_Ttpi-0oqoZp5BQsfyHDoiPMg5qLr",
-        })
-          .then((paypal) => {
-            paypal.Buttons({}).render("#paypal-container-element");
-          })
-          .catch((err) => {
-            console.error("Failed to load the Paypal JS SDK script", err);
-          });
+        loadPaypalScript();
+      } else {
+        setOrderButtonMessage("Your order was placed Thankyou");
       }
-    } else {
-      setOrderButtonMessage("Your order was placed Thankyou");
     }
   };
-
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -170,7 +160,10 @@ const UserOrderDetailsPageComponent = ({
                   {orderButtonMessage}
                 </Button>
                 <div style={{ position: "relative", zIndex: 1 }}>
-                  <div ref={paypalContainer} id="paypal-container-element"></div>
+                  <div
+                    ref={paypalContainer}
+                    id="paypal-container-element"
+                  ></div>
                 </div>
               </div>
             </ListGroup.Item>
