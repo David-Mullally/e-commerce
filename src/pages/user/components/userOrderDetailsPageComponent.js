@@ -56,6 +56,19 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
       })
       .catch((err) => console.log(err));
   }, []);
+ 
+
+  const orderHandler = () => {
+    setButtonDisabled(true);
+    if (paymentMethod === "pp") {
+      setOrderButtonMessage("To pay for your order click one of the buttons below");
+      if (!isPaid) {
+        //ToDo: Load PayPal script and do actions
+      }
+    } else {
+      setOrderButtonMessage("Your order was placed Thankyou")
+    }
+  }
 
   return (
     <Container fluid>
