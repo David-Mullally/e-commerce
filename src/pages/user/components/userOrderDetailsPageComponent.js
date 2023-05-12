@@ -9,9 +9,10 @@ import {
 } from "react-bootstrap";
 import CartItemComponent from "../../../components/CartItemComponent";
 import { useEffect, useState } from "react";
-const UserOrderDetailsPageComponent = ({ userInfo, getUser }) => {
+import { useParams } from "react-router-dom";
+const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
   const [userAddress, setUserAddress] = useState({});
-
+  const id = useParams("id");
   useEffect(() => {
     getUser().then((data) => {
       setUserAddress({
@@ -21,9 +22,18 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser }) => {
         zipCode: data.zipCode,
         country: data.country,
         phoneNumber: data.phoneNumber,
-      }).catch((err) => console.log(err));
-    });
+      })
+    }).catch((err) => console.log(err));;
   }, []);
+
+  useEffect(() => {
+    getOrder(id)
+      .then((data) => {
+        console.log("order data:",data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -34,7 +44,9 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser }) => {
             <Col md={6}>
               <h2>Shipping</h2>
               <b>Name</b>: {userInfo.name} {userInfo.lastName} <br />
-              <b>Address</b>: {userAddress.address} {userAddress.city} {userAddress.state} {userAddress.zipCode} {userAddress.country} <br />
+              <b>Address</b>: {userAddress.address} {userAddress.city}{" "}
+              {userAddress.state} {userAddress.zipCode} {userAddress.country}{" "}
+              <br />
               <b>Phone</b>: {userAddress.phoneNumber}
             </Col>
             <Col md={6}>

@@ -25,8 +25,8 @@ const UserCartDetailsPageComponent = ({
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [userAddress, setUserAddress] = useState(false);
   const [missingAddress, setMissingAddress] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("pp");
-  const navigate = useNavigate();
+    const [paymentMethod, setPaymentMethod] = useState("pp");
+    const navigate=useNavigate()
   const changeCount = (productId, count) => {
     reduxDispatch(addToCart(productId, count));
   };
@@ -92,6 +92,7 @@ const UserCartDetailsPageComponent = ({
     };
     createOrder(orderData)
       .then((data) => {
+        console.log("createOrder:", data)
         if (data) {
           navigate(`/user/order-details/${data.Id}`);
         }
