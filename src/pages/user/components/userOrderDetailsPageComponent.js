@@ -10,7 +10,12 @@ import {
 import CartItemComponent from "../../../components/CartItemComponent";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
+const UserOrderDetailsPageComponent = ({
+  userInfo,
+  getUser,
+  getOrder,
+  loadScript,
+}) => {
   const [userAddress, setUserAddress] = useState({});
   const [paymentMethod, setPaymentMethod] = useState("");
   const [isPaid, setIsPaid] = useState(false);
@@ -20,18 +25,20 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
   const [isDelivered, setIsDelivered] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
-  const {id} = useParams("id");
+  const { id } = useParams("id");
   useEffect(() => {
-    getUser().then((data) => {
-      setUserAddress({
-        address: data.address,
-        city: data.city,
-        state: data.state,
-        zipCode: data.zipCode,
-        country: data.country,
-        phoneNumber: data.phoneNumber,
+    getUser()
+      .then((data) => {
+        setUserAddress({
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          zipCode: data.zipCode,
+          country: data.country,
+          phoneNumber: data.phoneNumber,
+        });
       })
-    }).catch((err) => console.log(err));;
+      .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -40,14 +47,16 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
         setPaymentMethod(data.paymentMethod);
         setCartItems(data.cartItems);
         setCartSubtotal(data.orderTotal.cartSubtotal);
-        data.isDelivered ? setIsDelivered(data.deliveredAt) : setIsDelivered(false);
+        data.isDelivered
+          ? setIsDelivered(data.deliveredAt)
+          : setIsDelivered(false);
         data.isPaid ? setIsPaid(data.paiddAt) : setIsPaid(false);
         if (data.isPaid) {
           setOrderButtonMessage("Order Completed");
           setButtonDisabled(true);
         } else {
           if (data.paymentMethod === "pp") {
-            setOrderButtonMessage("Pay For Your Order")
+            setOrderButtonMessage("Pay For Your Order");
           } else if (data.paymentMethod === "cod") {
             setButtonDisabled(true);
             setOrderButtonMessage("Wait For Your Order. Payment On Delivery");
@@ -56,19 +65,27 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
       })
       .catch((err) => console.log(err));
   }, []);
- 
 
   const orderHandler = () => {
     setButtonDisabled(true);
     if (paymentMethod === "pp") {
-      setOrderButtonMessage("To pay for your order click one of the buttons below");
+      setOrderButtonMessage(
+        "To pay for your order click one of the buttons below"
+      );
       if (!isPaid) {
-        //ToDo: Load PayPal script and do actions
+        loadScript({
+          "client-id":
+            "AQMw66B6UGy4bCdgiFkSBLpsasODCC0lEdUzyOMF8rNADaIcE_f_Ttpi-0oqoZp5BQsfyHDoiPMg5qLr",
+        }).then((paypal) => {
+          console.log(paypal);
+        }).catch(err => {
+          console.error("Failed to load the Paypal JS SDK script", err)
+        });
       }
     } else {
-      setOrderButtonMessage("Your order was placed Thankyou")
+      setOrderButtonMessage("Your order was placed Thankyou");
     }
-  }
+  };
 
   return (
     <Container fluid>
@@ -94,8 +111,15 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
             </Col>
             <Row>
               <Col>
-              <Alert variant={isDelivered ? "success" : "danger"} className="mt-3">
-                  {isDelivered ? <>Delivered at {isDelivered}</> : <>Not Yet Delivered</>}
+                <Alert
+                  variant={isDelivered ? "success" : "danger"}
+                  className="mt-3"
+                >
+                  {isDelivered ? (
+                    <>Delivered at {isDelivered}</>
+                  ) : (
+                    <>Not Yet Delivered</>
+                  )}
                 </Alert>
               </Col>
               <Col>
@@ -108,11 +132,7 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
           <h2>Order Items</h2>
           <ListGroup variant="flush" style={{ height: "500px" }}>
             {cartItems.map((item, idx) => (
-              <CartItemComponent
-                item={item}
-                key={idx}
-                orderCreated={true}
-              />
+              <CartItemComponent item={item} key={idx} orderCreated={true} />
             ))}
           </ListGroup>
         </Col>
@@ -122,7 +142,8 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
               <h3>Order Summary</h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              Items Price (incl. Tax): <span className="fw-bold">${cartSubtotal}</span>
+              Items Price (incl. Tax):{" "}
+              <span className="fw-bold">${cartSubtotal}</span>
             </ListGroup.Item>
             <ListGroup.Item>
               Shipping: <span className="fw-bold">Included</span>
@@ -135,7 +156,13 @@ const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
             </ListGroup.Item>
             <ListGroup.Item className="text-danger">
               <div className="d-grid gap-2">
-                <Button size="lg" variant="danger" type="button" disabled={buttonDisabled}>
+                <Button
+                  size="lg"
+                  variant="danger"
+                  type="button"
+                  onClick={orderHandler}
+                  disabled={buttonDisabled}
+                >
                   {orderButtonMessage}
                 </Button>
               </div>
