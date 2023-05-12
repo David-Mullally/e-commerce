@@ -1,4 +1,4 @@
-import UserOrdersPageComponent from "./components/userOrdersPageComponent";
+import UserOrdersPageComponent from "./components/UserOrdersPageComponent";
 
 const UserOrders = () => {
   return <UserOrdersPageComponent />

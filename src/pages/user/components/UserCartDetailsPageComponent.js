@@ -92,9 +92,9 @@ const UserCartDetailsPageComponent = ({
     };
     createOrder(orderData)
       .then((data) => {
-        console.log("createOrder:", data)
+        console.log("order data", data)
         if (data) {
-          navigate(`/user/order-details/${data.Id}`);
+          navigate(`/user/order-details/${data._id}`);
         }
       })
       .catch((err) => console.log(err));
@@ -123,7 +123,7 @@ const UserCartDetailsPageComponent = ({
               <h2>Payment Method</h2>
               <Form.Select onChange={choosePayment}>
                 <option value="pp">PayPal</option>
-                <option value="Ccod">Cash On delivery</option>
+                <option value="cod">Cash On delivery</option>
               </Form.Select>
             </Col>
             <Row>

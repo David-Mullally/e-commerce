@@ -118,7 +118,7 @@ const ProductDetailsPageComponent = ({
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Form.Select
-                    value={quantity}
+                    defaultValue={quantity}
                     onChange={e => setQuantity(e.target.value)}
                     size="lg"
                     aria-label="Default select example"

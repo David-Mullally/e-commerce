@@ -15,7 +15,7 @@ const UserCartDetailsPage = () => {
   };
 
   const createOrder = async (orderData) => {
-    const { data } = await axios("/api/orders", { ...orderData });
+    const { data } = await axios.post(`/api/orders`, { ...orderData });
     return data;
   };
   return (

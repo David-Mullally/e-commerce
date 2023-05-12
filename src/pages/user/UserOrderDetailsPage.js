@@ -1,4 +1,4 @@
-import UserOrderDetailsPageComponent from "./components/userOrderDetailsPageComponent";
+import UserOrderDetailsPageComponent from "./components/UserOrderDetailsPageComponent";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
