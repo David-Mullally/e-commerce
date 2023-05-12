@@ -10,6 +10,7 @@ import {
 import CartItemComponent from "../../../components/CartItemComponent";
 import { useEffect, useState } from "react";
 import { logout } from "../../../redux/actions/userActions";
+import { useNavigate } from "react-router-dom";
 const UserCartDetailsPageComponent = ({
   cartItems,
   itemsCount,
@@ -19,11 +20,13 @@ const UserCartDetailsPageComponent = ({
   reduxDispatch,
   userInfo,
   getUser,
+  createOrder,
 }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [userAddress, setUserAddress] = useState(false);
   const [missingAddress, setMissingAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("pp");
+  const navigate = useNavigate();
   const changeCount = (productId, count) => {
     reduxDispatch(addToCart(productId, count));
   };
@@ -87,12 +90,18 @@ const UserCartDetailsPageComponent = ({
       }),
       paymentMethod: paymentMethod,
     };
-    console.log(orderData);
-    };
-    
-    const choosePayment = (e) => {
-        setPaymentMethod(e.target.value)
-    }
+    createOrder(orderData)
+      .then((data) => {
+        if (data) {
+          navigate(`/user/order-details/${data.Id}`);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const choosePayment = (e) => {
+    setPaymentMethod(e.target.value);
+  };
   return (
     <Container fluid>
       <Row className="mt-4">
