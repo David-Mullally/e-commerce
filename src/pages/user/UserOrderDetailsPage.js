@@ -16,14 +16,21 @@ const UserOrderDetailsPage = () => {
     return data;
   };
 
-  const loadPaypalScript = (cartSubtotal, cartItems) => {
+  const loadPaypalScript = (
+    cartSubtotal,
+    cartItems,
+    orderId,
+    updateStateAfterOrer
+  ) => {
     loadScript({
       "client-id":
         "AQMw66B6UGy4bCdgiFkSBLpsasODCC0lEdUzyOMF8rNADaIcE_f_Ttpi-0oqoZp5BQsfyHDoiPMg5qLr",
     })
       .then((paypal) => {
         paypal
-          .Buttons(buttons(cartSubtotal, cartItems))
+          .Buttons(
+            buttons(cartSubtotal, cartItems, orderId, updateStateAfterOrer)
+          )
           .render("#paypal-container-element");
       })
       .catch((err) => {
@@ -31,7 +38,7 @@ const UserOrderDetailsPage = () => {
       });
   };
 
-  const buttons = (cartSubtotal, cartItems) => {
+  const buttons = (cartSubtotal, cartItems, orderId, updateStateAfterOrer) => {
     return {
       createOrder: function (data, actions) {
         return actions.order.create({
@@ -43,19 +50,19 @@ const UserOrderDetailsPage = () => {
                   item_total: {
                     currency_code: "USD",
                     value: cartSubtotal,
-                  }
-                }
+                  },
+                },
               },
-              items: cartItems.map(product => {
+              items: cartItems.map((product) => {
                 return {
                   name: product.name,
                   unit_amount: {
                     currency_code: "USD",
-                    value: product.price
+                    value: product.price,
                   },
                   quantity: product.quantity,
-                }
-              })
+                };
+              }),
             },
           ],
         });
@@ -63,11 +70,20 @@ const UserOrderDetailsPage = () => {
       onCancel: onCancelHandler,
       onApprove: function (data, actions) {
         return actions.order.capture().then(function (orderData) {
-          var transaction = orderData.purchase_units[0].payments.captures[0]
-          if (transaction.status === "COMPLETED" && Number(transaction.amount.value) === Number(cartSubtotal)) {
-            console.log("Update order in database")
+          var transaction = orderData.purchase_units[0].payments.captures[0];
+          if (
+            transaction.status === "COMPLETED" &&
+            Number(transaction.amount.value) === Number(cartSubtotal)
+          ) {
+            updateOrder(orderId)
+              .then((data) => {
+                if (data.isPaid) {
+                  updateStateAfterOrer(data.paidAt);
+                }
+              })
+              .catch((er) => console.log(er));
           }
-        })
+        });
       },
       onError: onErrorHandler,
     };
@@ -77,11 +93,13 @@ const UserOrderDetailsPage = () => {
     console.log("onCancelHandler");
   };
 
-  const onApproveHandler = function () {
-    console.log("onApproveHandler");
-  };
   const onErrorHandler = function (err) {
     console.log("onErrorHandler");
+  };
+
+  const updateOrder = async (orderId) => {
+    const { data } = await axios.put(`/api/orders/paid/${orderId}`);
+    return data;
   };
 
   return (
