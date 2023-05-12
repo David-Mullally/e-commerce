@@ -16,19 +16,14 @@ const UserOrderDetailsPage = () => {
     return data;
   };
 
-  const loadPaypalScript = () => {
+  const loadPaypalScript = (cartSubtotal, cartItems) => {
     loadScript({
       "client-id":
         "AQMw66B6UGy4bCdgiFkSBLpsasODCC0lEdUzyOMF8rNADaIcE_f_Ttpi-0oqoZp5BQsfyHDoiPMg5qLr",
     })
       .then((paypal) => {
         paypal
-          .Buttons({
-            createOrder: createPaypalOrderHandler,
-            onCancel: onCancelHandler,
-            onApprove: onApproveHandler,
-            onError: onErrorHandler,
-          })
+          .Buttons(buttons(cartSubtotal, cartItems))
           .render("#paypal-container-element");
       })
       .catch((err) => {
@@ -36,8 +31,39 @@ const UserOrderDetailsPage = () => {
       });
   };
 
-  const createPaypalOrderHandler = function () {
-    console.log("createPaypalOrderHandler");
+  const buttons = (cartSubtotal, cartItems) => {
+    return {
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: cartSubtotal,
+                breakdown: {
+                  item_total: {
+                    currency_code: "USD",
+                    value: cartSubtotal,
+                  }
+                }
+              },
+              items: cartItems.map(product => {
+                return {
+                  name: product.name,
+                  unit_amount: {
+                    currency_code: "USD",
+                    value: product.price
+                  },
+                  quantity: product.quantity,
+                }
+              })
+            },
+          ],
+        });
+      },
+      onCancel: onCancelHandler,
+      onApprove: onApproveHandler,
+      onError: onErrorHandler,
+    };
   };
 
   const onCancelHandler = function () {
