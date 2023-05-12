@@ -8,7 +8,7 @@ import {
   Row,
 } from "react-bootstrap";
 import CartItemComponent from "../../../components/CartItemComponent";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 const UserOrderDetailsPageComponent = ({
   userInfo,
@@ -24,6 +24,8 @@ const UserOrderDetailsPageComponent = ({
   const [cartSubtotal, setCartSubtotal] = useState(0);
   const [isDelivered, setIsDelivered] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const paypalContainer = useRef();
+  console.log(paypalContainer);
 
   const { id } = useParams("id");
   useEffect(() => {
@@ -76,11 +78,13 @@ const UserOrderDetailsPageComponent = ({
         loadScript({
           "client-id":
             "AQMw66B6UGy4bCdgiFkSBLpsasODCC0lEdUzyOMF8rNADaIcE_f_Ttpi-0oqoZp5BQsfyHDoiPMg5qLr",
-        }).then((paypal) => {
-          console.log(paypal);
-        }).catch(err => {
-          console.error("Failed to load the Paypal JS SDK script", err)
-        });
+        })
+          .then((paypal) => {
+            paypal.Buttons({}).render("#paypal-container-element");
+          })
+          .catch((err) => {
+            console.error("Failed to load the Paypal JS SDK script", err);
+          });
       }
     } else {
       setOrderButtonMessage("Your order was placed Thankyou");
@@ -165,6 +169,9 @@ const UserOrderDetailsPageComponent = ({
                 >
                   {orderButtonMessage}
                 </Button>
+                <div style={{ position: "relative", zIndex: 1 }}>
+                  <div ref={paypalContainer} id="paypal-container-element"></div>
+                </div>
               </div>
             </ListGroup.Item>
           </ListGroup>
