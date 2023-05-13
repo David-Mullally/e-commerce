@@ -11,9 +11,14 @@ import {
   Table,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AdminEditProductPage = () => {
   const [validated, setValidated] = useState(false);
+
+  const { categories } = useSelector((state) => state.getCategories);
+  console.log("cat:",categories);
+
   const onHover = {
     cursor: "pointer",
     position: "absolute",
@@ -197,11 +202,19 @@ const AdminEditProductPage = () => {
             <Form.Label>Images</Form.Label>
             <Row>
               <Col style={{ position: "relative" }} xs={3}>
-                <Image crossOrigin="anonymous" src="/images/category-1.jpg" fluid />
+                <Image
+                  crossOrigin="anonymous"
+                  src="/images/category-1.jpg"
+                  fluid
+                />
                 <i style={onHover} className="bi bi-x text-danger"></i>
               </Col>
               <Col style={{ position: "relative" }} xs={3}>
-                <Image crossOrigin="anonymous" src="/images/category-1.jpg" fluid />
+                <Image
+                  crossOrigin="anonymous"
+                  src="/images/category-1.jpg"
+                  fluid
+                />
                 <i style={onHover} className="bi bi-x text-danger"></i>
               </Col>
             </Row>

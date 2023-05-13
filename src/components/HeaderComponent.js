@@ -14,11 +14,17 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import { logout } from "../redux/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getCategories } from "../redux/actions/categoryActions";
 
 const HeaderComponent = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
-  const itemsCount = useSelector((state) => state.cart.itemsCount)
+  const itemsCount = useSelector((state) => state.cart.itemsCount);
+
+  useEffect(() => {
+    dispatch(getCategories(dispatch));
+  }, [dispatch]);
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -50,7 +56,10 @@ const HeaderComponent = () => {
                 </Nav.Link>
               </LinkContainer>
             ) : userInfo.name && !userInfo.isAdmin ? (
-              <NavDropdown title={`${userInfo.name} ${userInfo.lastName}`}  id="collasible-nav-dropdown">
+              <NavDropdown
+                title={`${userInfo.name} ${userInfo.lastName}`}
+                id="collasible-nav-dropdown"
+              >
                 <NavDropdown.Item
                   as={Link}
                   eventKey="/user/my-orders"
@@ -79,13 +88,11 @@ const HeaderComponent = () => {
                 </LinkContainer>
               </>
             )}
- 
+
             {/*
              <Nav.Link href="#features">Features</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
-            */
-            }
-           
+            */}
 
             <LinkContainer to="/cart">
               <Nav.Link>
