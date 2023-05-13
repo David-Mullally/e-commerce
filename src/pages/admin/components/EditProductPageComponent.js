@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import {
   Alert,
   Button,
@@ -12,8 +13,15 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const AdminEditProductPageComponent = ({ categories }) => {
+const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
   const [validated, setValidated] = useState(false);
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetchProduct(id)
+      .then((product) => console.log(product))
+      .catch((er) => console.log(er));
+  }, []);
 
   const onHover = {
     cursor: "pointer",
