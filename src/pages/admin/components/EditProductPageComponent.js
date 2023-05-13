@@ -15,13 +15,14 @@ import { Link } from "react-router-dom";
 
 const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
   const [validated, setValidated] = useState(false);
+  const [product, setProduct] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
     fetchProduct(id)
-      .then((product) => console.log(product))
+      .then((product) => setProduct(product))
       .catch((er) => console.log(er));
-  }, []);
+  }, [id]);
 
   const onHover = {
     cursor: "pointer",
@@ -70,7 +71,7 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
                 required
                 type="text"
                 name="productName"
-                defaultValue="Panasonic"
+                defaultValue={product.name}
               />
               <Form.Control.Feedback type="invalid">
                 Please enter the products name!
@@ -87,7 +88,7 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
               required
               as="textarea"
               rows={2}
-              defaultValue="A brief description of the product."
+              defaultValue={product.description}
             />
           </Form.Group>
           <Form.Group
@@ -99,7 +100,7 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
               name="productCountInStock"
               required
               type="number"
-              defaultValue="100"
+              defaultValue={product.count}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="form.ProductPriceTextArea">
@@ -108,7 +109,7 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
               name="productPrice"
               required
               type="text"
-              defaultValue="$150"
+              defaultValue={product.price}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="form.ProductCategoryTextArea">
@@ -122,11 +123,17 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
               aria-label="Default select example"
             >
               <option value="">Choose Category</option>
-              {categories.map((category, idx) => (
-                <option key={idx} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
+              {categories.map((category, idx) => {
+                return product.category === category.name ? (
+                  <option selected key={idx} value={category.name}>
+                    {category.name}
+                  </option>
+                ) : (
+                  <option key={idx} value={category.name}>
+                    {category.name}
+                  </option>
+                );
+              })}
             </Form.Select>
           </Form.Group>
 
@@ -207,22 +214,17 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
           <Form.Group controlId="formMultiple" className="mb-3 mt-3">
             <Form.Label>Images</Form.Label>
             <Row>
-              <Col style={{ position: "relative" }} xs={3}>
-                <Image
-                  crossOrigin="anonymous"
-                  src="/images/category-1.jpg"
-                  fluid
-                />
-                <i style={onHover} className="bi bi-x text-danger"></i>
-              </Col>
-              <Col style={{ position: "relative" }} xs={3}>
-                <Image
-                  crossOrigin="anonymous"
-                  src="/images/category-1.jpg"
-                  fluid
-                />
-                <i style={onHover} className="bi bi-x text-danger"></i>
-              </Col>
+              {product.images &&
+                product.images.map((image, idx) => (
+                  <Col key={idx} style={{ position: "relative" }} xs={3}>
+                    <Image
+                      crossOrigin="anonymous"
+                      src={image.path ?? null}
+                      fluid
+                    />
+                    <i style={onHover} className="bi bi-x text-danger"></i>
+                  </Col>
+                ))}
             </Row>
 
             <Form.Control required type="file" multiple />
