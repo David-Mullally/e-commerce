@@ -92,7 +92,6 @@ const UserCartDetailsPageComponent = ({
     };
     createOrder(orderData)
       .then((data) => {
-        console.log("order data", data)
         if (data) {
           navigate(`/user/order-details/${data._id}`);
         }

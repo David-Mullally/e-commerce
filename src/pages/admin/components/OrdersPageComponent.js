@@ -14,12 +14,12 @@ const OrdersPageComponent = ({ getOrders }) => {
     getOrders()
       .then((orders) => setOrders(orders))
       .catch((err) =>
-        dispatchEvent(logout())
-      /*console.log({
+        //dispatchEvent(logout())
+      console.log({
         name: err.response.data.message
           ? err.response.data.message
           : err.response.data,
-      })*/
+      })
       );
   }, []);
 

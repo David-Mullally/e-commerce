@@ -7,7 +7,6 @@ const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartSubtotal = useSelector((state) => state.cart.cartSubtotal);
   const reduxDispatch = useDispatch();
-  console.log(cartItems)
   return (
     <CartPageComponent
       addToCart={addToCart}

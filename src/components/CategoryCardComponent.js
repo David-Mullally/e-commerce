@@ -1,7 +1,6 @@
 import {Button,Card} from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 const CategoryCardComponent = (props) => {
-  console.log(props.img)
   return (
     <Card style={{ margin: "0.5vw 2vw", padding: "2vw", width: "20vw"}}>
       <Card.Img

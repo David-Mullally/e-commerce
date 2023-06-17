@@ -32,7 +32,7 @@ const OrderDetailsPageComponent = ({ getOrder, markAsDelivered }) => {
   useEffect(() => {
     getOrder(id)
       .then((order) => {
-        setUserInfo(order.user);
+        setUserInfo(order);
         setPaymentMethod(order.paymentMethod);
         order.isPaid ? setIsPaid(order.paidAt) : setIsPaid(false);
         order.isDelivered
@@ -46,12 +46,12 @@ const OrderDetailsPageComponent = ({ getOrder, markAsDelivered }) => {
         setCartItems(order.cartItems);
       })
       .catch(
-        (err) => dispatch(logout())
-        /*console.log({
+      (err) => /*dispatch(logout())*/
+        console.log({
           name: err.response.data.message
             ? err.response.data.message
             : err.response.data,
-        })*/
+        })
       );
   }, [isDelivered, id]);
 

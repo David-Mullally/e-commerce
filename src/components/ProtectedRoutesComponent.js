@@ -12,7 +12,6 @@ const [isAuth, setIsAuth] = useState();
     axios.get("/api/get-token").then(function (data) {
       if (data.data.token) {
         setIsAuth(data.data.token)
-        console.log(isAuth)
       }
       return isAuth;
     });
