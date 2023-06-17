@@ -12,15 +12,28 @@ import {
   Table,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
+const AdminEditProductPageComponent = ({
+  categories,
+  fetchProduct,
+  updateProductApiRequest,
+}) => {
   const [validated, setValidated] = useState(false);
   const [product, setProduct] = useState({});
+  const [updateProductResponseState, setupdateProductResponseState] = useState({
+    message: "",
+    error: "",
+  });
   const { id } = useParams();
-
+  console.log("product", id);
+  const navigate = useNavigate();
   useEffect(() => {
     fetchProduct(id)
-      .then((product) => setProduct(product))
+      .then((product) => {
+        console.log(product);
+        setProduct(product);
+      })
       .catch((er) => console.log(er));
   }, [id]);
 
@@ -46,10 +59,29 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
   }
 
   const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
+    const form = event.currentTarget.elements;
+    const formInputs = {
+      name: form.name.value,
+      description: form.description.value,
+      count: form.count.value,
+      price: form.price.value,
+      category: form.category.value,
+      attributesTable: []
+    };
+    if (event.currentTarget.checkValidity() === true) {
+      updateProductApiRequest(id, formInputs)
+        .then((data) => {
+          if (data.message === "Product updated") navigate("/admin/products");
+        })
+        .catch((er) =>
+          setupdateProductResponseState({
+            error: er.response.data.message
+              ? er.response.data.message
+              : er.response.data,
+          })
+        );
     }
 
     setValidated(true);
@@ -70,8 +102,8 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
               <Form.Control
                 required
                 type="text"
-                name="productName"
-                defaultValue={product.name}
+                name="name"
+                value={product.name}
               />
               <Form.Control.Feedback type="invalid">
                 Please enter the products name!
@@ -84,11 +116,11 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
           >
             <Form.Label>Description</Form.Label>
             <Form.Control
-              name="productDescription"
+              name="description"
               required
               as="textarea"
               rows={2}
-              defaultValue={product.description}
+              value={product.description}
             />
           </Form.Group>
           <Form.Group
@@ -97,19 +129,19 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
           >
             <Form.Label>Count In Stock</Form.Label>
             <Form.Control
-              name="productCountInStock"
+              name="count"
               required
               type="number"
-              defaultValue={product.count}
+              value={product.count}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="form.ProductPriceTextArea">
             <Form.Label>Price</Form.Label>
             <Form.Control
-              name="productPrice"
+              name="price"
               required
               type="text"
-              defaultValue={product.price}
+              value={product.price}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="form.ProductCategoryTextArea">
@@ -119,7 +151,7 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
             </Form.Label>
             <Form.Select
               required
-              name="producCategory"
+              name="category"
               aria-label="Default select example"
             >
               <option value="">Choose Category</option>
@@ -233,9 +265,11 @@ const AdminEditProductPageComponent = ({ categories, fetchProduct }) => {
             variant="primary"
             type="submit"
             style={{ marginBottom: "12vh" }}
+            onClick={updateProductApiRequest}
           >
             Update
           </Button>
+          {updateProductResponseState.error ?? ""}
         </Col>
       </Row>
     </Container>
