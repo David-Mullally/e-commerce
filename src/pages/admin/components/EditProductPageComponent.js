@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useRef } from "react";
 import { useParams } from "react-router-dom";
 import {
   Alert,
@@ -26,7 +26,28 @@ const AdminEditProductPageComponent = ({
     error: "",
   });
   const [attributesFromDb, setAttributesFromDb] = useState([]);
+
+  const attrVal = useRef(null);
+  const attrKey = useRef(null);
+
   const { id } = useParams();
+
+  const setValuesForAttrFromDbSelectForm = (e) => {
+    if (e.target.value !== "Choose Attribute") {
+      var selectedAttr = attributesFromDb.find((item) => item.key === e.target.value);
+      let valuesForAttrKeys = attrVal.current;
+      if (selectedAttr && selectedAttr.value.length > 0) {
+        while (valuesForAttrKeys.options.length) {
+          valuesForAttrKeys.remove(0);
+        }
+        valuesForAttrKeys.options.add(new Option("Choose Attribute Value"));
+        selectedAttr.value.map(item => {
+          valuesForAttrKeys.add(new Option(item));
+          return "";
+        })
+      }
+    }
+  }
   console.log("product", id);
   const navigate = useNavigate();
   useEffect(() => {
@@ -199,6 +220,8 @@ const AdminEditProductPageComponent = ({
                   <Form.Select
                     name="atrrKey"
                     aria-label="Default select example"
+                    ref={attrKey}
+                    onChange={setValuesForAttrFromDbSelectForm}
                   >
                     <option>Choose Attribute</option>
                     {attributesFromDb.map((item, idx) => (
@@ -218,6 +241,7 @@ const AdminEditProductPageComponent = ({
                   <Form.Select
                     name="atrrValue"
                     aria-label="Default select example"
+                    ref={attrVal}
                   >
                     <option>Choose Attribute Value</option>
                     <option value="red">Red</option>
