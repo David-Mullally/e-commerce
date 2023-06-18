@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import {
   Alert,
@@ -25,6 +25,7 @@ const AdminEditProductPageComponent = ({
     message: "",
     error: "",
   });
+  const [attributesFromDb, setAttributesFromDb] = useState([]);
   const { id } = useParams();
   console.log("product", id);
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const AdminEditProductPageComponent = ({
       count: form.count.value,
       price: form.price.value,
       category: form.category.value,
-      attributesTable: []
+      attributesTable: [],
     };
     if (event.currentTarget.checkValidity() === true) {
       updateProductApiRequest(id, formInputs)
@@ -86,6 +87,27 @@ const AdminEditProductPageComponent = ({
 
     setValidated(true);
   };
+
+  useEffect(() => {
+    let categoryOfEditedProduct = categories.find(
+      (item) => item.name === product.category
+    );
+    if (categoryOfEditedProduct) {
+      const mainCategoryOfEditedProduct =
+        categoryOfEditedProduct.name.split("/")[0];
+      const mainCategoryOfEditedProductAlldata = categories.find(
+        (categoryOfEditedProduct) =>
+          categoryOfEditedProduct.name === mainCategoryOfEditedProduct
+      );
+      if (
+        mainCategoryOfEditedProductAlldata &&
+        mainCategoryOfEditedProductAlldata.attrs.length > 0
+      ) {
+        setAttributesFromDb(mainCategoryOfEditedProductAlldata.attrs);
+      }
+    }
+  }, [product]);
+
   return (
     <Container>
       <Row className="justify-content-md-center mt-3">
@@ -103,7 +125,7 @@ const AdminEditProductPageComponent = ({
                 required
                 type="text"
                 name="name"
-                value={product.name}
+                defaultValue={product.name}
               />
               <Form.Control.Feedback type="invalid">
                 Please enter the products name!
@@ -120,7 +142,7 @@ const AdminEditProductPageComponent = ({
               required
               as="textarea"
               rows={2}
-              value={product.description}
+              defaultValue={product.description}
             />
           </Form.Group>
           <Form.Group
@@ -132,7 +154,7 @@ const AdminEditProductPageComponent = ({
               name="count"
               required
               type="number"
-              value={product.count}
+              defaultValue={product.count}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="form.ProductPriceTextArea">
@@ -141,7 +163,7 @@ const AdminEditProductPageComponent = ({
               name="price"
               required
               type="text"
-              value={product.price}
+              defaultValue={product.price}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="form.ProductCategoryTextArea">
@@ -169,29 +191,42 @@ const AdminEditProductPageComponent = ({
             </Form.Select>
           </Form.Group>
 
-          <Row className="mt-5">
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="formBasicAttributes">
-                <Form.Label>Choose Attribute and set value</Form.Label>
-                <Form.Select name="atrrKey" aria-label="Default select example">
-                  <option>Choose Attribute</option>
-                  <option value="Color">Color</option>
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="formBasicAttributeValue">
-                <Form.Label>Attribute value</Form.Label>
-                <Form.Select
-                  name="atrrValue"
-                  aria-label="Default select example"
+          {attributesFromDb.length > 0 && (
+            <Row className="mt-5">
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formBasicAttributes">
+                  <Form.Label>Choose Attribute and set value</Form.Label>
+                  <Form.Select
+                    name="atrrKey"
+                    aria-label="Default select example"
+                  >
+                    <option>Choose Attribute</option>
+                    {attributesFromDb.map((item, idx) => (
+                      <Fragment key={idx}>
+                        <option value={item.key}>{item.key}</option>
+                      </Fragment>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group
+                  className="mb-3"
+                  controlId="formBasicAttributeValue"
                 >
-                  <option>Choose Attribute Value</option>
-                  <option value="red">Red</option>
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
+                  <Form.Label>Attribute value</Form.Label>
+                  <Form.Select
+                    name="atrrValue"
+                    aria-label="Default select example"
+                  >
+                    <option>Choose Attribute Value</option>
+                    <option value="red">Red</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
+          )}
+
           <Row>
             <Table hover>
               <thead>
