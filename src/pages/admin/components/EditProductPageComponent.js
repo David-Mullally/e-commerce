@@ -18,6 +18,8 @@ const AdminEditProductPageComponent = ({
   categories,
   fetchProduct,
   updateProductApiRequest,
+  reduxDispatch,
+  saveAttributeToCatDoc
 }) => {
   const [validated, setValidated] = useState(false);
   const [product, setProduct] = useState({});
@@ -202,6 +204,7 @@ const AdminEditProductPageComponent = ({
   const setNewAttributeManually = (e) => {
     if (e.keyCode && e.keycode === 13) {
       if (newAttrKey && newAttrValue) {
+        reduxDispatch(saveAttributeToCatDoc(newAttrKey, newAttrValue, categoryChosen))
         setAttributesTableWrapper(newAttrKey, newAttrValue);
         e.target.value = "";
         createNewAttrKey.current.value = "";

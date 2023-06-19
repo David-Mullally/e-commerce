@@ -1,6 +1,8 @@
 import EditProductPageComponent from "./components/EditProductPageComponent";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { saveAttributeToCatDoc } from "../../redux/actions/categoryActions";
 
 const fetchProduct = async (productId) => {
   const { data } = await axios.get(`/api/products/get-one/${productId}`);
@@ -14,12 +16,15 @@ const updateProductApiRequest = async (id, formInputs) => {
 
 const AdminEditProductPage = () => {
   const { categories } = useSelector((state) => state.getCategories);
+  const reduxDispatch = useDispatch();
 
   return (
     <EditProductPageComponent
       categories={categories}
       fetchProduct={fetchProduct}
       updateProductApiRequest={updateProductApiRequest}
+      reduxDispatch={reduxDispatch}
+      saveAttributeToCatDoc={saveAttributeToCatDoc}
     />
   );
 };
