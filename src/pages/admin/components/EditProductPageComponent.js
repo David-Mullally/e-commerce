@@ -27,6 +27,9 @@ const AdminEditProductPageComponent = ({
   });
   const [attributesFromDb, setAttributesFromDb] = useState([]); //For select lists
   const [attributesTable, setAttributesTable] = useState([]); // For HTML Table
+  const [categoryChosen, setCategoryChosen] = useState("Choose category");
+
+
   const attrVal = useRef(null);
   const attrKey = useRef(null);
 
@@ -92,7 +95,7 @@ const AdminEditProductPageComponent = ({
       count: form.count.value,
       price: form.price.value,
       category: form.category.value,
-      //attributesTable: [],
+      attributesTable: attributesTable,
     };
     if (event.currentTarget.checkValidity() === true) {
       updateProductApiRequest(id, formInputs)
@@ -130,6 +133,7 @@ const AdminEditProductPageComponent = ({
       }
     }
     setAttributesTable(product.attrs);
+    setCategoryChosen(product.category);
   }, [product]);
 
   const changeCategory = (e) => {
@@ -142,6 +146,7 @@ const AdminEditProductPageComponent = ({
     } else {
       setAttributesFromDb([]);
     }
+    setCategoryChosen(e.target.value);
   };
 
   const attributeValueSelected = (e) => {
@@ -243,7 +248,7 @@ const AdminEditProductPageComponent = ({
               aria-label="Default select example"
               onChange={changeCategory}
             >
-              <option value="">Choose Category</option>
+              <option value="Choose category">Choose Category</option>
               {categories.map((category, idx) => {
                 return product.category === category.name ? (
                   <option selected key={idx} value={category.name}>
@@ -332,9 +337,9 @@ const AdminEditProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute</Form.Label>
                   <Form.Control
-                    disabled={false}
+                    disabled={categoryChosen === "Choose category"}
                     placeholder="first choose or create a category"
-                    name="newProductAttrValue"
+                    name="newAttrKey"
                     type="text"
                   />
                 </Form.Group>
@@ -346,7 +351,7 @@ const AdminEditProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute value</Form.Label>
                   <Form.Control
-                    disabled={false}
+                    disabled={categoryChosen === "Choose category"}
                     placeholder="first choose or create a category"
                     name="newProductAttrValueValue"
                     type="text"
