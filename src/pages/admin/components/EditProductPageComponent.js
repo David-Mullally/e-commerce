@@ -19,7 +19,8 @@ const AdminEditProductPageComponent = ({
   fetchProduct,
   updateProductApiRequest,
   reduxDispatch,
-  saveAttributeToCatDoc
+  saveAttributeToCatDoc,
+  imageDeleteHandler
 }) => {
   const [validated, setValidated] = useState(false);
   const [product, setProduct] = useState({});
@@ -32,6 +33,7 @@ const AdminEditProductPageComponent = ({
   const [categoryChosen, setCategoryChosen] = useState("Choose category");
   const [newAttrKey, setNewAttrKey] = useState(false);
   const [newAttrValue, setNewAttrValue] = useState(false);
+  const [imageRemoved, setImageRemoved] = useState(false);
 
   const attrVal = useRef(null);
   const attrKey = useRef(null);
@@ -67,7 +69,7 @@ const AdminEditProductPageComponent = ({
         setProduct(product);
       })
       .catch((er) => console.log(er));
-  }, [id]);
+  }, [id, imageRemoved]);
 
   const onHover = {
     cursor: "pointer",
@@ -383,7 +385,7 @@ const AdminEditProductPageComponent = ({
                     placeholder="first choose or create a category"
                     name="newAttrKey"
                     type="text"
-                    onKeyUp={newAttrKeyHandler}
+                    onKeyUp={newAttrValueHandler}
                     required={newAttrValue}
                   />
                 </Form.Group>
@@ -422,7 +424,7 @@ const AdminEditProductPageComponent = ({
                       src={image.path ?? null}
                       fluid
                     />
-                    <i style={onHover} className="bi bi-x text-danger"></i>
+                    <i style={onHover} onClick={()=> imageDeleteHandler(image.path, id).then(data=> setImageRemoved(!imageRemoved))} className="bi bi-x text-danger"></i>
                   </Col>
                 ))}
             </Row>
