@@ -148,13 +148,13 @@ const AdminEditProductPageComponent = ({
     if (e.target.value !== " Choose Attribute Value") {
       setAttributesTableWrapper(attrKey.current.value, e.target.value);
     }
-  }
+  };
 
   const setAttributesTableWrapper = (key, val) => {
     setAttributesTable((attr) => {
       if (attr.length == 0) {
         var keyExistsInOldTable = false;
-        let modifiedTable = attr.map(item => {
+        let modifiedTable = attr.map((item) => {
           if (item.key === key) {
             keyExistsInOldTable = true;
             item.val = val;
@@ -162,15 +162,18 @@ const AdminEditProductPageComponent = ({
           } else {
             return item;
           }
-        })
-        if (keyExistsInOldTable) return ([...modifiedTable]);
-        else return [...modifiedTable, {key:key, value: val}]
+        });
+        if (keyExistsInOldTable) return [...modifiedTable];
+        else return [...modifiedTable, { key: key, value: val }];
       } else {
-        return [{key: key, value: val}]
-      };
-    })
+        return [{ key: key, value: val }];
+      }
+    });
   };
 
+  const deleteAttribute = (key) => {
+    setAttributesTable((table) => table.filter((item) => item.key !== key));
+  };
   return (
     <Container>
       <Row className="justify-content-md-center mt-3">
@@ -311,7 +314,9 @@ const AdminEditProductPageComponent = ({
                       <td>{item.key}</td>
                       <td>{item.value}</td>
                       <td>
-                        <CloseButton />
+                        <CloseButton
+                          onClick={() => deleteAttribute(item.key)}
+                        />
                       </td>
                     </tr>
                   ))}
