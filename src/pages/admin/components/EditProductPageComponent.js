@@ -29,7 +29,6 @@ const AdminEditProductPageComponent = ({
   const [attributesTable, setAttributesTable] = useState([]); // For HTML Table
   const [categoryChosen, setCategoryChosen] = useState("Choose category");
 
-
   const attrVal = useRef(null);
   const attrKey = useRef(null);
 
@@ -179,6 +178,25 @@ const AdminEditProductPageComponent = ({
   const deleteAttribute = (key) => {
     setAttributesTable((table) => table.filter((item) => item.key !== key));
   };
+
+  const checkKeyDown = (e) => {
+    if (e.code === "Enter") e.preventDefault();
+  };
+
+  const newAttrKeyHandler = (e) => {
+    e.preventDefault();
+    if (e.keyCode && e.keyCode === 13) {
+      console.log("add new attribute");
+    }
+  };
+
+  const newAttrValueHandler = (e) => {
+    e.preventDefault();
+    if (e.keyCode && e.keyCode === 13) {
+      console.log("add new attribute");
+    }
+  };
+
   return (
     <Container>
       <Row className="justify-content-md-center mt-3">
@@ -189,7 +207,12 @@ const AdminEditProductPageComponent = ({
         </Col>
         <Col md={6}>
           <h3>EditProduct</h3>
-          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+            onKeyDown={(e) => checkKeyDown(e)}
+          >
             <Form.Group className="mb-3" controlId="formBasicProductName">
               <Form.Label>Product Name</Form.Label>
               <Form.Control
@@ -341,6 +364,7 @@ const AdminEditProductPageComponent = ({
                     placeholder="first choose or create a category"
                     name="newAttrKey"
                     type="text"
+                    onKeyUp={newAttrKeyHandler}
                   />
                 </Form.Group>
               </Col>
@@ -355,6 +379,7 @@ const AdminEditProductPageComponent = ({
                     placeholder="first choose or create a category"
                     name="newProductAttrValueValue"
                     type="text"
+                    onKeyUp={newAttrKeyHandler}
                   />
                 </Form.Group>
               </Col>
