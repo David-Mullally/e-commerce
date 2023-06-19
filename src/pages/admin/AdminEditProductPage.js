@@ -8,7 +8,7 @@ const fetchProduct = async (productId) => {
 };
 
 const updateProductApiRequest = async (id, formInputs) => {
-  const { data } = await axios.put(`api/products/admin/{productId}`, { ...formInputs });
+  const { data } = await axios.put(`/api/products/admin/${id}`, { ...formInputs });
   return data
 };
 

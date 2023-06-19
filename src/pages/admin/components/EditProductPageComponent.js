@@ -25,8 +25,8 @@ const AdminEditProductPageComponent = ({
     message: "",
     error: "",
   });
-  const [attributesFromDb, setAttributesFromDb] = useState([]);
-
+  const [attributesFromDb, setAttributesFromDb] = useState([]); //For select lists
+  const [attributesTable, setAttributesTable] = useState([]); // For HTML Table
   const attrVal = useRef(null);
   const attrKey = useRef(null);
 
@@ -92,7 +92,7 @@ const AdminEditProductPageComponent = ({
       count: form.count.value,
       price: form.price.value,
       category: form.category.value,
-      attributesTable: [],
+      //attributesTable: [],
     };
     if (event.currentTarget.checkValidity() === true) {
       updateProductApiRequest(id, formInputs)
@@ -129,6 +129,7 @@ const AdminEditProductPageComponent = ({
         setAttributesFromDb(mainCategoryOfEditedProductAlldata.attrs);
       }
     }
+    setAttributesTable(product.attrs);
   }, [product]);
 
   const changeCategory = (e) => {
@@ -267,21 +268,29 @@ const AdminEditProductPageComponent = ({
           )}
 
           <Row>
-            <Table hover>
-              <thead>
-                <tr>
-                  <th>Attribute</th>
-                  <th>Value</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>attr key</td>
-                  <td>attr value</td>
-                </tr>
-              </tbody>
-            </Table>
+            {attributesTable && attributesTable.length > 0 && (
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {attributesTable.map((item, idx) => (
+                    <tr key={idx}>
+                      <td>{item.key}</td>
+                      <td>{item.value}</td>
+                      <td>
+                        <CloseButton />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )}
+
             <Row>
               <Col md={6}>
                 <Form.Group
