@@ -33,6 +33,8 @@ const AdminEditProductPageComponent = ({
 
   const attrVal = useRef(null);
   const attrKey = useRef(null);
+  const createNewAttrKey = useRef(null);
+  const createNewAttrValue = useRef(null);
 
   const { id } = useParams();
 
@@ -200,7 +202,12 @@ const AdminEditProductPageComponent = ({
   const setNewAttributeManually = (e) => {
     if (e.keyCode && e.keycode === 13) {
       if (newAttrKey && newAttrValue) {
-        console.log("add new attribute");
+        setAttributesTableWrapper(newAttrKey, newAttrValue);
+        e.target.value = "";
+        createNewAttrKey.current.value = "";
+        createNewAttrValue.current.value = "";
+        setNewAttrKey(false);
+        setNewAttrValue(false);
       }
     }
   };
@@ -368,11 +375,13 @@ const AdminEditProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute</Form.Label>
                   <Form.Control
+                    ref={createNewAttrKey}
                     disabled={categoryChosen === "Choose category"}
                     placeholder="first choose or create a category"
                     name="newAttrKey"
                     type="text"
                     onKeyUp={newAttrKeyHandler}
+                    required={newAttrValue}
                   />
                 </Form.Group>
               </Col>
@@ -383,16 +392,18 @@ const AdminEditProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute value</Form.Label>
                   <Form.Control
+                    ref={createNewAttrValue}
                     disabled={categoryChosen === "Choose category"}
                     placeholder="first choose or create a category"
                     name="newProductAttrValueValue"
                     type="text"
                     onKeyUp={newAttrKeyHandler}
+                    required={newAttrKey}
                   />
                 </Form.Group>
               </Col>
             </Row>
-            <Alert variant="primary">
+            <Alert show={newAttrKey && newAttrValue} variant="primary">
               After typing the attributes key and value, press enter on one of
               these fields{" "}
             </Alert>
