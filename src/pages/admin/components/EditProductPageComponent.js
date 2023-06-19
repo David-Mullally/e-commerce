@@ -28,6 +28,8 @@ const AdminEditProductPageComponent = ({
   const [attributesFromDb, setAttributesFromDb] = useState([]); //For select lists
   const [attributesTable, setAttributesTable] = useState([]); // For HTML Table
   const [categoryChosen, setCategoryChosen] = useState("Choose category");
+  const [newAttrKey, setNewAttrKey] = useState(false);
+  const [newAttrValue, setNewAttrValue] = useState(false);
 
   const attrVal = useRef(null);
   const attrKey = useRef(null);
@@ -185,15 +187,21 @@ const AdminEditProductPageComponent = ({
 
   const newAttrKeyHandler = (e) => {
     e.preventDefault();
-    if (e.keyCode && e.keyCode === 13) {
-      console.log("add new attribute");
-    }
+    setNewAttrKey(e.target.value);
+    setNewAttributeManually(e);
   };
 
   const newAttrValueHandler = (e) => {
     e.preventDefault();
-    if (e.keyCode && e.keyCode === 13) {
-      console.log("add new attribute");
+    setNewAttrValue(e.target.value);
+    setNewAttributeManually(e);
+  };
+
+  const setNewAttributeManually = (e) => {
+    if (e.keyCode && e.keycode === 13) {
+      if (newAttrKey && newAttrValue) {
+        console.log("add new attribute");
+      }
     }
   };
 
