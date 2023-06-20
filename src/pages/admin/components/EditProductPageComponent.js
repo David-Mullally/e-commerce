@@ -443,6 +443,7 @@ const AdminEditProductPageComponent = ({
             </Row>
 
             <Form.Control
+              required
               type="file"
               multiple
               onChange={(e) => {
@@ -452,7 +453,7 @@ const AdminEditProductPageComponent = ({
                     setIsUploading("Uploading file completed");
                     setImageUploaded(!imageUploaded);
                   })
-                  .catcht((er) =>
+                  .catch((er) =>
                     setIsUploading(
                       er.response.fata.message
                         ? er.response.data.message
