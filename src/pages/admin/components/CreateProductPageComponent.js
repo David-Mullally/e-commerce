@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Alert,
   Button,
@@ -17,6 +18,12 @@ const CreateProductPageComponent = ({
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
+  const [images, setImages] = useState(false);
+  const [isCreating, setIsCreating] = useState("");
+  const [createProductResponseState, setCreateProductResponseState] = useState({
+    message: "",
+    error: "",
+  });
 
   {
     /*const onChange = () => {
@@ -32,6 +39,8 @@ const CreateProductPageComponent = ({
   };*/
   }
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     const form = event.currentTarget.elements;
     event.preventDefault();
@@ -46,10 +55,21 @@ const CreateProductPageComponent = ({
     if (event.currentTarget.checkValidity() === true) {
       createProductAPITRequest(formInputs)
         .then((data) => {
-          console.log(data);
+          if (images) {
+            uploadImageAPIRequest(images, data.productId)
+              .then((res) => {})
+              .catch((er) =>
+                setIsCreating(
+                  er.reponse.data.message
+                    ? er.response.data.message
+                    : er.response.data
+                )
+              );
+          }
+          if (data.message === "product created") navigate("/admin/products");
         })
         .catch((er) =>
-          console.log(
+          setCreateProductResponseState(
             er.response.data.message
               ? er.response.data.message
               : er.response.data
@@ -58,6 +78,10 @@ const CreateProductPageComponent = ({
     }
 
     setValidated(true);
+  };
+
+  const uploadHandler = (images) => {
+    setImages(images);
   };
   return (
     <Container>
@@ -209,7 +233,13 @@ const CreateProductPageComponent = ({
           </Row>
           <Form.Group controlId="formMultiple" className="mb-3 mt-3">
             <Form.Label>Images</Form.Label>
-            <Form.Control required type="file" multiple />
+            <Form.Control
+              required
+              type="file"
+              multiple
+              onChange={(e) => uploadHander(e.target.files)}
+            />
+            {isCreating}
           </Form.Group>
           <Button
             variant="primary"
@@ -218,6 +248,7 @@ const CreateProductPageComponent = ({
           >
             Create
           </Button>
+          {createProductResponseState.error ?? ""}
         </Col>
       </Row>
     </Container>
