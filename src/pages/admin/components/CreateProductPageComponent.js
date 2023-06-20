@@ -11,8 +11,12 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const CreateProductPageComponent = () => {
+const CreateProductPageComponent = ({
+  createProductAPITRequest,
+  uploadImageAPIRequest,
+}) => {
   const [validated, setValidated] = useState(false);
+  const [attributesTable, setAttributesTable] = useState([]);
 
   {
     /*const onChange = () => {
@@ -29,18 +33,28 @@ const CreateProductPageComponent = () => {
   }
 
   const handleSubmit = (event) => {
-      const form = event.currentTarget.elements;
-      event.preventDefault();
-      event.stopPropagation();
-      const formInputs = {
-          name: form.name.value,
-          description: form.description.value,
-          count: form.count.value,
-          category: form.category.value,
-          attributesTable: [],
-      }
+    const form = event.currentTarget.elements;
+    event.preventDefault();
+    event.stopPropagation();
+    const formInputs = {
+      name: form.name.value,
+      description: form.description.value,
+      count: form.count.value,
+      category: form.category.value,
+      attributesTable: attributesTable,
+    };
     if (event.currentTarget.checkValidity() === true) {
-      console.log(formInputs)
+      createProductAPITRequest(formInputs)
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((er) =>
+          console.log(
+            er.response.data.message
+              ? er.response.data.message
+              : er.response.data
+          )
+        );
     }
 
     setValidated(true);
@@ -55,7 +69,12 @@ const CreateProductPageComponent = () => {
         </Col>
         <Col md={6}>
           <h3>Create A New Product</h3>
-          <Form noValidate validated={validated} onSubmit={handleSubmit} autocomplete="off">
+          <Form
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+            autocomplete="off"
+          >
             <Form.Group className="mb-3" controlId="formBasicProductName">
               <Form.Label>Product Name</Form.Label>
               <Form.Control required type="text" name="productName" />
@@ -122,9 +141,12 @@ const CreateProductPageComponent = () => {
               </Form.Group>
             </Col>
             <Col md={6}>
-            <Form.Group className="mb-3" controlId="formBasicAttributeValue">
+              <Form.Group className="mb-3" controlId="formBasicAttributeValue">
                 <Form.Label>Attribute value</Form.Label>
-                <Form.Select name="atrrValue" aria-label="Default select example">
+                <Form.Select
+                  name="atrrValue"
+                  aria-label="Default select example"
+                >
                   <option>Choose Attribute Value</option>
                   <option value="red">Red</option>
                 </Form.Select>
@@ -141,35 +163,49 @@ const CreateProductPageComponent = () => {
                 </tr>
               </thead>
               <tbody>
-                  <tr>
+                <tr>
                   <td>attr key</td>
                   <td>attr value</td>
-                  <td><CloseButton /></td>
-                  </tr>
-                </tbody>
+                  <td>
+                    <CloseButton />
+                  </td>
+                </tr>
+              </tbody>
             </Table>
             <Row>
               <Col md={6}>
-                <Form.Group className="mb-3" controlId="formBasicNewProductAttribute">
+                <Form.Group
+                  className="mb-3"
+                  controlId="formBasicNewProductAttribute"
+                >
                   <Form.Label>Create new product attribute</Form.Label>
-                  <Form.Control disabled={false}
-                  placeholder="first choose or create a category"
-                  name="newProductAttrValue"
-                  type="text" />
+                  <Form.Control
+                    disabled={false}
+                    placeholder="first choose or create a category"
+                    name="newProductAttrValue"
+                    type="text"
+                  />
                 </Form.Group>
-               
               </Col>
               <Col md={6}>
-              <Form.Group className="mb-3" controlId="formBasicNewProductAttributeValue">
+                <Form.Group
+                  className="mb-3"
+                  controlId="formBasicNewProductAttributeValue"
+                >
                   <Form.Label>Create new product attribute value</Form.Label>
-                  <Form.Control disabled={false}
-                  placeholder="first choose or create a category"
-                  name="newProductAttrValueValue"
-                  type="text" />
+                  <Form.Control
+                    disabled={false}
+                    placeholder="first choose or create a category"
+                    name="newProductAttrValueValue"
+                    type="text"
+                  />
                 </Form.Group>
               </Col>
             </Row>
-            <Alert variant="primary">After typing the attributes key and value, press enter on one of these fields </Alert>
+            <Alert variant="primary">
+              After typing the attributes key and value, press enter on one of
+              these fields{" "}
+            </Alert>
           </Row>
           <Form.Group controlId="formMultiple" className="mb-3 mt-3">
             <Form.Label>Images</Form.Label>
