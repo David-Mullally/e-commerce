@@ -57,7 +57,8 @@ const CreateProductPageComponent = ({
       createProductAPITRequest(formInputs)
         .then((data) => {
           if (images) {
-            if (process.env.NODE_ENV === "production") { // To do: cahnage to !==
+            if (process.env.NODE_ENV === "production") {
+              // To do: cahnage to !==
               uploadImageAPIRequest(images, data.productId)
                 .then((res) => {})
                 .catch((er) =>
@@ -68,11 +69,18 @@ const CreateProductPageComponent = ({
                   )
                 );
             } else {
-              uploadImagesCloudinaryAPIRequest();
+              uploadImagesCloudinaryAPIRequest(images, data.productId);
             }
           }
-          if (data.message === "product created") navigate("/admin/products");
+          return data;
         })
+          .then(data => {
+              setIsCreating("Product is being created....");
+              setTimeout(() => {
+                  setIsCreating("");
+                  if (data.message === "product created") navigate("/admin/products");
+               }, 2000);
+          })
         .catch((er) =>
           setCreateProductResponseState(
             er.response.data.message
@@ -242,7 +250,7 @@ const CreateProductPageComponent = ({
               required
               type="file"
               multiple
-              onChange={(e) => uploadHander(e.target.files)}
+              onChange={(e) => uploadHandler(e.target.files)}
             />
             {isCreating}
           </Form.Group>
