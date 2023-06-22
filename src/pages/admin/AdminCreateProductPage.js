@@ -17,10 +17,31 @@ const uploadImageAPIRequest = async (images, productId) => {
   );
 };
 
+const uploadImagesCloudinaryAPIRequest = (images) => {
+  const url = "https://api.cloudinary.com/v1_1/dptxzz9wv/image/upload";
+  const formData = new FormData();
+  for (let i = 0; i < images.length; i++) {
+    let file = images[i];
+    formData.append("file", file);
+    formData.append("upload_preset", "nseuxrnh");
+    fetch(url, {
+      method: POST,
+      body: formData,
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  }
+};
+
 const AdminCreateProductPage = () => {
   <CreateProductPageComponent
     createProductAPITRequest={createProductAPITRequest}
     uploadImageAPIRequest={uploadImageAPIRequest}
+    uploadImagesCloudinaryAPIRequest={uploadImagesCloudinaryAPIRequest}
   />;
 };
 

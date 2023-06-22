@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 const CreateProductPageComponent = ({
   createProductAPITRequest,
   uploadImageAPIRequest,
+  uploadImagesCloudinaryAPIRequest,
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
@@ -56,15 +57,19 @@ const CreateProductPageComponent = ({
       createProductAPITRequest(formInputs)
         .then((data) => {
           if (images) {
-            uploadImageAPIRequest(images, data.productId)
-              .then((res) => {})
-              .catch((er) =>
-                setIsCreating(
-                  er.reponse.data.message
-                    ? er.response.data.message
-                    : er.response.data
-                )
-              );
+            if (process.env.NODE_ENV === "production") { // To do: cahnage to !==
+              uploadImageAPIRequest(images, data.productId)
+                .then((res) => {})
+                .catch((er) =>
+                  setIsCreating(
+                    er.reponse.data.message
+                      ? er.response.data.message
+                      : er.response.data
+                  )
+                );
+            } else {
+              uploadImagesCloudinaryAPIRequest();
+            }
           }
           if (data.message === "product created") navigate("/admin/products");
         })
