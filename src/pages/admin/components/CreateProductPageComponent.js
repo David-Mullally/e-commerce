@@ -54,6 +54,10 @@ const CreateProductPageComponent = ({
       attributesTable: attributesTable,
     };
     if (event.currentTarget.checkValidity() === true) {
+      if (images.length > 3) {
+        setIsCreating("too many files");
+        return
+      }
       createProductAPITRequest(formInputs)
         .then((data) => {
           if (images) {
@@ -72,15 +76,8 @@ const CreateProductPageComponent = ({
               uploadImagesCloudinaryAPIRequest(images, data.productId);
             }
           }
-          return data;
+          if (data.message === "product created") navigate("/admin/products");
         })
-          .then(data => {
-              setIsCreating("Product is being created....");
-              setTimeout(() => {
-                  setIsCreating("");
-                  if (data.message === "product created") navigate("/admin/products");
-               }, 2000);
-          })
         .catch((er) =>
           setCreateProductResponseState(
             er.response.data.message

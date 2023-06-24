@@ -22,6 +22,8 @@ const AdminEditProductPageComponent = ({
   saveAttributeToCatDoc,
   imageDeleteHandler,
   uploadHandler,
+  uploadImagesAPIRequest,
+  uploadImagesCloudinaryAPIRequest,
 }) => {
   const [validated, setValidated] = useState(false);
   const [product, setProduct] = useState({});
@@ -448,18 +450,29 @@ const AdminEditProductPageComponent = ({
               multiple
               onChange={(e) => {
                 setIsUploading("Uploading files in progress...");
-                uploadHandler(e.target.files, id)
-                  .then((data) => {
-                    setIsUploading("Uploading file completed");
-                    setImageUploaded(!imageUploaded);
-                  })
-                  .catch((er) =>
-                    setIsUploading(
-                      er.response.fata.message
-                        ? er.response.data.message
-                        : er.response.data
-                    )
+                if (process.env.NODE_ENV === "production") {
+                  // to do : change to !==
+                  uploadImagesAPIRequest(e.target.files, id)
+                    .then((data) => {
+                      setIsUploading("file upload completed");
+                      setImageUploaded(!imageUploaded);
+                    })
+                    .catch((er) =>
+                      setIsUploading(
+                        er.response.data.message
+                          ? er.response.data.message
+                          : er.response.data
+                      )
+                    );
+                } else {
+                  uploadImagesCloudinaryAPIRequest(e.target.files, id);
+                  setIsUploading(
+                    "File upload completed. Please allow time for the change to take effect. Refresh if neccessary"
                   );
+                  setTimeout(() => {
+                    setImageUploaded(!imageUploaded);
+                  }, 5000);
+                }
               }}
             />
             {isUploading}
