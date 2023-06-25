@@ -1,6 +1,11 @@
 import CreateProductPageComponent from "./components/CreateProductPageComponent";
 import axios from "axios";
-import { uploadImageAPIRequest, uploadImagesCloudinaryAPIRequest } from "./utils/utils";
+import {
+  uploadImageAPIRequest,
+  uploadImagesCloudinaryAPIRequest,
+} from "./utils/utils";
+import { useSelector, useDispatch } from "react-redux";
+import { newCategory } from "../../redux/actions/categoryActions";
 
 const createProductAPITRequest = async (formInputs) => {
   const { data } = await axios.post("/api/products/admin", { ...formInputs });
@@ -8,10 +13,15 @@ const createProductAPITRequest = async (formInputs) => {
 };
 
 const AdminCreateProductPage = () => {
-  <CreateProductPageComponent
+  const { categories } = useSelector((state) => state.getCategories);
+  const dispatch = useDispatch();
+  return <CreateProductPageComponent
     createProductAPITRequest={createProductAPITRequest}
     uploadImageAPIRequest={uploadImageAPIRequest}
     uploadImagesCloudinaryAPIRequest={uploadImagesCloudinaryAPIRequest}
+    categories={categories}
+    newCategory={newCategory}
+    reduxDispatch={dispatch}
   />;
 };
 

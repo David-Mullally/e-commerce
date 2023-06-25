@@ -16,6 +16,9 @@ const CreateProductPageComponent = ({
   createProductAPITRequest,
   uploadImageAPIRequest,
   uploadImagesCloudinaryAPIRequest,
+  categories,
+  reduxDispatch,
+  newCategory
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
@@ -93,6 +96,13 @@ const CreateProductPageComponent = ({
   const uploadHandler = (images) => {
     setImages(images);
   };
+
+  const newCategoryHandler = (e) => {
+    if (e.keyCode && e.keyCode === 13 && e.target.value) {
+      reduxDispatch(newCategory(e.target.value));
+    }
+  }
+
   return (
     <Container>
       <Row className="justify-content-md-center mt-3">
@@ -151,9 +161,11 @@ const CreateProductPageComponent = ({
               aria-label="Default select example"
             >
               <option value="">Choose Category</option>
-              <option value="1">Laptop</option>
-              <option value="2">TV</option>
-              <option value="3">Games</option>
+              {categories.map((category, idx) => {
+                <option key={idx} value={category.name} >
+                  {category.name}
+                </option>
+              })}
             </Form.Select>
           </Form.Group>
 
@@ -161,7 +173,7 @@ const CreateProductPageComponent = ({
             <Form.Label>
               Or create a new category (e.g. Computers, Laptops etc.){""}
             </Form.Label>
-            <Form.Control name="newProductCategory" type="text" />
+            <Form.Control onkeyUp={newCategoryHandler} name="newProductCategory" type="text" />
           </Form.Group>
 
           <Row className="mt-5">

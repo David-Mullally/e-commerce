@@ -10,13 +10,21 @@ export const getCategories = () => async (dispatch) => {
   });
 };
 
-export const saveAttributeToCatDoc = (key, value, categoryChosen) => async (dispatch, getState) =>{
-    const { data } = await axios.post("/api/categories/attr", { key, value, categoryChosen });
+export const saveAttributeToCatDoc =
+  (key, value, categoryChosen) => async (dispatch, getState) => {
+    const { data } = await axios.post("/api/categories/attr", {
+      key,
+      value,
+      categoryChosen,
+    });
     if (data.categoryUpdated) {
-        dispatch({
-            type: actionTypes.SAVE_ATTR,
-            payload: [...data.categoryUpdated],
-        })
+      dispatch({
+        type: actionTypes.SAVE_ATTR,
+        payload: [...data.categoryUpdated],
+      });
     }
-};
+  };
 
+export const newCategory = (category) => async (dispatch, getstate) => {
+  console.log(category);
+};
