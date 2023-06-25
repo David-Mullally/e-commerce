@@ -18,7 +18,7 @@ const CreateProductPageComponent = ({
   uploadImagesCloudinaryAPIRequest,
   categories,
   reduxDispatch,
-  newCategory
+  newCategory,
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
@@ -28,6 +28,7 @@ const CreateProductPageComponent = ({
     message: "",
     error: "",
   });
+  const [categoryChosen, setCategoryChosen] = useState("Choose category");
 
   {
     /*const onChange = () => {
@@ -59,7 +60,7 @@ const CreateProductPageComponent = ({
     if (event.currentTarget.checkValidity() === true) {
       if (images.length > 3) {
         setIsCreating("too many files");
-        return
+        return;
       }
       createProductAPITRequest(formInputs)
         .then((data) => {
@@ -100,8 +101,14 @@ const CreateProductPageComponent = ({
   const newCategoryHandler = (e) => {
     if (e.keyCode && e.keyCode === 13 && e.target.value) {
       reduxDispatch(newCategory(e.target.value));
+      setTimeout(() => {
+        let element = document.getElementById("cats");
+        element.value = e.target.value;
+        setCategoryChosen(e.target.value);
+        e.target.value = "";
+      }, 200);
     }
-  }
+  };
 
   return (
     <Container>
@@ -156,15 +163,16 @@ const CreateProductPageComponent = ({
               <CloseButton />(<small>remove select</small>)
             </Form.Label>
             <Form.Select
+              id="cats"
               required
               name="producCategory"
               aria-label="Default select example"
             >
-              <option value="">Choose Category</option>
+              <option value="Choose category">Choose Category</option>
               {categories.map((category, idx) => {
-                <option key={idx} value={category.name} >
+                <option key={idx} value={category.name}>
                   {category.name}
-                </option>
+                </option>;
               })}
             </Form.Select>
           </Form.Group>
@@ -173,7 +181,11 @@ const CreateProductPageComponent = ({
             <Form.Label>
               Or create a new category (e.g. Computers, Laptops etc.){""}
             </Form.Label>
-            <Form.Control onkeyUp={newCategoryHandler} name="newProductCategory" type="text" />
+            <Form.Control
+              onkeyUp={newCategoryHandler}
+              name="newProductCategory"
+              type="text"
+            />
           </Form.Group>
 
           <Row className="mt-5">
@@ -226,7 +238,7 @@ const CreateProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute</Form.Label>
                   <Form.Control
-                    disabled={false}
+                    disabled={categoryChosen === "Choose category"}
                     placeholder="first choose or create a category"
                     name="newProductAttrValue"
                     type="text"
@@ -240,7 +252,7 @@ const CreateProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute value</Form.Label>
                   <Form.Control
-                    disabled={false}
+                    disabled={categoryChosen === "Choose category"}
                     placeholder="first choose or create a category"
                     name="newProductAttrValueValue"
                     type="text"

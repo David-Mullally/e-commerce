@@ -25,6 +25,13 @@ export const saveAttributeToCatDoc =
     }
   };
 
-export const newCategory = (category) => async (dispatch, getstate) => {
-  console.log(category);
+export const newCategory = (category) => async (dispatch, getState) => {
+  const cat = getState().getcategories.categories;
+  const { data } = axios.post("/api/categories", { category });
+  if (data.categoryCreated) {
+    dispatch({
+      type: actionTypes.INSERT_CATEGORY,
+      payload: [...cat, data.categoryCreated]
+    })
+  }
 };
