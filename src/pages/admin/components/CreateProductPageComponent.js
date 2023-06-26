@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import {
   changeCategory,
   setValuesForAttrFromDbSelectForm,
+  setAttributesTableWrapper,
 } from "./utils/utils";
 
 const CreateProductPageComponent = ({
@@ -124,6 +125,12 @@ const CreateProductPageComponent = ({
     setCategoryChosen("Choose category");
   };
 
+
+  const attributeValueSelected = (e) => {
+    if (e.target.value !== "Choose Attribute Value") {
+      setAttributesTableWrapper(attrKey.current.value, e.target.value, setAttributesTable);
+    }
+  }
   return (
     <Container>
       <Row className="justify-content-md-center mt-3">
@@ -242,6 +249,7 @@ const CreateProductPageComponent = ({
                     name="atrrValue"
                     aria-label="Default select example"
                     ref={attrVal}
+                    onChange={attributeValueSelected}
                   >
                     <option>Choose Attribute Value</option>
                     {attributesFromDb.map((item, idx) => (
@@ -265,7 +273,7 @@ const CreateProductPageComponent = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {attributesTable.map((item) => {
+                  {attributesTable.map((item, idx) => {
                     <tr key={idx}>
                       <td>{item.key}</td>
                       <td>{item.value}</td>
