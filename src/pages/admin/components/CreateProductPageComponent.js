@@ -125,12 +125,20 @@ const CreateProductPageComponent = ({
     setCategoryChosen("Choose category");
   };
 
-
   const attributeValueSelected = (e) => {
     if (e.target.value !== "Choose Attribute Value") {
-      setAttributesTableWrapper(attrKey.current.value, e.target.value, setAttributesTable);
+      setAttributesTableWrapper(
+        attrKey.current.value,
+        e.target.value,
+        setAttributesTable
+      );
     }
-  }
+  };
+
+  const deleteAttribute = (key) => {
+    setAttributesTable((table) => table.filter((item) => item.key !== key));
+  };
+
   return (
     <Container>
       <Row className="justify-content-md-center mt-3">
@@ -278,7 +286,7 @@ const CreateProductPageComponent = ({
                       <td>{item.key}</td>
                       <td>{item.value}</td>
                       <td>
-                        <CloseButton />
+                        <CloseButton onClick={deleteAttribute(item.key)} />
                       </td>
                     </tr>;
                   })}
