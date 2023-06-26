@@ -35,3 +35,16 @@ export const newCategory = (category) => async (dispatch, getState) => {
     })
   }
 };
+
+export const deleteCategory = (category) => async (dispatch, getState) => {
+  const cat = getState().getCategories.categories;
+  const categories = cat.filter((item) => item.name !== category);
+  const { data } = axios.delete(`/api/categories/${encodedURIComponent(category)}`)
+  if (data.categoryDeleted) {
+    dispatch({
+      type: actionTypes.DELETE_CATEGORY,
+      payload: [...categories],
+    })
+  
+  }
+}

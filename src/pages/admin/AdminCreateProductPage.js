@@ -5,7 +5,7 @@ import {
   uploadImagesCloudinaryAPIRequest,
 } from "./utils/utils";
 import { useSelector, useDispatch } from "react-redux";
-import { newCategory } from "../../redux/actions/categoryActions";
+import { newCategory, deleteCategory } from "../../redux/actions/categoryActions";
 
 const createProductAPITRequest = async (formInputs) => {
   const { data } = await axios.post("/api/products/admin", { ...formInputs });
@@ -22,6 +22,7 @@ const AdminCreateProductPage = () => {
     categories={categories}
     newCategory={newCategory}
     reduxDispatch={dispatch}
+    deleteCategory={deleteCategory}
   />;
 };
 

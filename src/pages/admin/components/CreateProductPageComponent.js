@@ -19,6 +19,7 @@ const CreateProductPageComponent = ({
   categories,
   reduxDispatch,
   newCategory,
+  deleteCategory
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
@@ -109,6 +110,12 @@ const CreateProductPageComponent = ({
       }, 200);
     }
   };
+
+  const deleteCategoryHandler = () => {
+    let element = document.getElementById("cats");
+    reduxDispatch(deleteCategory(element.value));
+    setCategoryChosen("Choose category");
+  }
 
   return (
     <Container>
