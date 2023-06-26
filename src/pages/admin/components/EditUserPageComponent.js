@@ -93,7 +93,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check name="isAdmin" type="checkbox" label="Is Admin" checked={isAdmin/>
+                          <Form.Check name="isAdmin" type="checkbox" label="Is Admin" checked={isAdmin} />
             </Form.Group>
             <Button
               variant="primary"
