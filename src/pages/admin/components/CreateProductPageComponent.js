@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Alert,
@@ -11,7 +11,10 @@ import {
   Table,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { changeCategory } from "./utils/utils";
+import {
+  changeCategory,
+  setValuesForAttrFromDbSelectForm,
+} from "./utils/utils";
 
 const CreateProductPageComponent = ({
   createProductAPITRequest,
@@ -48,6 +51,8 @@ const CreateProductPageComponent = ({
   }
 
   const navigate = useNavigate();
+  const attrVal = useRef(null);
+  const attrKey = useRef(null);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget.elements;
@@ -106,8 +111,8 @@ const CreateProductPageComponent = ({
       reduxDispatch(newCategory(e.target.value));
       setTimeout(() => {
         let element = document.getElementById("cats");
-        element.value = e.target.value;
         setCategoryChosen(e.target.value);
+        element.value = e.target.value;
         e.target.value = "";
       }, 200);
     }
@@ -213,6 +218,14 @@ const CreateProductPageComponent = ({
                   <Form.Select
                     name="atrrKey"
                     aria-label="Default select example"
+                    ref={attrKey}
+                    onchange={(e) =>
+                      setValuesForAttrFromDbSelectForm(
+                        e,
+                        attrVal,
+                        attributesFromDb
+                      )
+                    }
                   >
                     <option>Choose Attribute</option>
                     <option value="Color">Color</option>
@@ -228,6 +241,7 @@ const CreateProductPageComponent = ({
                   <Form.Select
                     name="atrrValue"
                     aria-label="Default select example"
+                    ref={attrVal}
                   >
                     <option>Choose Attribute Value</option>
                     {attributesFromDb.map((item, idx) => (

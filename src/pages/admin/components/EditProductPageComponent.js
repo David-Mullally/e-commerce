@@ -13,7 +13,7 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { changeCategory } from "./utils/utils";
+import { changeCategory, setValuesForAttrFromDbSelectForm } from "./utils/utils";
 
 const AdminEditProductPageComponent = ({
   categories,
@@ -48,24 +48,6 @@ const AdminEditProductPageComponent = ({
 
   const { id } = useParams();
 
-  const setValuesForAttrFromDbSelectForm = (e) => {
-    if (e.target.value !== "Choose Attribute") {
-      var selectedAttr = attributesFromDb.find(
-        (item) => item.key === e.target.value
-      );
-      let valuesForAttrKeys = attrVal.current;
-      if (selectedAttr && selectedAttr.value.length > 0) {
-        while (valuesForAttrKeys.options.length) {
-          valuesForAttrKeys.remove(0);
-        }
-        valuesForAttrKeys.options.add(new Option("Choose Attribute Value"));
-        selectedAttr.value.map((item) => {
-          valuesForAttrKeys.add(new Option(item));
-          return "";
-        });
-      }
-    }
-  };
   console.log("product", id);
   const navigate = useNavigate();
   useEffect(() => {
@@ -317,7 +299,7 @@ const AdminEditProductPageComponent = ({
                     name="atrrKey"
                     aria-label="Default select example"
                     ref={attrKey}
-                    onChange={setValuesForAttrFromDbSelectForm}
+                    onChange={(e)=>setValuesForAttrFromDbSelectForm(e, attrVal, attributesFromDb)}
                   >
                     <option>Choose Attribute</option>
                     {attributesFromDb.map((item, idx) => (
