@@ -25,6 +25,7 @@ const CreateProductPageComponent = ({
   reduxDispatch,
   newCategory,
   deleteCategory,
+  saveAttributeToCatDoc,
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
@@ -36,7 +37,8 @@ const CreateProductPageComponent = ({
   });
   const [categoryChosen, setCategoryChosen] = useState("Choose category");
   const [attributesFromDb, setAttributesFromDb] = useState([]);
-
+  const [newAttrKey, setNewAttrKey] = useState(false);
+  const [newAttrValue, setNewAttrValue] = useState(false);
   {
     /*const onChange = () => {
     const password = document.querySelector("input[name=password]");
@@ -54,6 +56,8 @@ const CreateProductPageComponent = ({
   const navigate = useNavigate();
   const attrVal = useRef(null);
   const attrKey = useRef(null);
+  const createNewAttrKey = useRef(null);
+  const createNewAttrVal = useRef(null);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget.elements;
@@ -137,6 +141,34 @@ const CreateProductPageComponent = ({
 
   const deleteAttribute = (key) => {
     setAttributesTable((table) => table.filter((item) => item.key !== key));
+  };
+
+  const newAttrKeyHandler = (e) => {
+    e.preventDefault();
+    setNewAttrKey(e.target.value);
+    addNewAttributeManually(e);
+  };
+
+  const newAttrValueHandler = (e) => {
+    e.preventDefault();
+    setNewAttrValue(e.target.value);
+    addNewAttributeManually(e);
+  };
+
+  const addNewAttributeManually = (e) => {
+    if (e.keyCode && e.keycode === 13) {
+      if (newAttrKey && newAttrValue) {
+        reduxDispatch(
+          saveAttributeToCatDoc(newAttrKey, newAttrValue, categoryChosen)
+        );
+        setAttributesTableWrapper(newAttrKey, newAttrValue, setAttributesTable);
+        e.target.value = "";
+        createNewAttrKey.current.value = "";
+        createNewAttrVal.current.value = "";
+        setNewAttrKey(false);
+        setNewAttrValue(false);
+      }
+    }
   };
 
   return (
@@ -302,10 +334,12 @@ const CreateProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute</Form.Label>
                   <Form.Control
+                    ref={createNewAttrKey}
                     disabled={["", "ChooseCategory"].includes(categoryChosen)}
                     placeholder="first choose or create a category"
                     name="newProductAttrValue"
                     type="text"
+                    onKeyUp={newAttrKeyHandler}
                   />
                 </Form.Group>
               </Col>
@@ -316,15 +350,18 @@ const CreateProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute value</Form.Label>
                   <Form.Control
+                    ref={createNewAttrVal}
                     disabled={["", "ChooseCategory"].includes(categoryChosen)}
                     placeholder="first choose or create a category"
+                    required={newAttrKey}
                     name="newProductAttrValueValue"
                     type="text"
+                    onKeyUp={newAttrValueHandler}
                   />
                 </Form.Group>
               </Col>
             </Row>
-            <Alert variant="primary">
+            <Alert show={newAttrKey && newAttrValue} variant="primary">
               After typing the attributes key and value, press enter on one of
               these fields{" "}
             </Alert>
