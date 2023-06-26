@@ -81,7 +81,7 @@ function App() {
             path="/admin/edit-product/:id"
             element={<AdminEditProductPage />}
           />
-          <Route path="/admin/edit-user" element={<AdminEditUserPage />} />
+          <Route path="/admin/edit-user/:id" element={<AdminEditUserPage />} />
           <Route
             path="/admin/order-details/:id"
             element={<AdminOrderDetailsPage />}
