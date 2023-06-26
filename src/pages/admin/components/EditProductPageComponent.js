@@ -13,6 +13,7 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { changeCategory } from "./utils/utils";
 
 const AdminEditProductPageComponent = ({
   categories,
@@ -147,19 +148,6 @@ const AdminEditProductPageComponent = ({
     setAttributesTable(product.attrs);
     setCategoryChosen(product.category);
   }, [product]);
-
-  const changeCategory = (e) => {
-    const highLevelCategory = e.target.value.split("/")[0];
-    const highLevelCategoryAllData = categories.find(
-      (cat) => cat.name === highLevelCategory
-    );
-    if (highLevelCategoryAllData && highLevelCategoryAllData.attrs) {
-      setAttributesFromDb(highLevelCategoryAllData.attrs);
-    } else {
-      setAttributesFromDb([]);
-    }
-    setCategoryChosen(e.target.value);
-  };
 
   const attributeValueSelected = (e) => {
     if (e.target.value !== " Choose Attribute Value") {
@@ -296,7 +284,14 @@ const AdminEditProductPageComponent = ({
               required
               name="category"
               aria-label="Default select example"
-              onChange={changeCategory}
+              onChange={(e) =>
+                changeCategory(
+                  e,
+                  categories,
+                  setAttributesFromDb,
+                  setCategoryChosen
+                )
+              }
             >
               <option value="Choose category">Choose Category</option>
               {categories.map((category, idx) => {

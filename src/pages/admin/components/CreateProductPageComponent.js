@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Alert,
@@ -11,6 +11,7 @@ import {
   Table,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { changeCategory } from "./utils/utils";
 
 const CreateProductPageComponent = ({
   createProductAPITRequest,
@@ -19,7 +20,7 @@ const CreateProductPageComponent = ({
   categories,
   reduxDispatch,
   newCategory,
-  deleteCategory
+  deleteCategory,
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
@@ -30,6 +31,7 @@ const CreateProductPageComponent = ({
     error: "",
   });
   const [categoryChosen, setCategoryChosen] = useState("Choose category");
+  const [attributesFromDb, setAttributesFromDb] = useState([]);
 
   {
     /*const onChange = () => {
@@ -115,7 +117,7 @@ const CreateProductPageComponent = ({
     let element = document.getElementById("cats");
     reduxDispatch(deleteCategory(element.value));
     setCategoryChosen("Choose category");
-  }
+  };
 
   return (
     <Container>
@@ -174,6 +176,14 @@ const CreateProductPageComponent = ({
               required
               name="producCategory"
               aria-label="Default select example"
+              onChange={(e) =>
+                changeCategory(
+                  e,
+                  categories,
+                  setAttributesFromDb,
+                  categoryChosen
+                )
+              }
             >
               <option value="Choose category">Choose Category</option>
               {categories.map((category, idx) => {
@@ -195,48 +205,65 @@ const CreateProductPageComponent = ({
             />
           </Form.Group>
 
-          <Row className="mt-5">
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="formBasicAttributes">
-                <Form.Label>Choose Attribute and set value</Form.Label>
-                <Form.Select name="atrrKey" aria-label="Default select example">
-                  <option>Choose Attribute</option>
-                  <option value="Color">Color</option>
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3" controlId="formBasicAttributeValue">
-                <Form.Label>Attribute value</Form.Label>
-                <Form.Select
-                  name="atrrValue"
-                  aria-label="Default select example"
+          {attributesFromDb.length > 0 && (
+            <Row className="mt-5">
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formBasicAttributes">
+                  <Form.Label>Choose Attribute and set value</Form.Label>
+                  <Form.Select
+                    name="atrrKey"
+                    aria-label="Default select example"
+                  >
+                    <option>Choose Attribute</option>
+                    <option value="Color">Color</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group
+                  className="mb-3"
+                  controlId="formBasicAttributeValue"
                 >
-                  <option>Choose Attribute Value</option>
-                  <option value="red">Red</option>
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
+                  <Form.Label>Attribute value</Form.Label>
+                  <Form.Select
+                    name="atrrValue"
+                    aria-label="Default select example"
+                  >
+                    <option>Choose Attribute Value</option>
+                    {attributesFromDb.map((item, idx) => (
+                      <React.Fragment key={idx}>
+                        <option value={item.key}>{item.key}</option>
+                      </React.Fragment>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
+          )}
           <Row>
-            <Table hover>
-              <thead>
-                <tr>
-                  <th>Attribute</th>
-                  <th>Value</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>attr key</td>
-                  <td>attr value</td>
-                  <td>
-                    <CloseButton />
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
+            {attributesTable.length > 0 && (
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {attributesTable.map((item) => {
+                    <tr key={idx}>
+                      <td>{item.key}</td>
+                      <td>{item.value}</td>
+                      <td>
+                        <CloseButton />
+                      </td>
+                    </tr>;
+                  })}
+                </tbody>
+              </Table>
+            )}
+
             <Row>
               <Col md={6}>
                 <Form.Group
@@ -245,7 +272,7 @@ const CreateProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute</Form.Label>
                   <Form.Control
-                    disabled={categoryChosen === "Choose category"}
+                    disabled={["", "ChooseCategory"].includes(categoryChosen)}
                     placeholder="first choose or create a category"
                     name="newProductAttrValue"
                     type="text"
@@ -259,7 +286,7 @@ const CreateProductPageComponent = ({
                 >
                   <Form.Label>Create new product attribute value</Form.Label>
                   <Form.Control
-                    disabled={categoryChosen === "Choose category"}
+                    disabled={["", "ChooseCategory"].includes(categoryChosen)}
                     placeholder="first choose or create a category"
                     name="newProductAttrValueValue"
                     type="text"
