@@ -32,23 +32,33 @@ const ProductDetailsPageComponent = ({
     setShowCartMessage(true);
   };
 
-  var options123 = {
+  /* var options123 = {
     scale: 2,
     offset: { vertical: 0, horizontal: 0 },
     zoomPosition: "right",
-  };
+  }; */
 
-  var options4 = {
+  /* var options4 = {
     scale: 2,
     offset: { vertical: 0, horizontal: 0 },
     zoomPosition: "top",
-  };
+  }; */
 
   useEffect(() => {
-    new ImageZoom(document.getElementById("first"), options123);
-    new ImageZoom(document.getElementById("second"), options123);
-    new ImageZoom(document.getElementById("third"), options123);
-    new ImageZoom(document.getElementById("forth"), options4);
+    if (product.images) {
+      var options = {
+        // width: 400,
+        // zoomWidth: 500,
+        // fillContainer: true,
+        // zoomPosition: "bottom",
+        scale: 2,
+        offset: { vertical: 0, horizontal: 0 },
+      };
+      product.images.map(
+        (image, id) =>
+          new ImageZoom(document.getElementById(`imageId${id + 1}`), options)
+      );
+    }
   });
 
   useEffect(() => {
@@ -77,42 +87,21 @@ const ProductDetailsPageComponent = ({
         ) : (
           <>
             <Col md={4} style={{ zIndex: 1 }}>
-              <div id="first">
-                <Image
-                  crossOrigin="anonymous"
-                  style={{ maxWidth: "190px", maxHeight: "170px" }}
-                  fluid
-                  src={`/images/category-1.jpg`}
-                />
-              </div>
-              <br />
-              <div id="second">
-                <Image
-                  crossOrigin="anonymous"
-                  style={{ maxWidth: "190px", maxHeight: "170px" }}
-                  fluid
-                  src={`/images/category-2.jpg`}
-                />
-              </div>
-              <br />
-              <div id="third">
-                <Image
-                  crossOrigin="anonymous"
-                  style={{ maxWidth: "190px", maxHeight: "170px" }}
-                  fluid
-                  src={`/images/category-3.jpg`}
-                />
-              </div>
-              <br />
-              <div id="forth">
-                <Image
-                  crossOrigin="anonymous"
-                  style={{ maxWidth: "190px", maxHeight: "170px" }}
-                  fluid
-                  src={`/images/category-4.jpg`}
-                />
-              </div>
-              <br />
+              {product.images
+                ? product.images.map((image, id) => (
+                    <div kex={id}>
+                      <div key={id} id={`imagesId${id + 1}`}>
+                        <Image
+                          crossOrigin="anonymous"
+                          style={{ maxWidth: "190px", maxHeight: "170px" }}
+                          fluid
+                          src={`${image.path ?? null}`}
+                        />
+                      </div>
+                      <br />
+                    </div>
+                  ))
+                : null}
             </Col>
             <Col md={8} style={{ height: "60vh", overflowY: "scroll" }}>
               <Row>
@@ -122,20 +111,24 @@ const ProductDetailsPageComponent = ({
                       <h1>{product.name}</h1>
                     </ListGroup.Item>
                     <ListGroup.Item>
-                      <Rating readonly size={20} initialValue={product.rating} />
+                      <Rating
+                        readonly
+                        size={20}
+                        initialValue={product.rating}
+                      />
                       ({product.reviewsNumber})
                     </ListGroup.Item>
                     <ListGroup.Item>
                       Price <span className="fw-bold">${product.price}</span>
                     </ListGroup.Item>
-                    <ListGroup.Item>
-                     {product.description}
-                    </ListGroup.Item>
+                    <ListGroup.Item>{product.description}</ListGroup.Item>
                   </ListGroup>
                 </Col>
                 <Col md={4}>
                   <ListGroup>
-                    <ListGroup.Item>Status: {product.count > 0 ? "In Stock" : "Out Of Stock"}</ListGroup.Item>
+                    <ListGroup.Item>
+                      Status: {product.count > 0 ? "In Stock" : "Out Of Stock"}
+                    </ListGroup.Item>
                     <ListGroup.Item>
                       Price <span className="fw-bold">${product.price}</span>
                     </ListGroup.Item>
