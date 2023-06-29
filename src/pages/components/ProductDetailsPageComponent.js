@@ -11,7 +11,7 @@ import {
 import AddedToCartMessageComponent from "../../components/AddedToCartMessageComponent";
 import { Rating } from "react-simple-star-rating";
 import ImageZoom from "js-image-zoom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { useParams } from "react-router-dom";
 
@@ -28,6 +28,9 @@ const ProductDetailsPageComponent = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [productReviewed, setProductReviewed] = useState(false);
+
+  const messagesEndRef = useRef(null);
+
   const { id } = useParams();
 
   const addToCartHandler = () => {
@@ -46,6 +49,14 @@ const ProductDetailsPageComponent = ({
     offset: { vertical: 0, horizontal: 0 },
     zoomPosition: "top",
   }; */
+
+  useEffect(() => {
+    if (productReviewed) {
+      setTimeout(() => {
+        messagesEndRef.current.scrollIntoView({behavior: "smooth"})
+      },200)
+    }
+  }, [productReviewed])
 
   useEffect(() => {
     if (product.images) {
@@ -77,7 +88,7 @@ const ProductDetailsPageComponent = ({
       );
   }, [id, productReviewed]);
 
-  const reviewHandler = () => {
+  const sendReviewHandler = () => {
     e.preventDefault();
     const form = e.currentTarget.elements;
     const formInputs = {
@@ -200,6 +211,7 @@ const ProductDetailsPageComponent = ({
                           {review.comment}{" "}
                         </ListGroup.Item>
                       ))}
+                        <div ref={messagesEndRef} />
                   </ListGroup>
                 </Col>
               </Row>
