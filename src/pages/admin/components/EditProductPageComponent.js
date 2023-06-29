@@ -48,12 +48,12 @@ const AdminEditProductPageComponent = ({
 
   const { id } = useParams();
 
-  console.log("product", id);
+  //console.log("product", id);
   const navigate = useNavigate();
   useEffect(() => {
     fetchProduct(id)
       .then((product) => {
-        console.log(product);
+        //console.log(product);
         setProduct(product);
       })
       .catch((er) => console.log(er));
@@ -257,7 +257,7 @@ const AdminEditProductPageComponent = ({
               <option value="Choose category">Choose Category</option>
               {categories.map((category, idx) => {
                 return product.category === category.name ? (
-                  <option selected key={idx} value={category.name}>
+                  <option /* selected */  key={idx} value={category.name}>
                     {category.name}
                   </option>
                 ) : (

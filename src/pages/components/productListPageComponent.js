@@ -18,6 +18,8 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
   const [attrsFilter, setAttrsFilter] = useState([]);
   const [attrsFromFilter, setAttrsFromFilter] = useState([]);
 
+  console.log(attrsFromFilter)
+
   const { categoryName } = useParams() || "";
 
   useEffect(() => {
