@@ -44,7 +44,7 @@ function App() {
             path="/product-details/:id"
             element={<ProductDetailsPage />}
           />
-          <Route path="/product-list-page" element={<ProductListPage />} />
+          <Route path="/product-list/category/:categoryName" element={<ProductListPage />} />
           <Route path="/register" element={<RegistrationPage />} />
           <Route
             path="*"

@@ -1,19 +1,28 @@
 import CategoryCardComponent from "../../components/CategoryCardComponent";
 import ProductsCarouselComponent from "../../components/ProductsCarouselComponent";
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
 
-const HomePageComponent = () => {
+const HomePageComponent = ({ categories, idx }) => {
+  const [mainCategories, setMainCategories] = useState([]);
+
+  useEffect(() => {
+      setMainCategories((cat)=>categories.filter((item)=>!item.name.includes("/")))
+  }, [categories]);
+
   return (
     <>
       <ProductsCarouselComponent />
-      <Container style={{display: "flex", flexWrap: "wrap", paddingBottom: "5vw" }}>
-        {Array.from({ length: 5 }).map((_, index) => {
-          return (
-            <CategoryCardComponent key={index}
-              img={`/images/carousel/carousel-${index + 1}.jpg`}
-            />
-          );
-        })}
+      <Container
+        style={{ display: "flex", flexWrap: "wrap", paddingBottom: "5vw" }}
+      >
+        <Row xs={1} md={2} className="g-4 mt-5">
+          {mainCategories.map((category, idx) => {
+            return (
+              <CategoryCardComponent key={idx} category={category} idx={idx} />
+            );
+          })}
+        </Row>
       </Container>
     </>
   );

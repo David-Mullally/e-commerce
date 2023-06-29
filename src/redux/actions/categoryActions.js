@@ -7,11 +7,10 @@ export const getCategories = () => async (dispatch) => {
   dispatch({
     type: actionTypes.GET_CATEGORIES_REQUEST,
     payload: data,
-  });
-};
+  })
+}
 
-export const saveAttributeToCatDoc =
-  (key, value, categoryChosen) => async (dispatch, getState) => {
+export const saveAttributeToCatDoc = (key, value, categoryChosen) => async (dispatch, getState) => {
     const { data } = await axios.post("/api/categories/attr", {
       key,
       value,
@@ -27,7 +26,7 @@ export const saveAttributeToCatDoc =
 
 export const newCategory = (category) => async (dispatch, getState) => {
   const cat = getState().getcategories.categories;
-  const { data } = axios.post("/api/categories", { category });
+  const { data } = axios.post("/api/categories", { category })
   if (data.categoryCreated) {
     dispatch({
       type: actionTypes.INSERT_CATEGORY,
@@ -39,7 +38,7 @@ export const newCategory = (category) => async (dispatch, getState) => {
 export const deleteCategory = (category) => async (dispatch, getState) => {
   const cat = getState().getCategories.categories;
   const categories = cat.filter((item) => item.name !== category);
-  const { data } = axios.delete(`/api/categories/${encodedURIComponent(category)}`)
+  const { data } = axios.delete(`/api/categories/${encodeURIComponent(category)}`)
   if (data.categoryDeleted) {
     dispatch({
       type: actionTypes.DELETE_CATEGORY,

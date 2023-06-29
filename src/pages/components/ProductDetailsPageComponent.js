@@ -88,7 +88,7 @@ const ProductDetailsPageComponent = ({
       );
   }, [id, productReviewed]);
 
-  const sendReviewHandler = () => {
+  const sendReviewHandler = (e) => {
     e.preventDefault();
     const form = e.currentTarget.elements;
     const formInputs = {

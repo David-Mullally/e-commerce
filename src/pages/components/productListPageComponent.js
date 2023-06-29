@@ -17,7 +17,7 @@ const ProductListPageComponent = ({ getProducts }) => {
 
   useEffect(() => {
     getProducts().then((products) => setProducts(products.products));
-    setIsLoading(false).catch((err) => {
+    setLoading(false).catch((err) => {
       console.log(err);
       setError(true);
     });
