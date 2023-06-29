@@ -17,8 +17,10 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
   const [error, setError] = useState(false);
   const [attrsFilter, setAttrsFilter] = useState([]);
   const [attrsFromFilter, setAttrsFromFilter] = useState([]);
+  const [showResetFiltersButton, setShowResetFiltersButton] = useState(false);
+  const [filters, setFilters] = useState({})
 
-  console.log(attrsFromFilter)
+  console.log(attrsFromFilter);
 
   const { categoryName } = useParams() || "";
 
@@ -45,6 +47,19 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
     });
   }, []);
 
+  const handleFilters = () => {
+    setShowResetFiltersButton(true);
+    setFilters({
+      attrs: attrsFromFilter,
+    })
+  };
+
+  const resetFilters = () => {
+    setShowResetFiltersButton(false);
+    setFilters({});
+    window.location.href = "/product-list";
+  };
+
   return (
     <Container fluid className="product-list-page">
       <Row>
@@ -64,11 +79,16 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
               <CategoryFilterComponent />
             </ListGroup.Item>
             <ListGroup.Item>
-              <AttributesFilterComponent attrsFilter={attrsFilter} setAttrsFromFilter={setAttrsFromFilter} />
+              <AttributesFilterComponent
+                attrsFilter={attrsFilter}
+                setAttrsFromFilter={setAttrsFromFilter}
+              />
             </ListGroup.Item>
           </ListGroup>
-          <Button variant="primary">Filter</Button>{" "}
-          <Button variant="danger">Reset Filters</Button>
+          <Button variant="primary" onClick={handleFilters}>Filter</Button>{" "}
+          {showResetFiltersButton && (
+            <Button variant="danger" onClick={resetFilters}>Reset Filters</Button>
+          )}
         </Col>
         <Col md={9}>
           {loading ? (

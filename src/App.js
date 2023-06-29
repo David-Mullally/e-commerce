@@ -38,6 +38,7 @@ function App() {
         <Route element={<RoutesWithUserChatComponent />}>
           {/* unprotected routes*/}
           <Route path="/" element={<HomePage />} />
+          <Route path="/product-list" element={<ProductListPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<LogInPage />} />
           <Route
