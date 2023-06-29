@@ -10,13 +10,17 @@ import SortOptionsComponent from "../../components/SortOptionsComponent";
 
 import { useEffect, useState } from "react";
 
-const ProductListPageComponent = ({ getProducts}) => {
+const ProductListPageComponent = ({ getProducts }) => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    getProducts()
-      .then((products) => setProducts(products.products))
-      .catch((err) => console.log(err));
+    getProducts().then((products) => setProducts(products.products));
+    setIsLoading(false).catch((err) => {
+      console.log(err);
+      setError(true);
+    });
   }, []);
 
   return (
@@ -42,23 +46,29 @@ const ProductListPageComponent = ({ getProducts}) => {
             </ListGroup.Item>
           </ListGroup>
           <Button variant="primary">Filter</Button>{" "}
-          <Button variant="danger">Reset</Button>
+          <Button variant="danger">Reset Filters</Button>
         </Col>
         <Col md={9}>
-          {products.map((product) => {
-            return (
-              <ProductForListComponent
-                key={product._id}
-                images={product.images}
-                name={product.name}
-                description={product.description}
-                price={product.price}
-                rating={product.rating}
-                reviewsNumber={product.reviewsNumber}
-                productId={product._id}
-              />
-            );
-          })}
+          {loading ? (
+            <h1>Loading products....</h1>
+          ) : error ? (
+            <h1>Error while loading products. Try again later.</h1>
+          ) : (
+            products.map((product) => {
+              return (
+                <ProductForListComponent
+                  key={product._id}
+                  images={product.images}
+                  name={product.name}
+                  description={product.description}
+                  price={product.price}
+                  rating={product.rating}
+                  reviewsNumber={product.reviewsNumber}
+                  productId={product._id}
+                />
+              );
+            })
+          )}
 
           <PaginationComponent />
         </Col>

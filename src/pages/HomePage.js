@@ -1,22 +1,7 @@
-import CategoryCardComponent from "../components/CategoryCardComponent";
-import ProductsCarouselComponent from "../components/ProductsCarouselComponent";
-import { Container } from "react-bootstrap";
+import HomePageComponent from "./components/HomePageComponent";
 
 const HomePage = () => {
-  return (
-    <>
-      <ProductsCarouselComponent />
-      <Container style={{display: "flex", flexWrap: "wrap", paddingBottom: "5vw" }}>
-        {Array.from({ length: 5 }).map((_, index) => {
-          return (
-            <CategoryCardComponent key={index}
-              img={`/images/carousel/carousel-${index + 1}.jpg`}
-            />
-          );
-        })}
-      </Container>
-    </>
-  );
+  return <HomePageComponent />
 };
 
 export default HomePage;
