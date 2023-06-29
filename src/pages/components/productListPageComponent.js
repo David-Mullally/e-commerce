@@ -21,6 +21,7 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
   const [filters, setFilters] = useState({}); //collect all filters
   const [price, setPrice] = useState(500);
   const [ratingsFromFilter, setRatingsFromFilter] = useState({});
+  const [categoriesFromFilter, setCategoriesFromFilter] = useState({});
 
   console.log(attrsFromFilter);
 
@@ -55,6 +56,8 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
     setFilters({
       price: price,
       attrs: attrsFromFilter,
+      rating: ratingsFromFilter, 
+      categories: categoriesFromFilter,
     })
   };
 
@@ -80,7 +83,7 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
               <RatingFilterComponent setRatingsFromFilter={setRatingsFromFilter } />
             </ListGroup.Item>
             <ListGroup.Item>
-              <CategoryFilterComponent />
+              <CategoryFilterComponent setCategoriesFromFilter={setCategoriesFromFilter} />
             </ListGroup.Item>
             <ListGroup.Item>
               <AttributesFilterComponent
