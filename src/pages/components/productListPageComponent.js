@@ -9,11 +9,30 @@ import RatingFilterComponent from "../../components/filterQueryResultOptions/Rat
 import SortOptionsComponent from "../../components/SortOptionsComponent";
 
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-const ProductListPageComponent = ({ getProducts }) => {
+const ProductListPageComponent = ({ getProducts, categories }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [attrsFilter, setAttrsFilter] = useState([]);
+
+  const { categoryName } = useParams() || "";
+
+  useEffect(() => {
+    if (categoryName) {
+      let categoryAllData = categories.find(
+        (item) => item.name === categoryName.replaceAll(",", "/")
+      );
+      if (categoryAllData) {
+        let mainCategory = categoryAllData.name.split("/")[0];
+        let index = categories.findIndex((item) => item.name === mainCategory);
+      }
+    } else {
+      setAttrsFilter([]);
+    }
+  }, [categoryName, categories]);
+  setAttrsFilter(categories[index].attrs);
 
   useEffect(() => {
     getProducts().then((products) => setProducts(products.products));
@@ -42,7 +61,7 @@ const ProductListPageComponent = ({ getProducts }) => {
               <CategoryFilterComponent />
             </ListGroup.Item>
             <ListGroup.Item>
-              <AttributesFilterComponent />
+              <AttributesFilterComponent attrsFilter={attrsFilter} />
             </ListGroup.Item>
           </ListGroup>
           <Button variant="primary">Filter</Button>{" "}

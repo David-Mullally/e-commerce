@@ -4,11 +4,11 @@ import axios from "axios";
 
 export const getCategories = () => async (dispatch) => {
   const { data } = await axios.get("/api/categories");
-  dispatch({
-    type: actionTypes.GET_CATEGORIES_REQUEST,
-    payload: data,
-  })
-}
+    dispatch({
+      type: actionTypes.GET_CATEGORIES_REQUEST,
+      payload: data,
+    })
+  }
 
 export const saveAttributeToCatDoc = (key, value, categoryChosen) => async (dispatch, getState) => {
     const { data } = await axios.post("/api/categories/attr", {
