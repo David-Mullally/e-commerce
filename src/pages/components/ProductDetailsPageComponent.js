@@ -20,6 +20,7 @@ const ProductDetailsPageComponent = ({
   reduxDispatch,
   getProductDetails,
   userInfo,
+  writeReviewAPIRequest,
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [showCartMessage, setShowCartMessage] = useState(false);
@@ -74,7 +75,7 @@ const ProductDetailsPageComponent = ({
           er.response.data.message ? er.response.data.message : er.response.data
         )
       );
-  }, []);
+  }, [id, productReviewed]);
 
   const reviewHandler = () => {
     e.preventDefault();
@@ -84,10 +85,21 @@ const ProductDetailsPageComponent = ({
       rating: form.rating.value,
     };
     if (e.currentTarget.checkValidity() === true) {
-      console.log(product._id, formInputs)
+      writeReviewAPIRequest(product._id, formInputs)
+        .then((data) => {
+          if (data === "review created") {
+            setProductReviewed("You successfully reviewed the product!");
+          }
+        })
+        .catch((er) =>
+          setProductReviewed(
+            er.response.data.message
+              ? er.response.data.message
+              : er.response.data
+          )
+        );
     }
   };
-
 
   return (
     <Container>

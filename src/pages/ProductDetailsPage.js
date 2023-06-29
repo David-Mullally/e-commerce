@@ -9,6 +9,11 @@ const getProductDetails = async (id) => {
   return data;
 };
 
+const writeReviewAPIRequest = async (productId, formInputs) => {
+  const { data } = axios.put(`/api/users/reviews/${productId}`, { ...formInputs });
+  return data;
+};
+
 const ProductDetailsPage = () => {
 
 
@@ -16,7 +21,7 @@ const ProductDetailsPage = () => {
   const userInfo = useSelector((state)=> state.userRegisterLogin.userInfo)
   
 
-  return <ProductDetailsPageComponent addToCartReduxAction={addToCart} reduxDispatch={dispatch} getProductDetails={getProductDetails} userInfo={userInfo} />;
+  return <ProductDetailsPageComponent addToCartReduxAction={addToCart} reduxDispatch={dispatch} getProductDetails={getProductDetails} userInfo={userInfo} writeReviewAPIRequest={writeReviewAPIRequest} />;
 };
 
 export default ProductDetailsPage;
