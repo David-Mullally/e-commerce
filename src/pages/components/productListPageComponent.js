@@ -16,6 +16,7 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [attrsFilter, setAttrsFilter] = useState([]);
+  const [attrsFromFilter, setAttrsFromFilter] = useState([]);
 
   const { categoryName } = useParams() || "";
 
@@ -27,12 +28,12 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
       if (categoryAllData) {
         let mainCategory = categoryAllData.name.split("/")[0];
         let index = categories.findIndex((item) => item.name === mainCategory);
+        setAttrsFilter(categories[index].attrs);
       }
     } else {
       setAttrsFilter([]);
     }
   }, [categoryName, categories]);
-  setAttrsFilter(categories[index].attrs);
 
   useEffect(() => {
     getProducts().then((products) => setProducts(products.products));
@@ -61,7 +62,7 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
               <CategoryFilterComponent />
             </ListGroup.Item>
             <ListGroup.Item>
-              <AttributesFilterComponent attrsFilter={attrsFilter} />
+              <AttributesFilterComponent attrsFilter={attrsFilter} setAttrsFromFilter={setAttrsFromFilter} />
             </ListGroup.Item>
           </ListGroup>
           <Button variant="primary">Filter</Button>{" "}
