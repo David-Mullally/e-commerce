@@ -19,12 +19,14 @@ const ProductDetailsPageComponent = ({
   addToCartReduxAction,
   reduxDispatch,
   getProductDetails,
+  userInfo,
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [showCartMessage, setShowCartMessage] = useState(false);
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [productReviewed, setProductReviewed] = useState(false);
   const { id } = useParams();
 
   const addToCartHandler = () => {
@@ -73,6 +75,20 @@ const ProductDetailsPageComponent = ({
         )
       );
   }, []);
+
+  const reviewHandler = () => {
+    e.preventDefault();
+    const form = e.currentTarget.elements;
+    const formInputs = {
+      comment: form.comment.value,
+      rating: form.rating.value,
+    };
+    if (e.currentTarget.checkValidity() === true) {
+      console.log(product._id, formInputs)
+    }
+  };
+
+
   return (
     <Container>
       <AddedToCartMessageComponent
@@ -162,10 +178,14 @@ const ProductDetailsPageComponent = ({
                       product.reviews.map((review, idx) => (
                         <ListGroup.Item key={idx}>
                           John Doe <br />
-                          <Rating readonly size={20} initialValue={review.rating} />
+                          <Rating
+                            readonly
+                            size={20}
+                            initialValue={review.rating}
+                          />
                           <br />
-                          {review.createdAt.substring(0,10)} <br />
-                         {review.comment}{" "}
+                          {review.createdAt.substring(0, 10)} <br />
+                          {review.comment}{" "}
                         </ListGroup.Item>
                       ))}
                   </ListGroup>
@@ -173,28 +193,47 @@ const ProductDetailsPageComponent = ({
               </Row>
               <hr />
               send review form
-              <Alert variant="danger">
-                You must be loggin in to write a review
-              </Alert>
-              <Form>
+              {!userInfo && (
+                <Alert variant="danger">
+                  You must be loggin in to write a review
+                </Alert>
+              )}
+              <Form onSubmit={sendReviewHandler}>
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlTeaxarea1"
                 >
                   <Form.Label>Write A Review</Form.Label>
-                  <Form.Control as="textarea" rows={3} />
+                  <Form.Control
+                    name="comment"
+                    required
+                    disabled={!userInfo.name}
+                    as="textarea"
+                    rows={3}
+                  />
                 </Form.Group>
-                <Form.Select aria-label="Default select example">
-                  <option>Rating</option>
+                <Form.Select
+                  name="rating"
+                  required
+                  disabled={!userInfo.name}
+                  aria-label="Default select example"
+                >
+                  <option value="">Rating</option>
                   <option value="5">5 (Very Good)</option>
                   <option value="4">4 (Good)</option>
                   <option value="3">3 (Average)</option>
                   <option value="2">2 (Poor)</option>
                   <option value="1">1 (Awful)</option>
                 </Form.Select>
-                <Button className="mb-3 mt-3" variant="primary">
+                <Button
+                  disabled={!userInfo.name}
+                  type="submit"
+                  lastName="mb-3 mt-3"
+                  variant="primary"
+                >
                   Submit
                 </Button>
+                {productReviewed}
               </Form>
             </Col>
           </>

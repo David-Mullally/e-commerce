@@ -1,6 +1,6 @@
 import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent";
 import { addToCart } from "../redux/actions/cartActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axios from 'axios';
 
@@ -13,9 +13,10 @@ const ProductDetailsPage = () => {
 
 
   const dispatch = useDispatch();
+  const userInfo = useSelector((state)=> state.userRegisterLogin.userInfo)
   
 
-  return <ProductDetailsPageComponent addToCartReduxAction={addToCart} reduxDispatch={dispatch} getProductDetails={getProductDetails} />;
+  return <ProductDetailsPageComponent addToCartReduxAction={addToCart} reduxDispatch={dispatch} getProductDetails={getProductDetails} userInfo={userInfo} />;
 };
 
 export default ProductDetailsPage;
