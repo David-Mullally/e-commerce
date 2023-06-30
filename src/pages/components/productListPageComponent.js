@@ -43,6 +43,25 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
   }, [categoryName, categories]);
 
   useEffect(() => {
+    if (Object.entries(categoriesFromFilter).length > 0) {
+      setAttrsFilter([]);
+      var cat = [];
+      var count;
+      Object.entries(categoriesFromFilter).forEach((category, checked) => {
+        if (checked) {
+          var name = category.split("/")[0];
+          cat.push(name);
+          count = cat.filter((x) => x === name).length;
+          if (count === 1) {
+            var index = categories.findIndex((item) => item.name === name);
+            setAttrsFilter((attrs) => [...attrs, ...categories[index], attrs]);
+          }
+        }
+      });
+    }
+  }, [categoriesFromFilter, categories]);
+
+  useEffect(() => {
     getProducts().then((products) => setProducts(products.products));
     setLoading(false).catch((err) => {
       console.log(err);
@@ -56,9 +75,9 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
     setFilters({
       price: price,
       attrs: attrsFromFilter,
-      rating: ratingsFromFilter, 
+      rating: ratingsFromFilter,
       categories: categoriesFromFilter,
-    })
+    });
   };
 
   const resetFilters = () => {
@@ -80,10 +99,14 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
               <PriceFilterComponent price={price} setPrice={setPrice} />
             </ListGroup.Item>
             <ListGroup.Item>
-              <RatingFilterComponent setRatingsFromFilter={setRatingsFromFilter } />
+              <RatingFilterComponent
+                setRatingsFromFilter={setRatingsFromFilter}
+              />
             </ListGroup.Item>
             <ListGroup.Item>
-              <CategoryFilterComponent setCategoriesFromFilter={setCategoriesFromFilter} />
+              <CategoryFilterComponent
+                setCategoriesFromFilter={setCategoriesFromFilter}
+              />
             </ListGroup.Item>
             <ListGroup.Item>
               <AttributesFilterComponent
@@ -92,9 +115,13 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
               />
             </ListGroup.Item>
           </ListGroup>
-          <Button variant="primary" onClick={handleFilters}>Filter</Button>{" "}
+          <Button variant="primary" onClick={handleFilters}>
+            Filter
+          </Button>{" "}
           {showResetFiltersButton && (
-            <Button variant="danger" onClick={resetFilters}>Reset Filters</Button>
+            <Button variant="danger" onClick={resetFilters}>
+              Reset Filters
+            </Button>
           )}
         </Col>
         <Col md={9}>
