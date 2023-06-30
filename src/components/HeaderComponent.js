@@ -14,13 +14,16 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import { logout } from "../redux/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getCategories } from "../redux/actions/categoryActions";
 
 const HeaderComponent = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
   const itemsCount = useSelector((state) => state.cart.itemsCount);
+  const categories = useSelector((state) => state.getCategories);
+
+  const [searchCategoryToggle, setSearchCategoryToggle] = useState("All");
 
   useEffect(() => {
     dispatch(getCategories(dispatch));
@@ -36,10 +39,16 @@ const HeaderComponent = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <InputGroup>
-              <DropdownButton id="dropdown-basic-button" title="Search">
-                <Dropdown.Item>Best Fictional Dad</Dropdown.Item>
-                <Dropdown.Item>Dad Jokes</Dropdown.Item>
-                <Dropdown.Item>Dad Music</Dropdown.Item>
+              <DropdownButton
+                id="dropdown-basic-button"
+                title={searchCategoryToggle}
+              >
+                <Dropdown.Item onClick={() => setSearchCategoryToggle("All")}>
+                  All
+                </Dropdown.Item>
+                {categories.map((category, id) => (
+                  <Dropdown.Item key={id} onClick={() => setSearchCategoryToggle(category.name)}>{category.name}</Dropdown.Item>
+                ))}
               </DropdownButton>
               <Form.Control type="text" placeholder="vote/nominate" />
               <Button variant="warning">
