@@ -1,11 +1,11 @@
 import Carousel from "react-bootstrap/Carousel";
 import { LinkContainer } from "react-router-bootstrap";
 
-const ProductsCarouselComponent = () => {
+const ProductsCarouselComponent = ({ bestSellers }) => {
   const cursorPointer = {
     cursor: "pointer",
   };
-
+  console.log(bestSellers);
   return (
     <Carousel>
       {["random-dad-jokes", "resources", "dad-music", "posts", "gadgets"].map(

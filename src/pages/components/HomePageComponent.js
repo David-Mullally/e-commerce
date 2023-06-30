@@ -3,16 +3,28 @@ import ProductsCarouselComponent from "../../components/ProductsCarouselComponen
 import { Container, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
-const HomePageComponent = ({ categories, idx }) => {
+const HomePageComponent = ({ categories, getBestSellers }) => {
   const [mainCategories, setMainCategories] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
 
   useEffect(() => {
-      setMainCategories((cat)=>categories.filter((item)=>!item.name.includes("/")))
+    getBestSellers()
+      .then((data) => {
+        setBestSellers(data);
+      })
+      .catch((er) =>
+        console.log(
+          er.response.data.message ? er.response.data.message : er.response.data
+        )
+      );
+    setMainCategories((cat) =>
+      categories.filter((item) => !item.name.includes("/"))
+    );
   }, [categories]);
 
   return (
     <>
-      <ProductsCarouselComponent />
+      <ProductsCarouselComponent bestSellers={bestSellers} />
       <Container
         style={{ display: "flex", flexWrap: "wrap", paddingBottom: "5vw" }}
       >
