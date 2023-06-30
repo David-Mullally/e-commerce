@@ -39,13 +39,34 @@ function App() {
           {/* unprotected routes*/}
           <Route path="/" element={<HomePage />} />
           <Route path="/product-list" element={<ProductListPage />} />
+          <Route path="/product-list/:pageNum" element={<ProductListPage />} />
+          <Route
+            path="/product-list/:categoryName/:pageNum"
+            element={<ProductListPage />}
+          />
+          <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+          <Route
+            path="/product-list/search/:searchQuery"
+            element={<ProductListPage />}
+          />
+          <Route
+            path="/product-list/search/:searchQuery/:pageNum"
+            element={<ProductListPage />}
+          />
+          <Route
+            path="/product-list/category/:categoryName/search/:searchQuery"
+            element={<ProductListPage />}
+          />
+          <Route
+            path="/product-list/category/:categoryName/search/:searchQuery/:pageNum"
+            element={<ProductListPage />}
+          />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<LogInPage />} />
           <Route
-            path="/product-details/:id"
-            element={<ProductDetailsPage />}
+            path="/product-list/category/:categoryName"
+            element={<ProductListPage />}
           />
-          <Route path="/product-list/category/:categoryName" element={<ProductListPage />} />
           <Route path="/register" element={<RegistrationPage />} />
           <Route
             path="*"
