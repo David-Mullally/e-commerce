@@ -11,7 +11,7 @@ import {
   NavDropdown,
 } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../redux/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -26,6 +26,8 @@ const HeaderComponent = () => {
   const [searchCategoryToggle, setSearchCategoryToggle] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(getCategories(dispatch));
   }, [dispatch]);
@@ -33,7 +35,24 @@ const HeaderComponent = () => {
   const submitHandler = (e) => {
     if (e.keyCode && e.keyCode !== 13) return;
     e.preventDefault();
-    console.log(searchQuery);
+    if (searchQuery.trim()) {
+      if (searchCategoryToggle === "All") {
+        navigate(`/product-list/search/${searchQuery}`);
+      } else {
+        navigate(
+          `/product-list/category/${searchCategoryToggle.replaceAll(
+            "/",
+            ""
+          )}/search/${searchQuery}`
+        );
+      }
+    } else if (searchCategoryToggle !== "All") {
+      navigate(
+        `/product-list/category/${searchCategoryToggle.replaceAll("/", "")}`
+      );
+    } else {
+      navigate("/product-list");
+    }
   };
 
   return (
