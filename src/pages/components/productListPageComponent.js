@@ -9,7 +9,7 @@ import RatingFilterComponent from "../../components/filterQueryResultOptions/Rat
 import SortOptionsComponent from "../../components/SortOptionsComponent";
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const ProductListPageComponent = ({ getProducts, categories }) => {
   const [products, setProducts] = useState([]);
@@ -26,6 +26,7 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
   console.log(attrsFromFilter);
 
   const { categoryName } = useParams() || "";
+  const location = useLocation();
 
   useEffect(() => {
     if (categoryName) {
@@ -103,11 +104,13 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
                 setRatingsFromFilter={setRatingsFromFilter}
               />
             </ListGroup.Item>
-            <ListGroup.Item>
+            {!location.pathname.match(/\/category/) && (
+              <ListGroup.Item>
               <CategoryFilterComponent
                 setCategoriesFromFilter={setCategoriesFromFilter}
               />
             </ListGroup.Item>
+            )}
             <ListGroup.Item>
               <AttributesFilterComponent
                 attrsFilter={attrsFilter}
