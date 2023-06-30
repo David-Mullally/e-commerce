@@ -39,9 +39,9 @@ function App() {
           {/* unprotected routes*/}
           <Route path="/" element={<HomePage />} />
           <Route path="/product-list" element={<ProductListPage />} />
-          <Route path="/product-list/:pageNum" element={<ProductListPage />} />
+          <Route path="/product-list/:pageNumParam" element={<ProductListPage />} />
           <Route
-            path="/product-list/:categoryName/:pageNum"
+            path="/product-list/:categoryName/:pageNumParam"
             element={<ProductListPage />}
           />
           <Route path="/product-details/:id" element={<ProductDetailsPage />} />
@@ -50,7 +50,7 @@ function App() {
             element={<ProductListPage />}
           />
           <Route
-            path="/product-list/search/:searchQuery/:pageNum"
+            path="/product-list/search/:searchQuery/:pageNumParam"
             element={<ProductListPage />}
           />
           <Route
@@ -58,7 +58,7 @@ function App() {
             element={<ProductListPage />}
           />
           <Route
-            path="/product-list/category/:categoryName/search/:searchQuery/:pageNum"
+            path="/product-list/category/:categoryName/search/:searchQuery/:pageNumParam"
             element={<ProductListPage />}
           />
           <Route path="/cart" element={<CartPage />} />
