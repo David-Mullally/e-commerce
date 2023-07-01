@@ -83,7 +83,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
               <Form.Control
                 required
                 type="text"
-                name="User First Name"
+                name="name"
                 defaultValue={user.name}
               />
             </Form.Group>
@@ -93,7 +93,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
             >
               <Form.Label>Users Last Name</Form.Label>
               <Form.Control
-                name="userLastName"
+                name="lastName"
                 required
                 type="text"
                 defaultValue={user.lastName}

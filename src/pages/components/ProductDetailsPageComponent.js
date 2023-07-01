@@ -128,7 +128,7 @@ const ProductDetailsPageComponent = ({
             <Col md={4} style={{ zIndex: 1 }}>
               {product.images
                 ? product.images.map((image, id) => (
-                    <div kex={id}>
+                    <div key={id}>
                       <div key={id} id={`imagesId${id + 1}`}>
                         <Image
                           crossOrigin="anonymous"
@@ -211,7 +211,7 @@ const ProductDetailsPageComponent = ({
                           {review.comment}{" "}
                         </ListGroup.Item>
                       ))}
-                        <div ref={messagesEndRef} />
+                    <div ref={messagesEndRef} />
                   </ListGroup>
                 </Col>
               </Row>
@@ -242,17 +242,29 @@ const ProductDetailsPageComponent = ({
                   disabled={!userInfo.name}
                   aria-label="Default select example"
                 >
-                  <option value="">Rating</option>
-                  <option value="5">5 (Very Good)</option>
-                  <option value="4">4 (Good)</option>
-                  <option value="3">3 (Average)</option>
-                  <option value="2">2 (Poor)</option>
-                  <option value="1">1 (Awful)</option>
+                  <option key={0} value="">
+                    Rating
+                  </option>
+                  <option key={5} value="5">
+                    5 (Very Good)
+                  </option>
+                  <option key={4} value="4">
+                    4 (Good)
+                  </option>
+                  <option key={3} value="3">
+                    3 (Average)
+                  </option>
+                  <option key={2} value="2">
+                    2 (Poor)
+                  </option>
+                  <option key={1} value="1">
+                    1 (Awful)
+                  </option>
                 </Form.Select>
                 <Button
                   disabled={!userInfo.name}
                   type="submit"
-                  lastName="mb-3 mt-3"
+                  className="mb-3 mt-3"
                   variant="primary"
                 >
                   Submit

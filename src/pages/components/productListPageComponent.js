@@ -79,8 +79,9 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
       setProducts(products.products);
       setPaginationLinksNumber(products.paginationLinksNumber);
       setPageNum(products.pageNum);
-    });
-    setLoading(false).catch((err) => {
+      setLoading(false)
+    })
+    .catch((err) => {
       console.log(err);
       setError(true);
     });
@@ -131,6 +132,7 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
               <AttributesFilterComponent
                 attrsFilter={attrsFilter}
                 setAttrsFromFilter={setAttrsFromFilter}
+                filters={filters}
               />
             </ListGroup.Item>
           </ListGroup>

@@ -10,7 +10,7 @@ const RatingFilterComponent = ({setRatingsFromFilter}) => {
         return (
             <Fragment key={index}>
               <Form.Check type="checkbox" id={`check-api-${index}`}>
-                <Form.Check.Input onChange={(e)=> setRatingsFromFilter((items)=>{return {...items, [5-idx]:e.target.checked}})} type="checkbox" isValid />
+                <Form.Check.Input onChange={(e)=> setRatingsFromFilter((items)=>{return {...items, [5-index]:e.target.checked}})} type="checkbox" isValid />
                 <Form.Check.Label style={{ cursor: "pointer" }}>
                   <Rating readonly size={20} initialValue={5 - index} />
                 </Form.Check.Label>

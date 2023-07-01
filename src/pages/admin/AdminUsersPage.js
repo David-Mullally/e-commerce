@@ -14,7 +14,7 @@ const deleteUser = async(userId) => {
   return data;
 }
 
- fetchUsers(); 
+ //fetchUsers(); 
 
 const AdminUsersPage = () => {
   return <UsersPageComponent fetchUsers={fetchUsers} deleteUser={deleteUser} />;
