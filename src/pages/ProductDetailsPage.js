@@ -10,7 +10,7 @@ const getProductDetails = async (id) => {
 };
 
 const writeReviewAPIRequest = async (productId, formInputs) => {
-  const { data } = axios.put(`/api/users/reviews/${productId}`, { ...formInputs });
+  const { data } = await axios.post(`/api/users/review/${productId}`, { ...formInputs });
   return data;
 };
 
