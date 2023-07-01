@@ -7,21 +7,21 @@ let filtersUrl = "";
 const proceedFilters = (filters) => {
   filtersUrl = "";
   Object.keys(filters).map((key, index) => {
-    if (key === "price") filtersUrl += "&price=" + filters[key];
+    if (key === "price") filtersUrl += `&price=${filters[key]}`;
     else if (key === "rating") {
       let rat = "";
       Object.keys(filters[key]).map((key2, index2) => {
         if (filters[key][key2]) rat += `${key2},`;
         return "";
       });
-      filtersUrl = "&rating=" + rat;
+      filtersUrl += "&rating=" + rat;
     } else if (key === "category") {
       let cat = "";
       Object.keys(filters[key]).map((key3, index3) => {
         if (filters[key][key3]) cat += `${key3},`;
         return "";
       });
-      filtersUrl = "&category=" + cat;
+      filtersUrl += "&category=" + cat;
     } else if (key === "attrs") {
       if (filters[key].length > 0) {
         let val = filters[key].reduce((acc, item) => {
@@ -42,7 +42,7 @@ const getProducts = async (
   pageNumParam = null,
   searchQuery = "",
   filters = {},
-  sortOption = ""
+  sortOption = "",
 ) => {
   // filtersUrl = "&price=60&rating=1,2,3&category=a,b,c,d&attrs=color-red-blue,size-1TB,2TB";
   filtersUrl = proceedFilters(filters);
