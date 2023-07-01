@@ -6,19 +6,20 @@ const ProductsCarouselComponent = ({ bestSellers }) => {
     cursor: "pointer",
   };
   console.log(bestSellers);
-  return (
+  return bestSellers.length > 0 ? (
     <Carousel>
-      {["random-dad-jokes", "resources", "dad-music", "posts", "gadgets"].map(
-        (category, idx) => {
+      {bestSellers.map(
+        (item, idx) => {
+          {console.log("imagePath", item.images[0].path)}
           return (
             <div key={idx}>
-              <Carousel.Item>
+              <Carousel.Item key={idx}>
                 <img
                   objectfit="cover"
                   crossOrigin="anonymous"
                   className="d-block w-100"
                   style={{ height: "200px" }}
-                  src={`/images/category-${idx + 1}.jpg`}
+                  src={`${item.images ? item.images[0].path : null}`}
                   alt="First slide"
                 />
                 <Carousel.Caption
@@ -29,10 +30,10 @@ const ProductsCarouselComponent = ({ bestSellers }) => {
                     margin: "0 20vw",
                   }}
                 >
-                  <LinkContainer style={cursorPointer} to="/random-dad-jokes">
-                    <h1>{category}</h1>
+                  <LinkContainer style={cursorPointer} to={`/product-details/${item._id}`}>
+                    <h3>Bestseller in {item.category}</h3>
                   </LinkContainer>
-                  <p>go to category</p>
+                  <p>{item.description}</p>
                 </Carousel.Caption>
               </Carousel.Item>
             </div>
@@ -40,7 +41,7 @@ const ProductsCarouselComponent = ({ bestSellers }) => {
         }
       )}
     </Carousel>
-  );
+  ) : null;
 };
 
 export default ProductsCarouselComponent;
