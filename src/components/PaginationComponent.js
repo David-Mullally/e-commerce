@@ -9,7 +9,7 @@ function PaginationComponent({
 }) {
   const category = categoryName ? `category/${categoryName}/` : "";
   const search = searchQuery ? `search/${searchQuery}/` : "";
-  const url = `/product.list/${category}/${search}`;
+  const url = `/product-list/${category}${search}`       /*${search}*/;
 
   return (
     <Pagination style={{ marginBottom: "70px" }}>
@@ -18,16 +18,16 @@ function PaginationComponent({
       </LinkContainer>
       {[...Array(paginationLinksNumber).keys()].map((x) => (
         <LinkContainer key={x + 1} to={`${url}${x + 1}`}>
-          <Pagination.Item active={page + 1 === pageNum}>
+          <Pagination.Item active={x + 1 === pageNum}>
             {x + 1}
           </Pagination.Item>
         </LinkContainer>
       ))}
       <LinkContainer
-        disabled={pageNum === paginationLinksNumber}
+        
         to={`${url}${pageNum + 1}`}
       >
-        <Pagination.Next />
+        <Pagination.Next disabled={pageNum === paginationLinksNumber} />
       </LinkContainer>
     </Pagination>
   );

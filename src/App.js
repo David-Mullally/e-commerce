@@ -41,7 +41,7 @@ function App() {
           <Route path="/product-list" element={<ProductListPage />} />
           <Route path="/product-list/:pageNumParam" element={<ProductListPage />} />
           <Route
-            path="/product-list/:categoryName/:pageNumParam"
+            path="/product-list/category/:categoryName/:pageNumParam"
             element={<ProductListPage />}
           />
           <Route path="/product-details/:id" element={<ProductDetailsPage />} />
