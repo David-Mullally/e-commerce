@@ -21,8 +21,7 @@ const HeaderComponent = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
   const itemsCount = useSelector((state) => state.cart.itemsCount);
-  const categories = useSelector((state) => state.getCategories);
-
+  const {categories} = useSelector((state) => state.getCategories);
   const [searchCategoryToggle, setSearchCategoryToggle] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -87,7 +86,7 @@ const HeaderComponent = () => {
                 type="text"
                 placeholder="search in shop..."
               />
-              <Button onClickk={submitHandler} variant="warning">
+              <Button onClick={submitHandler} variant="warning">
                 <i className="bi bi-search"></i>
               </Button>
             </InputGroup>
