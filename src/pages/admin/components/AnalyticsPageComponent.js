@@ -25,6 +25,9 @@ const AnalyticsPageComponent = ({
     new Date(previousDay).toISOString().substring(0, 10)
   );
 
+  const [dataForFirstSet, setDataForFirstSet] = useState([]);
+  const [dataForSecondSet, setDataForSecondSet] = useState([]);
+
   useEffect(() => {
     const abctrl = new AbortController();
     fetchOrdersForFirstDate(abctrl, firstDateToCompare)
@@ -39,6 +42,7 @@ const AnalyticsPageComponent = ({
           });
           return { name: date, [firstDateToCompare]: ordersSum };
         });
+        setDataForFirstSet(orders);
       })
       .catch((er) =>
         console.log(
@@ -57,7 +61,7 @@ const AnalyticsPageComponent = ({
           });
           return { name: date, [secondDateToCompare]: ordersSum };
         });
-          console.log(orders);
+        setDataForSecondSet(orders);
       })
       .catch((er) =>
         console.log(
@@ -75,14 +79,6 @@ const AnalyticsPageComponent = ({
     setSecondDateToCompare(e.target.value);
   };
 
-  const data = [
-    { name: "9am", 2021: 1000, 2022: 1200 },
-    { name: "10am", 2021: 1050, 2022: 1300 },
-    { name: "11am", 2021: 1100, 2022: 1200 },
-    { name: "12pm", 2021: 1400, 2022: 1300 },
-    { name: "1pm", 2021: 1700, 2022: 1800 },
-    { name: "2pm", 2021: 1050, 2022: 1200 },
-  ];
   return (
     <Row className="m-5">
       <Col md={2}>
@@ -119,7 +115,7 @@ const AnalyticsPageComponent = ({
           <LineChart
             width={500}
             height={300}
-            data={data}
+            //data={data}
             margin={{
               top: 5,
               right: 30,
@@ -142,19 +138,43 @@ const AnalyticsPageComponent = ({
             />
             <Tooltip />
             <Legend verticalAlign="top" height={36} />
-            <Line
-              type="monotone"
-              dataKey="2021"
-              stroke="#8884d8"
-              strokeWidth={4}
-              activeDot={{ r: 8 }}
-            />
-            <Line
-              type="monotone"
-              dataKey="2022"
-              stroke="#82ca9d"
-              strokeWidth={4}
-            />
+            {dataForFirstSet.length > dataForSecondSet.length ? (
+              <>
+                <Line
+                  data={dataForFirstSet}
+                  type="monotone"
+                  dataKey={firstDateToCompare}
+                  stroke="#8884d8"
+                  strokeWidth={4}
+                  activeDot={{ r: 8 }}
+                />
+                <Line
+                  data={dataForSecondSet}
+                  type="monotone"
+                  dataKey={secondDateToCompare}
+                  stroke="#82ca9d"
+                  strokeWidth={4}
+                />
+              </>
+            ) : (
+              <>
+                <Line
+                  data={dataForSecondSet}
+                  type="monotone"
+                  dataKey={secondDateToCompare}
+                  stroke="#8884d8"
+                  strokeWidth={4}
+                  activeDot={{ r: 8 }}
+                />
+                <Line
+                  data={dataForFirstSet}
+                  type="monotone"
+                  dataKey={firstDateToCompare}
+                  stroke="#82ca9d"
+                  strokeWidth={4}
+                />
+              </>
+            )}
           </LineChart>
         </ResponsiveContainer>
       </Col>
