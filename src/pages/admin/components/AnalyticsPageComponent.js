@@ -28,14 +28,37 @@ const AnalyticsPageComponent = ({
   useEffect(() => {
     const abctrl = new AbortController();
     fetchOrdersForFirstDate(abctrl, firstDateToCompare)
-      .then((data) => console.log("first" ,data))
+      .then((data) => {
+        let ordersSum = 0;
+        const orders = data.map((order) => {
+          ordersSum += order.orderTotal.cartSubtotal;
+          var date = new Date(order.createdAt).toLocaleString("en-US", {
+            hour: "numeric",
+            hour12: true,
+            timeZome: "UTC",
+          });
+          return { name: date, [firstDateToCompare]: ordersSum };
+        });
+      })
       .catch((er) =>
         console.log(
           er.response.data.message ? er.response.data.message : er.response.data
         )
       );
     fetchOrdersForSecondDate(abctrl, secondDateToCompare)
-      .then((data) => console.log("second", data))
+      .then((data) => {
+        let ordersSum = 0;
+        const orders = data.map((order) => {
+          ordersSum += order.orderTotal.cartSubtotal;
+          var date = new Date(order.createdAt).toLocaleString("en-US", {
+            hour: "numeric",
+            hour12: true,
+            timeZome: "UTC",
+          });
+          return { name: date, [secondDateToCompare]: ordersSum };
+        });
+          console.log(orders);
+      })
       .catch((er) =>
         console.log(
           er.response.data.message ? er.response.data.message : er.response.data
