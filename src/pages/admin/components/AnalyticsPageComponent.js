@@ -10,9 +10,12 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const AnalyticsPageComponent = () => {
+const AnalyticsPageComponent = ({
+  fetchOrdersForFirstDate,
+  fetchOrdersForSecondDate,
+}) => {
   const [firstDateToCompare, setFirstDateToCompare] = useState(
     new Date().toISOString().substring(0, 10)
   );
@@ -21,6 +24,25 @@ const AnalyticsPageComponent = () => {
   const [secondDateToCompare, setSecondDateToCompare] = useState(
     new Date(previousDay).toISOString().substring(0, 10)
   );
+
+  useEffect(() => {
+    const abctrl = new AbortController();
+    fetchOrdersForFirstDate(abctrl, firstDateToCompare)
+      .then((data) => console.log("first" ,data))
+      .catch((er) =>
+        console.log(
+          er.response.data.message ? er.response.data.message : er.response.data
+        )
+      );
+    fetchOrdersForSecondDate(abctrl, secondDateToCompare)
+      .then((data) => console.log("second", data))
+      .catch((er) =>
+        console.log(
+          er.response.data.message ? er.response.data.message : er.response.data
+        )
+      );
+    return () => abctrl.abort();
+  }, [firstDateToCompare, secondDateToCompare]);
 
   const firtsDateHandler = (e) => {
     setFirstDateToCompare(e.target.value);
