@@ -16,14 +16,18 @@ const AdminChatRoomComponent = ({chatRoom, roomIndex, socketUser}) => {
         </Toast.Header>
         <Toast.Body>
           <div style={{ maxHeight: "500px", overflow: "auto" }}>
-            {Array.from({ length: 30 }).map((_, idx) => (
+            {chatRoom[1].map((msg, idx) => (
               <Fragment key={idx}>
-                <p className="bg-primary p-3 ms-4 text-light rounded-pill">
-                  <b>User Wrote:</b> Hello World! This is a chat message!
+                {msg.client && (
+                  <p key={idx} className="bg-primary p-3 ms-4 text-light rounded-pill">
+                  <b>User Wrote:</b> {msg.client}
                 </p>
-                <p>
-                  <b>You Wrote:</b> Hello World! This is a chat message!
+                )}
+                {msg.admin && (
+                  <p key={idx}>
+                  <b>You Wrote:</b> {msg.admin}
                 </p>
+                )}
               </Fragment>
             ))}
           </div>
