@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 const UserChatComponent = () => {
   const [socket, setSocket] = useState(false);
   const [chat, setChat] = useState([]);
+  const [messageRecieved, setMessageRecieved] = useState(false);
 
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
 
@@ -17,6 +18,7 @@ const UserChatComponent = () => {
         setChat((chat) => {
           return [...chat, { admin: msg }];
         });
+        setMessageRecieved(true);
         const chatMessages = document.querySelector(".cht-msg");
         chatMessages.scrollTop = chatMessages.scrollHeight;
       });
@@ -29,6 +31,7 @@ const UserChatComponent = () => {
     if (e.keyCode && e.keyCode !== 13) {
       return;
     }
+    setMessageRecieved(false);
     const msg = document.getElementById("clientChatMsg");
     let v = msg.value.trim();
     if (v === "" || v === null || v === false || !v) {
@@ -51,7 +54,10 @@ const UserChatComponent = () => {
       <input type="checkbox" id="check" />
       <label className="chat-btn" htmlFor="check">
         <i className="bi bi-chat-dots comment"></i>
-        <span className="position-absolute top-0 start-10 translate-middle p-2 bg-danger border- border-light rounded-circle"></span>
+        {messageRecieved && (
+          <span className="position-absolute top-0 start-10 translate-middle p-2 bg-danger border- border-light rounded-circle"></span>
+        )}
+
         <i className="bi bi-x-circle close"></i>
       </label>
       <div className="chat-wrapper">
@@ -61,7 +67,7 @@ const UserChatComponent = () => {
         <div className="chat-form">
           <div className="chat-msg">
             {chat.map((item, id) => {
-              console.log(item)
+              console.log(item);
               return (
                 <div>
                   {item.client && (
@@ -70,7 +76,10 @@ const UserChatComponent = () => {
                     </p>
                   )}
                   {item.admin && (
-                    <p key={id} className="bg-primary p-3 ms-4 text-light rounded-pill">
+                    <p
+                      key={id}
+                      className="bg-primary p-3 ms-4 text-light rounded-pill"
+                    >
                       <b>Support:</b> {item.admin.message}
                     </p>
                   )}
