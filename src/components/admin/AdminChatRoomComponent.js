@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Button, Form, Toast } from "react-bootstrap";
 
 const AdminChatRoomComponent = ({ chatRoom, roomIndex, socketUser }) => {
@@ -24,7 +24,18 @@ const AdminChatRoomComponent = ({ chatRoom, roomIndex, socketUser }) => {
     }
     chatRoom[1].push({ admin: msg.value });
     setRerender(!rerender);
+    msg.focus();
+    setTimeout(() => {
+      msg.value = "";
+      const chatMessages = document.querySelector(`.cht-msg${socketUser}`);
+      if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 200)
   };
+
+  useEffect(() => {
+    const chatMessages = document.querySelector(`.cht-msg${socketUser}`);
+    if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+  })
 
   return (
     <div style={{ display: "flex" }}>
