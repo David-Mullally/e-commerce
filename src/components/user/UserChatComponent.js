@@ -13,6 +13,14 @@ const UserChatComponent = () => {
     if (!userInfo.isAdmin) {
       const socket = socketIOClient();
       setSocket(socket);
+      socket.on("server sends message from admin to client", (msg) => {
+        setChat((chat) => {
+          return [...chat, { admin: msg }];
+        });
+        const chatMessages = document.querySelector(".cht-msg");
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      });
+
       return () => socket.disconnect();
     }
   }, [userInfo.isAdmin]);
@@ -53,16 +61,17 @@ const UserChatComponent = () => {
         <div className="chat-form">
           <div className="chat-msg">
             {chat.map((item, id) => {
+              console.log(item)
               return (
-                <div key={id}>
+                <div>
                   {item.client && (
-                    <p>
+                    <p key={id}>
                       <b>You:</b> {item.client}
                     </p>
                   )}
                   {item.admin && (
-                    <p className="bg-primary p-3 ms-4 text-light rounded-pill">
-                      <b>Support:</b> {item.admin}
+                    <p key={id} className="bg-primary p-3 ms-4 text-light rounded-pill">
+                      <b>Support:</b> {item.admin.message}
                     </p>
                   )}
                 </div>

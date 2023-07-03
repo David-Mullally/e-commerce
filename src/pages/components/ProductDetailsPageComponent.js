@@ -86,7 +86,7 @@ const ProductDetailsPageComponent = ({
           er.response.data.message ? er.response.data.message : er.response.data
         )
       );
-  }, [id, productReviewed]);
+  }, [id, productReviewed, getProductDetails]);
 
   const sendReviewHandler = (e) => {
     e.preventDefault();

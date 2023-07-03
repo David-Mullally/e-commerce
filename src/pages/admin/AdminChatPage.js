@@ -5,7 +5,7 @@ import AdminLinksComponent from "../../components/admin/AdminLinksComponent";
 import { useSelector } from "react-redux";
 
 const AdminChatPage = () => {
-  const { chatRooms } = useSelector((state) => state.adminChat);
+  const { chatRooms, socket } = useSelector((state) => state.adminChat);
   console.log(chatRooms);
   return (
     <Row className="m-5">
@@ -20,6 +20,7 @@ const AdminChatPage = () => {
               chatRoom={chatRoom}
               roomIndex={index + 1}
               socketUser={chatRoom[0]}
+              socket={socket}
             />
           ))}
         </Row>
