@@ -12,13 +12,18 @@ const AdminChatPage = () => {
       <Col md={2}>
         <AdminLinksComponent />
       </Col>
-          <Col md={10}>
-              <Row>
-                  {Object.entries(chatRooms).map((chatRoom, index) => (
-                    <AdminChatRoomComponent key={index} chatRoom={chatRoom} />
-                  ))}  
-              </Row>
-        </Col>
+      <Col md={10}>
+        <Row>
+          {Object.entries(chatRooms).map((chatRoom, index) => (
+            <AdminChatRoomComponent
+              key={index}
+              chatRoom={chatRoom}
+              roomIndex={index + 1}
+              socketUser={chatRoom[0]}
+            />
+          ))}
+        </Row>
+      </Col>
     </Row>
   );
 };
