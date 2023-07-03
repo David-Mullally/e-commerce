@@ -1,12 +1,13 @@
 import { Fragment, useState } from "react";
 import { Button, Form, Toast } from "react-bootstrap";
 
-const AdminChatRoomComponent = () => {
+const AdminChatRoomComponent = ({chatRoom}) => {
   const [toast1, closeToast1] = useState();
   const close1 = () => closeToast1(false);
 
   const [toast2, closeToast2] = useState();
   const close2 = () => closeToast2(false);
+  console.log(chatRoom);
 
   return (
       <div style={{ display: "flex"}}>
