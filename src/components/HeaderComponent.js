@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getCategories } from "../redux/actions/categoryActions";
 import socketIOClient from "socket.io-client";
+import { setChatRooms } from "../redux/actions/chatActions";
 
 const HeaderComponent = () => {
   const dispatch = useDispatch();
@@ -59,10 +60,15 @@ const HeaderComponent = () => {
     if (userInfo.isAdmin) {
       const socket = socketIOClient();
       socket.on("server sends message from client to admin", ({ message }) => {
-        console.log(message);
+        /* 
+        let chatRooms = {
+        dsfsdfsadffsdfSocketID: [{"client": "dsdsds"}, {"client": "saadada"}, {"admin": "sadadsd"}],
+        }
+        */
+        dispatch(setChatRooms("exampleUser", message));
       });
     }
-  }, [userInfo.isAdmin]);
+  }, [userInfo.isAdmin, dispatch]);
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
