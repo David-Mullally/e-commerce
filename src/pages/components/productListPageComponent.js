@@ -85,7 +85,7 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
       console.log(err);
       setError(true);
     });
-  }, [categoryName, pageNumParam, searchQuery, filters, sortOption]);
+  }, [categoryName, pageNumParam, searchQuery, filters, sortOption,getProducts]);
 
   const handleFilters = () => {
     navigate(location.pathname.replace(/\/[0-9] +$/, ""))
