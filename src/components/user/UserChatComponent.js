@@ -12,6 +12,7 @@ const UserChatComponent = () => {
 
   useEffect(() => {
     if (!userInfo.isAdmin) {
+      var audio = new Audio("/audio/chat-msg.mp3");
       const socket = socketIOClient();
       setSocket(socket);
       socket.on("server sends message from admin to client", (msg) => {
@@ -19,6 +20,7 @@ const UserChatComponent = () => {
           return [...chat, { admin: msg }];
         });
         setMessageRecieved(true);
+        audio.play();
         const chatMessages = document.querySelector(".cht-msg");
         chatMessages.scrollTop = chatMessages.scrollHeight;
       });

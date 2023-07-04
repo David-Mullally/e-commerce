@@ -3,6 +3,7 @@ import * as actionTypes from "../constants/chatConstants";
 const CHAT_INITIAL_STATE = {
   socket: false,
   chatRooms: {},
+  messageRecieved: false,
 };
 
 export const adminChatReducer = (state = CHAT_INITIAL_STATE, action) => {
@@ -35,6 +36,11 @@ export const adminChatReducer = (state = CHAT_INITIAL_STATE, action) => {
         ...state,
         socket: action.payload.socket,
       };
+    case actionTypes.MESSAGE_RECIEVED:
+      return {
+        ...state,
+        messageRecieved: action.payload.value,
+      }
     default:
       return state;
   }

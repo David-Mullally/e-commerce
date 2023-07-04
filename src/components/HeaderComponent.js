@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getCategories } from "../redux/actions/categoryActions";
 import socketIOClient from "socket.io-client";
-import { setChatRooms, setSocket } from "../redux/actions/chatActions";
+import { setChatRooms, setSocket, setMessageRecieved } from "../redux/actions/chatActions";
 
 const HeaderComponent = () => {
   const dispatch = useDispatch();
@@ -26,6 +26,8 @@ const HeaderComponent = () => {
   const {categories} = useSelector((state) => state.getCategories);
   const [searchCategoryToggle, setSearchCategoryToggle] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { messageRecieved } = useSelector((state) => state.adminChat);
 
   const navigate = useNavigate();
 
@@ -58,6 +60,7 @@ const HeaderComponent = () => {
 
   useEffect(() => { 
     if (userInfo.isAdmin) {
+      var audio = new Audio("/audio/chat-msg.mp3")
       const socket = socketIOClient();
       dispatch(setSocket(socket));
       socket.on("server sends message from client to admin", ({ message }) => {
@@ -67,7 +70,10 @@ const HeaderComponent = () => {
         }
         */
         dispatch(setChatRooms("exampleUser", message));
+        dispatch(setMessageRecieved(true));
+        audio.play();
       });
+      return () => socket.disconnect();
     }
   }, [userInfo.isAdmin, dispatch]);
 
@@ -113,7 +119,7 @@ const HeaderComponent = () => {
               <LinkContainer to="/admin/orders">
                 <Nav.Link>
                   Admin
-                  <span className="position-absolute top-1 start-10 translate-middle p-2 border bg-danger border-light rounded-circle"></span>
+                  {messageRecieved && <span className="position-absolute top-1 start-10 translate-middle p-2 border bg-danger border-light rounded-circle"></span> }
                 </Nav.Link>
               </LinkContainer>
             ) : userInfo.name && !userInfo.isAdmin ? (
