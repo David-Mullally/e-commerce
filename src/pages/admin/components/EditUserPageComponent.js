@@ -14,7 +14,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
   });
   const navigate = useNavigate();
   const { id } = useParams();
-  {
+  
     /*const onChange = () => {
     const password = document.querySelector("input[name=password]");
     const passwordConfirm = document.querySelector(
@@ -26,7 +26,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
       passwordConfirm.setCustomValidity("Passwords don't match");
     }
   };*/
-  }
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -66,7 +66,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
           er.response.data.message ? er.response.data.message : er.response.data
         )
       );
-  }, [id]);
+  }, [id, fetchUser]);
   return (
     <Container>
       <Row className="justify-content-md-center mt-3">
@@ -102,7 +102,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
             <Form.Group className="mb-3" controlId="form.UserBasicEmail">
               <Form.Label>E-Mail</Form.Label>
               <Form.Control
-                name="userEmail"
+                name="email"
                 required
                 type="email"
                 defaultValue={user.email}

@@ -38,7 +38,7 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
     return () => {
       abortctrl.abort();
     };
-  }, [userDeleted]); 
+  }, [userDeleted, dispatch, fetchUsers]); 
 
   return (
     <Row className="m-5">
@@ -74,7 +74,7 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
                     )}
                   </td>
                   <td>
-                    <LinkContainer to={`/admin/edit-user/${user.id}`}>
+                    <LinkContainer to={`/admin/edit-user/${user._id}`}>
                       <Button className="btm-sm">
                         <i className="bi bi-pencil-square"></i>
                       </Button>
