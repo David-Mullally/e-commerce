@@ -64,13 +64,13 @@ const HeaderComponent = () => {
       const socket = socketIOClient();
       dispatch(setSocket(socket));
       socket.emit("admin connected with server", "Admin" + Math.floor(Math.random() * 1000000000000))
-      socket.on("server sends message from client to admin", ({ message }) => {
+      socket.on("server sends message from client to admin", ({ user,message }) => {
         /* 
         let chatRooms = {
         dsfsdfsadffsdfSocketID: [{"client": "dsdsds"}, {"client": "saadada"}, {"admin": "sadadsd"}],
         }
         */
-        dispatch(setChatRooms("exampleUser", message));
+        dispatch(setChatRooms(user, message));
         dispatch(setMessageRecieved(true));
         audio.play();
       });
