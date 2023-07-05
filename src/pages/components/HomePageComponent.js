@@ -1,5 +1,6 @@
 import CategoryCardComponent from "../../components/CategoryCardComponent";
 import ProductsCarouselComponent from "../../components/ProductsCarouselComponent";
+import MetaComponent from "../../components/MetaComponent";
 import { Container, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
@@ -20,10 +21,11 @@ const HomePageComponent = ({ categories, getBestSellers }) => {
     setMainCategories((cat) =>
       categories.filter((item) => !item.name.includes("/"))
     );
-  }, [categories]);
+  }, [categories, getBestSellers]);
 
   return (
     <>
+      <MetaComponent />
       <ProductsCarouselComponent bestSellers={bestSellers} />
       <Container
         style={{ display: "flex", flexWrap: "wrap", paddingBottom: "5vw" }}

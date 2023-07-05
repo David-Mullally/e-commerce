@@ -38,7 +38,7 @@ const AdminEditProductPage = () => {
       saveAttributeToCatDoc={saveAttributeToCatDoc}
       imageDeleteHandler={imageDeleteHandler}
       uploadImageAPIRequest={uploadImageAPIRequest}
-      uploadImagesCloudinaryAPIRequest
+      uploadImagesCloudinaryAPIRequest={uploadImagesCloudinaryAPIRequest}
       
     />
   );
