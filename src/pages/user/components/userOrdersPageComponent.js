@@ -9,9 +9,8 @@ const UserOrdersPageComponent = ({ getOrders }) => {
     getOrders()
       .then((orders) => setOrders(orders))
       .catch((er) => console.log(er));
-  }, []);
+  }, [getOrders]);
 
-  getOrders().then((orders) => console.log("orders::", orders));
   return (
     <Row className="m-5">
       <Col md={12}>

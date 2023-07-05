@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 const ProductsPageComponent = ({fetchProducts, deleteProduct}) => {
   const [products, setProducts] = useState([]);
   const [productDeleted, setProductDeleted] = useState(false);
-  const diapatch = useDispatch();
+  const dispatch = useDispatch();
 
   const deleteHandler = async(productId) => {
     if (window.confirm("Are you sure?")) {
@@ -27,7 +27,7 @@ const ProductsPageComponent = ({fetchProducts, deleteProduct}) => {
     fetchProducts(abortctrl)
       .then((res) => setProducts(res))
       .catch((err) =>
-        dispatchEvent(logout())
+        dispatch(logout())
         /*setProducts([
          { name: err.response.data.message
             ? err.response.data.message

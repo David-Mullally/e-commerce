@@ -48,7 +48,7 @@ const HeaderComponent = () => {
       }
     } else if (searchCategoryToggle !== "All") {
       navigate(
-        `/product-list/category/${searchCategoryToggle.replace(/,/g, "/")}`
+        `/product-list/category/${searchCategoryToggle.replace(/\//g, "/")}`
       );
     } else {
       navigate("/product-list");

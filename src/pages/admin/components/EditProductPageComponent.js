@@ -404,7 +404,7 @@ const AdminEditProductPageComponent = ({
               multiple
               onChange={(e) => {
                 setIsUploading("Uploading files in progress...");
-                if (process.env.NODE_ENV === "production") {
+                if (process.env.NODE_ENV !== "production") {
                   // to do : change to !==
                   uploadImagesAPIRequest(e.target.files, id)
                     .then((data) => {
