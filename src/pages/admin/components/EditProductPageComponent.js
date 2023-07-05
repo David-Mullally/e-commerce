@@ -57,7 +57,7 @@ const AdminEditProductPageComponent = ({
         setProduct(product);
       })
       .catch((er) => console.log(er));
-  }, [id, imageRemoved, imageUploaded]);
+  }, [id, imageRemoved, imageUploaded, fetchProduct]);
 
   const onHover = {
     cursor: "pointer",
@@ -66,7 +66,6 @@ const AdminEditProductPageComponent = ({
     top: "-10px",
     transform: "scale(2.7)",
   };
-  {
     /*const onChange = () => {
     const password = document.querySelector("input[name=password]");
     const passwordConfirm = document.querySelector(
@@ -78,7 +77,6 @@ const AdminEditProductPageComponent = ({
       passwordConfirm.setCustomValidity("Passwords don't match");
     }
   };*/
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -129,7 +127,7 @@ const AdminEditProductPageComponent = ({
     }
     setAttributesTable(product.attrs);
     setCategoryChosen(product.category);
-  }, [product]);
+  }, [product, categories]);
 
   const attributeValueSelected = (e) => {
     if (e.target.value !== " Choose Attribute Value") {

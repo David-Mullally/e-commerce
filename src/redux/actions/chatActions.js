@@ -28,3 +28,12 @@ export const setMessageRecieved = (value) => async (dispatch) => {
         }
     })
 }
+
+export const removeChatRoom = (socketId) => async (dispatch) => {
+    dispatch({
+        type: actionTypes.REMOVE_CHATROOM,
+        payload: {
+            socketId: socketId,
+        }
+    })
+}
